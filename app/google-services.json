@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "443256499463",
+    "firebase_url": "https://cargo-cb24f.firebaseio.com",
+    "project_id": "cargo-cb24f",
+    "storage_bucket": "cargo-cb24f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:443256499463:android:29e653f829829a99",
+        "android_client_info": {
+          "package_name": "me.cargoapp.cargo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "443256499463-rujshdoj81ch26cobinnjg39r3lts1ff.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDr9r2oDEBpEOFhz0ZG6I-V81CU9uV7GPw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
