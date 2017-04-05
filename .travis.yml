@@ -2,9 +2,9 @@ language: android
 jdk: oraclejdk8
 android:
   components:
-    - platform-tools
+    - platform-tools-25.0.4
     - tools
-    - tools # see https://github.com/travis-ci/travis-ci/issues/6040
+    - tools-26.0.1 # see https://github.com/travis-ci/travis-ci/issues/6040
 
     # The BuildTools version used by your project
     - build-tools-25.0.2
