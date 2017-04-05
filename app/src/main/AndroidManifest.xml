@@ -36,8 +36,7 @@
         </service>
 
         <activity
-            android:name=".SettingsActivity_"
-            android:label="@string/title_activity_settings"></activity>
+            android:name=".SettingsActivity_" />
     </application>
 
 </manifest>

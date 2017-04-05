@@ -50,8 +50,8 @@ public class OverlayService extends Service {
                 .setColor(getResources().getColor(R.color.primary, null))
                 .setOngoing(true)
                 .setPriority(Notification.PRIORITY_MIN)
-                .setContentTitle("Cargo est lancé")
-                .setContentText("Profitez de la route en toute sécurité.")
+                .setContentTitle(getResources().getString(R.string.notification_title))
+                .setContentText(getResources().getString(R.string.notification_text))
                 .build();
     }
 }
