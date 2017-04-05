@@ -35,8 +35,9 @@
             </intent-filter>
         </service>
 
-        <activity
-            android:name=".SettingsActivity_" />
+        <activity android:name=".SettingsActivity_" />
+        <activity android:name=".ReceivedMessageActivity_"
+            android:theme="@android:style/Theme.Translucent" />
     </application>
 
 </manifest>

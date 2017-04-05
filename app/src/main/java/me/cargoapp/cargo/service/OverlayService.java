@@ -7,9 +7,13 @@ import android.os.IBinder;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EService;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import me.cargoapp.cargo.OverlayLayer;
 import me.cargoapp.cargo.R;
+import me.cargoapp.cargo.event.HideOverlayEvent;
+import me.cargoapp.cargo.event.ShowOverlayEvent;
 
 @EService
 public class OverlayService extends Service {
@@ -28,6 +32,8 @@ public class OverlayService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        EventBus.getDefault().register(this);
+
         _overlayLayer.addToScreen();
 
         Notification notification = _createNotification();
@@ -38,10 +44,22 @@ public class OverlayService extends Service {
 
     @Override
     public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+
         _overlayLayer.removeFromScreen();
         _overlayLayer = null;
 
         stopForeground(true);
+    }
+
+    @Subscribe
+    public void onHideOverlay(HideOverlayEvent event) {
+        _overlayLayer.removeFromScreen();
+    }
+
+    @Subscribe
+    public void onShowOverlay(ShowOverlayEvent event) {
+        _overlayLayer.addToScreen();
     }
 
     private Notification _createNotification() {
