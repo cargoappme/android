@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/overlay"
+        android:layout_width="@dimen/overlay_width"
+        android:layout_height="@dimen/overlay_height"
+        android:src="@drawable/oval"
+        android:layout_marginLeft="@dimen/overlay_offset"
+        android:layout_centerVertical="true"
+        android:tint="@color/primary" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="@dimen/overlay_logo_size"
+        android:layout_height="@dimen/overlay_logo_size"
+        android:src="@drawable/ic_notification"
+        android:tint="@color/white"
+        android:layout_centerVertical="true"
+        android:layout_alignEnd="@+id/overlay"
+        android:layout_marginEnd="15dp" />
+</RelativeLayout>
