@@ -54,7 +54,9 @@ public class NotificationParser {
         return result;
     }
 
-    static boolean reply (Context context, NotificationParserResult result, String text) {
+    static public boolean reply (Context context, NotificationParserResult result, String text) {
+        // SMS : action 0 input 0
+        // Messenger : action 1 input 0
         final RemoteInput[] remoteInputs = result.sbn.getNotification().actions[0].getRemoteInputs();
         Intent intent = new Intent();
         Bundle results = new Bundle();
@@ -70,7 +72,7 @@ public class NotificationParser {
         }
     }
 
-    static void dismiss (NotificationListenerService listener, NotificationParserResult result) {
+    static public void dismiss (NotificationListenerService listener, NotificationParserResult result) {
         listener.cancelNotification(result.sbn.getKey());
     }
 }
