@@ -9,7 +9,7 @@ import android.text.TextUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
-import me.cargoapp.cargo.event.MessageNotificationDismissEvent;
+import me.cargoapp.cargo.event.DismissMessageNotificationAction;
 
 public class NotificationInteracter {
     static public boolean reply (Context context, NotificationParser.NotificationParserResult result, String text) {
@@ -48,6 +48,6 @@ public class NotificationInteracter {
     }
 
     static public void dismiss (NotificationParser.NotificationParserResult result) {
-        EventBus.getDefault().post(new MessageNotificationDismissEvent(result));
+        EventBus.getDefault().post(new DismissMessageNotificationAction(result));
     }
 }

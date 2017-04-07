@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
@@ -12,10 +11,9 @@ import org.androidannotations.annotations.WindowFeature;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import me.cargoapp.cargo.event.ShowOverlayEvent;
-import me.cargoapp.cargo.event.HideOverlayEvent;
+import me.cargoapp.cargo.event.ShowOverlayAction;
+import me.cargoapp.cargo.event.HideOverlayAction;
 import me.cargoapp.cargo.event.MessageReceivedEvent;
-import me.cargoapp.cargo.messaging.NotificationInteracter;
 
 @WindowFeature({ Window.FEATURE_NO_TITLE })
 @EActivity(R.layout.activity_received_message)
@@ -36,7 +34,7 @@ public class ReceivedMessageActivity extends Activity {
     public void onPause() {
         super.onPause();
 
-        EventBus.getDefault().post(new ShowOverlayEvent());
+        EventBus.getDefault().post(new ShowOverlayAction());
     }
 
     @Override
@@ -48,7 +46,7 @@ public class ReceivedMessageActivity extends Activity {
 
     @Subscribe(sticky = true)
     public void onMessageReceived(MessageReceivedEvent event) {
-        EventBus.getDefault().post(new HideOverlayEvent());
+        EventBus.getDefault().post(new HideOverlayAction());
 
         _contactName.setText(event.result.author);
         _contactIcon.setImageIcon(event.result.icon);

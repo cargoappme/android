@@ -1,4 +1,4 @@
 package me.cargoapp.cargo.event;
 
-public class HideOverlayEvent {
+public class ShowOverlayAction {
 }

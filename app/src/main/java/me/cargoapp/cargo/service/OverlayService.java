@@ -12,8 +12,8 @@ import org.greenrobot.eventbus.Subscribe;
 
 import me.cargoapp.cargo.OverlayLayer;
 import me.cargoapp.cargo.R;
-import me.cargoapp.cargo.event.HideOverlayEvent;
-import me.cargoapp.cargo.event.ShowOverlayEvent;
+import me.cargoapp.cargo.event.HideOverlayAction;
+import me.cargoapp.cargo.event.ShowOverlayAction;
 
 @EService
 public class OverlayService extends Service {
@@ -53,12 +53,12 @@ public class OverlayService extends Service {
     }
 
     @Subscribe
-    public void onHideOverlay(HideOverlayEvent event) {
+    public void onHideOverlay(HideOverlayAction event) {
         _overlayLayer.removeFromScreen();
     }
 
     @Subscribe
-    public void onShowOverlay(ShowOverlayEvent event) {
+    public void onShowOverlay(ShowOverlayAction event) {
         _overlayLayer.addToScreen();
     }
 

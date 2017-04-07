@@ -5,23 +5,16 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
-import android.speech.tts.TextToSpeech;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.Locale;
-
 import me.cargoapp.cargo.ReceivedMessageActivity_;
-import me.cargoapp.cargo.event.HideOverlayEvent;
-import me.cargoapp.cargo.event.MessageNotificationDismissEvent;
+import me.cargoapp.cargo.event.DismissMessageNotificationAction;
 import me.cargoapp.cargo.event.MessageReceivedEvent;
 import me.cargoapp.cargo.messaging.Application;
-import me.cargoapp.cargo.messaging.NotificationInteracter;
 import me.cargoapp.cargo.messaging.NotificationParser;
 
 public class NotificationReaderService extends NotificationListenerService {
@@ -55,7 +48,7 @@ public class NotificationReaderService extends NotificationListenerService {
 
         final NotificationParser.NotificationParserResult result = NotificationParser.parseNotification(sbn);
         if (result.application != Application.NONE) {
-            EventBus.getDefault().post(new MessageNotificationDismissEvent(result));
+            EventBus.getDefault().post(new DismissMessageNotificationAction(result));
 
             Intent i = new Intent().setClass(getApplicationContext(), ReceivedMessageActivity_.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
@@ -73,7 +66,7 @@ public class NotificationReaderService extends NotificationListenerService {
     }
 
     @Subscribe()
-    public void onMessageNotificationDismiss(MessageNotificationDismissEvent event) {
+    public void onMessageNotificationDismiss(DismissMessageNotificationAction event) {
         this.cancelNotification(event.result.sbn.getKey());
     }
 }
