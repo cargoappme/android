@@ -1,13 +1,7 @@
 package me.cargoapp.cargo.messaging;
 
 import android.app.Notification;
-import android.app.PendingIntent;
-import android.app.RemoteInput;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Icon;
-import android.os.Bundle;
-import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 
 public class NotificationParser {
@@ -52,27 +46,5 @@ public class NotificationParser {
         }
 
         return result;
-    }
-
-    static public boolean reply (Context context, NotificationParserResult result, String text) {
-        // SMS : action 0 input 0
-        // Messenger : action 1 input 0
-        final RemoteInput[] remoteInputs = result.sbn.getNotification().actions[0].getRemoteInputs();
-        Intent intent = new Intent();
-        Bundle results = new Bundle();
-        results.putString(remoteInputs[0].getResultKey(), text);
-        RemoteInput.addResultsToIntent(remoteInputs, intent, results);
-
-        try {
-            result.sbn.getNotification().actions[0].actionIntent.send(context, 0, intent);
-            return true;
-        } catch (PendingIntent.CanceledException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    static public void dismiss (NotificationListenerService listener, NotificationParserResult result) {
-        listener.cancelNotification(result.sbn.getKey());
     }
 }

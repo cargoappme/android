@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
@@ -14,6 +15,7 @@ import org.greenrobot.eventbus.Subscribe;
 import me.cargoapp.cargo.event.ShowOverlayEvent;
 import me.cargoapp.cargo.event.HideOverlayEvent;
 import me.cargoapp.cargo.event.MessageReceivedEvent;
+import me.cargoapp.cargo.messaging.NotificationInteracter;
 
 @WindowFeature({ Window.FEATURE_NO_TITLE })
 @EActivity(R.layout.activity_received_message)
