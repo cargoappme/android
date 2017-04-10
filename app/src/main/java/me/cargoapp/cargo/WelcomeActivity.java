@@ -5,11 +5,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +59,6 @@ public class WelcomeActivity extends Activity {
                 Manifest.permission.SYSTEM_ALERT_WINDOW,
                 Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE
         };
-
 
         // Checking for first time launch or all perms - before calling setContentView()
         if (!_preferences.isFirstRun().get() && PermissionHelper.isPermittedTo(this, dangerousAndSpecialPermissions)) {
@@ -129,7 +130,11 @@ public class WelcomeActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case 0: {
-                requestSpecialPerms();
+                if (!PermissionHelper.isPermittedTo(this, Manifest.permission.SYSTEM_ALERT_WINDOW)) {
+                    requestSpecialPerms();
+                } else {
+                    launchHomeScreen();
+                }
                 return;
             }
             case 1: {
@@ -151,7 +156,8 @@ public class WelcomeActivity extends Activity {
         _dotsLayout.removeAllViews();
         for (int i = 0; i < dots.length; i++) {
             dots[i] = new TextView(this);
-            dots[i].setText(Html.fromHtml("&#8226;", Html.FROM_HTML_MODE_COMPACT));
+            if (Build.VERSION.SDK_INT >= 24) dots[i].setText(Html.fromHtml("&#8226;", Html.FROM_HTML_MODE_COMPACT));
+            else dots[i].setText(Html.fromHtml("&#8226;"));
             dots[i].setTextSize(35);
             dots[i].setTextColor(colorInactive);
             _dotsLayout.addView(dots[i]);
