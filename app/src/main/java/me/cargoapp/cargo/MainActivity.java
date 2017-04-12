@@ -11,6 +11,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
+import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -22,46 +29,49 @@ import java.util.Locale;
 import me.cargoapp.cargo.service.OverlayService_;
 
 @EActivity(R.layout.activity_main)
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     private String TAG = this.getClass().getSimpleName();
 
-    private TextToSpeech _tts;
-    private SpeechRecognizer _stt;
     private Intent _sttIntent;
-    private final int REQ_CODE_SPEECH_INPUT = 100;
 
     @AfterViews
     void afterViews() {
-        _stt = SpeechRecognizer.createSpeechRecognizer(this);
-        _sttIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        _sttIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        _sttIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-
-
-        SpeechRecognitionListener listener = new SpeechRecognitionListener();
-        _stt.setRecognitionListener(listener);
-
-        _tts=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if(status != TextToSpeech.ERROR) {
-                    _tts.setLanguage(Locale.FRENCH);
-                }
-            }
-        });
 
         Intent overlayServiceIntent = new Intent(this, OverlayService_.class);
         startService(overlayServiceIntent);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText("Tab 1"));
+        tabLayout.addTab(tabLayout.newTab().setText("Tab 2"));
+        tabLayout.addTab(tabLayout.newTab().setText("Tab 3"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        final PagerAdapter adapter = new PagerAdapter
+                (getSupportFragmentManager(), tabLayout.getTabCount());
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
-    /**
-     * Showing google speech input dialog
-     * */
-    private void promptSpeechInput() {
-        _stt.startListening(_sttIntent);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -81,51 +91,4 @@ public class MainActivity extends Activity {
         }
     }
 
-    @Click(R.id.btn_recognize)
-    void onClick() {
-        Toast.makeText(MainActivity.this, "Listening...", Toast.LENGTH_SHORT).show();
-        promptSpeechInput();
-    }
-
-    protected class SpeechRecognitionListener implements RecognitionListener
-    {
-        @Override
-        public void onBeginningOfSpeech() {
-        }
-
-        @Override
-        public void onBufferReceived(byte[] buffer) {
-        }
-
-        @Override
-        public void onEndOfSpeech() {
-        }
-
-        @Override
-        public void onError(int error) {
-            _stt.startListening(_sttIntent);
-        }
-
-        @Override
-        public void onEvent(int eventType, Bundle params) {
-        }
-
-        @Override
-        public void onPartialResults(Bundle partialResults) {
-        }
-
-        @Override
-        public void onReadyForSpeech(Bundle params) {
-        }
-
-        @Override
-        public void onResults(Bundle results) {
-            ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-            _tts.speak(matches.get(0), TextToSpeech.QUEUE_FLUSH, null, "0");
-        }
-
-        @Override
-        public void onRmsChanged(float rmsdB) {
-        }
-    }
 }
