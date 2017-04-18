@@ -1,6 +1,6 @@
 package me.cargoapp.cargo;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,7 +17,7 @@ import me.cargoapp.cargo.event.ShowOverlayAction;
 
 @WindowFeature({ Window.FEATURE_NO_TITLE })
 @EActivity(R.layout.activity_received_message)
-public class ReceivedMessageActivity extends AppCompatActivity {
+public class ReceivedMessageActivity extends Activity {
     @ViewById(R.id.contact_icon)
     ImageView _contactIcon;
 
