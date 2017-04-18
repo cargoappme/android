@@ -101,7 +101,7 @@ public class TabJourney extends Fragment implements
             targetLocation.setLatitude(place.getLatLng().latitude);
             targetLocation.setLongitude(place.getLatLng().longitude);
             float distanceInMeters = targetLocation.distanceTo(_currentLocation);
-            
+
             Toast.makeText(getActivity(), String.valueOf(distanceInMeters), Toast.LENGTH_SHORT).show();
         } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
             Status status = PlaceAutocomplete.getStatus(getActivity(), data);
