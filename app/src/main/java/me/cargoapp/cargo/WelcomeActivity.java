@@ -45,6 +45,7 @@ public class WelcomeActivity extends AppIntro2 {
 
         String[] dangerousAndSpecialPermissions = {
                 Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.SYSTEM_ALERT_WINDOW,
                 Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE
         };
@@ -59,6 +60,8 @@ public class WelcomeActivity extends AppIntro2 {
         addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_welcome_title), getString(R.string.welcome_welcome_description), R.drawable.welcome_welcome, getResources().getColor(R.color.slide_1_background, null)));
         addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_microphone_title), getString(R.string.welcome_microphone_description), R.drawable.welcome_microphone, getResources().getColor(R.color.slide_2_background, null)));
         askForPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, 2);
+        addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_gps_title), getString(R.string.welcome_gps_description), R.drawable.welcome_maps, getResources().getColor(R.color.slide_2_background, null)));
+        askForPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 3);
         Fragment notificationFragment = new WelcomeActivity_.SpecialFragment_();
         Bundle notificationArgs = new Bundle();
         notificationArgs.putBoolean(NOTIFICATION_ARG, true);
