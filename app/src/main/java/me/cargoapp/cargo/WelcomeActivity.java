@@ -1,54 +1,43 @@
 package me.cargoapp.cargo;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.text.Html;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.v4.app.Fragment;
 import android.view.Window;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.paolorotolo.appintro.AppIntro2;
+import com.github.paolorotolo.appintro.AppIntro2Fragment;
+import com.github.paolorotolo.appintro.ISlidePolicy;
+
+import org.androidannotations.annotations.AfterInject;
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.PageSelected;
+import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.WindowFeature;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import me.cargoapp.cargo.helper.PermissionHelper;
 
+
+
 @WindowFeature({ Window.FEATURE_NO_TITLE })
 @EActivity
-public class WelcomeActivity extends Activity {
+public class WelcomeActivity extends AppIntro2 {
+
+    final static String NOTIFICATION_ARG = "notifications";
 
     private String TAG = this.getClass().getSimpleName();
 
-    @ViewById(R.id.view_pager)
-    ViewPager _viewPager;
-
-    @ViewById(R.id.dots_layout)
-    LinearLayout _dotsLayout;
-
-    @ViewById(R.id.btn_next)
-    Button _btnNext;
-
     @Pref
     Preferences_ _preferences;
-
-    private int[] _layouts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,108 +56,31 @@ public class WelcomeActivity extends Activity {
             return;
         }
 
-        setContentView(R.layout.activity_welcome);
+        addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_welcome_title), getString(R.string.welcome_welcome_description), R.drawable.welcome_welcome, getResources().getColor(R.color.slide_1_background, null)));
+        addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_microphone_title), getString(R.string.welcome_microphone_description), R.drawable.welcome_microphone, getResources().getColor(R.color.slide_2_background, null)));
+        askForPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, 2);
+        Fragment notificationFragment = new WelcomeActivity_.SpecialFragment_();
+        Bundle notificationArgs = new Bundle();
+        notificationArgs.putBoolean(NOTIFICATION_ARG, true);
+        notificationFragment.setArguments(notificationArgs);
+        addSlide(notificationFragment);
+        Fragment overlayFragment = new WelcomeActivity_.SpecialFragment_();
+        Bundle overlayArgs = new Bundle();
+        overlayArgs.putBoolean(NOTIFICATION_ARG, false);
+        overlayFragment.setArguments(overlayArgs);
+        addSlide(overlayFragment);
 
-        _layouts = new int[]{
-                R.layout.welcome_slide_1,
-                R.layout.welcome_slide_perms
-        };
+        showSkipButton(false);
 
-        // adding bottom _dots
-        addBottomDots(0);
-
-        MyViewPagerAdapter viewPagerAdapter = new MyViewPagerAdapter();
-        _viewPager.setAdapter(viewPagerAdapter);
-    }
-
-    @Click(R.id.btn_next)
-    void onNextClick() {
-        // checking for last page
-        // if last page home screen will be launched
-        int current = getItem(+1);
-        if (current < _layouts.length) {
-            // move to next screen
-            _viewPager.setCurrentItem(current);
-        } else {
-            requestPerms();
-        }
-    }
-
-    private void requestPerms() {
-        requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, 0);
+        setVibrate(true);
+        setVibrateIntensity(30);
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 0: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    requestSpecialPerms();
-                } else {
-                    requestPerms();
-                }
-            }
-        }
-    }
+    public void onDonePressed(Fragment currentFragment) {
+        super.onDonePressed(currentFragment);
 
-    void requestSpecialPerms() {
-        Toast.makeText(this, R.string.enable_perm, Toast.LENGTH_SHORT).show();
-
-        if (!PermissionHelper.isPermittedTo(this, Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE)) {
-            Intent intent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
-            startActivityForResult(intent, 0);
-            return;
-        }
-
-        if (!PermissionHelper.isPermittedTo(this, Manifest.permission.SYSTEM_ALERT_WINDOW)) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-            startActivityForResult(intent, 1);
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case 0: {
-                if (!PermissionHelper.isPermittedTo(this, Manifest.permission.SYSTEM_ALERT_WINDOW)) {
-                    requestSpecialPerms();
-                } else {
-                    launchHomeScreen();
-                }
-                return;
-            }
-            case 1: {
-                if (!PermissionHelper.isPermittedTo(this, Manifest.permission.SYSTEM_ALERT_WINDOW)) {
-                    requestSpecialPerms();
-                } else {
-                    launchHomeScreen();
-                }
-            }
-        }
-    }
-
-    private void addBottomDots(int currentPage) {
-        TextView[] dots = new TextView[_layouts.length];
-
-        int colorActive = getResources().getColor(R.color.slider_dot_active, null);
-        int colorInactive = getResources().getColor(R.color.slider_dot_inactive, null);
-
-        _dotsLayout.removeAllViews();
-        for (int i = 0; i < dots.length; i++) {
-            dots[i] = new TextView(this);
-            if (Build.VERSION.SDK_INT >= 24) dots[i].setText(Html.fromHtml("&#8226;", Html.FROM_HTML_MODE_COMPACT));
-            else dots[i].setText(Html.fromHtml("&#8226;"));
-            dots[i].setTextSize(35);
-            dots[i].setTextColor(colorInactive);
-            _dotsLayout.addView(dots[i]);
-        }
-
-        if (dots.length > 0)
-            dots[currentPage].setTextColor(colorActive);
-    }
-
-    private int getItem(int i) {
-        return _viewPager.getCurrentItem() + i;
+        launchHomeScreen();
     }
 
     private void launchHomeScreen() {
@@ -177,51 +89,65 @@ public class WelcomeActivity extends Activity {
         finish();
     }
 
-    @PageSelected(R.id.view_pager)
-    void onPageSelected(ViewPager view, int position) {
-        addBottomDots(position);
+    @EFragment(R.layout.fragment_welcome_special)
+    public static class SpecialFragment extends Fragment implements ISlidePolicy {
+        @ViewById(R.id.layout)
+        LinearLayout _layout;
 
-        // changing the next button text 'NEXT' / 'GOT IT'
-        if (position == _layouts.length - 1) {
-            // last page. make button text to GOT IT
-            _btnNext.setText(getString(R.string.slider_start));
-        } else {
-            // still pages are left
-            _btnNext.setText(getString(R.string.slider_next));
-        }
-    }
+        @ViewById(R.id.title)
+        TextView _title;
 
-    /**
-     * View pager adapter
-     */
-    private class MyViewPagerAdapter extends PagerAdapter {
-        private LayoutInflater layoutInflater;
+        @ViewById(R.id.image)
+        ImageView _image;
 
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        @ViewById(R.id.description)
+        TextView _description;
 
-            View view = layoutInflater.inflate(_layouts[position], container, false);
-            container.addView(view);
+        @ViewById(R.id.button)
+        TextView _button;
 
-            return view;
+        boolean _isNotification;
+
+        @AfterInject
+        public void afterInject() {
+            _isNotification = getArguments().getBoolean(NOTIFICATION_ARG);
         }
 
-        @Override
-        public int getCount() {
-            return _layouts.length;
+        @AfterViews
+        public void afterViews() {
+            if (_isNotification) {
+                _layout.setBackgroundColor(getResources().getColor(R.color.slide_3_background, null));
+                _title.setText(R.string.welcome_notifications_title);
+                _description.setText(R.string.welcome_notifications_description);
+            } else {
+                _layout.setBackgroundColor(getResources().getColor(R.color.slide_4_background, null));
+                _title.setText(R.string.welcome_overlay_title);
+                _description.setText(R.string.welcome_overlay_description);
+            }
+
+            _image.setImageResource(R.drawable.welcome_check);
+            _button.setText(R.string.welcome_special_button);
+        }
+
+        @Click(R.id.button)
+        public void onClick() {
+            Toast.makeText(getContext(), R.string.welcome_enable_permission, Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(_isNotification ? Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS : Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+            startActivityForResult(intent, 0);
         }
 
         @Override
-        public boolean isViewFromObject(View view, Object obj) {
-            return view == obj;
+        public boolean isPolicyRespected() {
+            if (_isNotification) {
+                return PermissionHelper.isPermittedTo(getContext(), Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE);
+            } else {
+                return PermissionHelper.isPermittedTo(getContext(), Manifest.permission.SYSTEM_ALERT_WINDOW);
+            }
         }
 
-
         @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            View view = (View) object;
-            container.removeView(view);
+        public void onUserIllegallyRequestedNextPage() {
         }
     }
 }

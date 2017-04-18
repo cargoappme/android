@@ -62,8 +62,10 @@ public class OverlayLayer implements View.OnTouchListener {
         params.gravity = Gravity.LEFT;
         params.alpha = 0.5f;
 
-        _wm.addView(_layout, params);
+        // _wm.addView(_layout, params);
     }
+
+    public boolean isShown() { return _layout.isShown(); }
 
     public void removeFromScreen() {
         _wm.removeView(_layout);

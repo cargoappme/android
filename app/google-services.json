@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "443256499463",
-    "firebase_url": "https://cargo-cb24f.firebaseio.com",
-    "project_id": "cargo-cb24f",
-    "storage_bucket": "cargo-cb24f.appspot.com"
+    "project_number": "876285726998",
+    "firebase_url": "https://cargo-ec5ed.firebaseio.com",
+    "project_id": "cargo-ec5ed",
+    "storage_bucket": "cargo-ec5ed.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:443256499463:android:29e653f829829a99",
+        "mobilesdk_app_id": "1:876285726998:android:29e653f829829a99",
         "android_client_info": {
           "package_name": "me.cargoapp.cargo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "443256499463-rujshdoj81ch26cobinnjg39r3lts1ff.apps.googleusercontent.com",
+          "client_id": "876285726998-5qsgd6lkf3ca3dc10jt83bnohu6s9tk1.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDr9r2oDEBpEOFhz0ZG6I-V81CU9uV7GPw"
+          "current_key": "AIzaSyC_n3bSDKMAQ-3jtZ6BJym_v07qgdfZY74"
         }
       ],
       "services": {

@@ -1,19 +1,21 @@
 <resources>
     <string name="app_name">Cargo</string>
 
-    <string name="slider_next">Suivant</string>
-    <string name="slider_start">C\'est parti !</string>
-
-    <string name="slide_1_title">Cargo</string>
-    <string name="slide_1_desc">Une application pour simplifier et sécuriser vos trajets en voiture !</string>
-
-    <string name="slide_perms_title">Permissions</string>
-    <string name="slide_perms_desc">Nous avons besoin de certaines permissions pour que Cargo fonctionne.</string>
-
-    <string name="enable_perm">Activez l\'option pour Cargo</string>
-
     <string name="notification_title">Cargo est lancé</string>
     <string name="notification_text">Profitez de la route en toute sécurité.</string>
+
+
+    <!-- Welcome -->
+    <string name="welcome_welcome_title">Bienvenue sur Cargo !</string>
+    <string name="welcome_welcome_description">Nous espérons que vous vous plairez avec nous.</string>
+    <string name="welcome_microphone_title">Microphone</string>
+    <string name="welcome_microphone_description">Cargo utilise votre microphone pour les interactions vocales.</string>
+    <string name="welcome_notifications_title">Notifications</string>
+    <string name="welcome_notifications_description">Cargo lit vos notifications pour interagir avec vos messageries.</string>
+    <string name="welcome_overlay_title">Superposition</string>
+    <string name="welcome_overlay_description">Cargo se superpose à vos applications pour être plus facile d\'accès.</string>
+    <string name="welcome_special_button">Autoriser</string>
+    <string name="welcome_enable_permission">Activez l\'option pour Cargo et faites retour</string>
 
     <!-- Strings related to Settings -->
 

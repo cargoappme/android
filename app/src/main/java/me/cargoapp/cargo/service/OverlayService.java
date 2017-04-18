@@ -31,10 +31,15 @@ public class OverlayService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public void onCreate() {
         EventBus.getDefault().register(this);
+    }
 
-        _overlayLayer.addToScreen();
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (!_overlayLayer.isShown()) {
+            _overlayLayer.addToScreen();
+        }
 
         Notification notification = _createNotification();
         startForeground(FOREGROUND_ID, notification);
@@ -54,12 +59,16 @@ public class OverlayService extends Service {
 
     @Subscribe
     public void onHideOverlay(HideOverlayAction event) {
-        _overlayLayer.removeFromScreen();
+        if (_overlayLayer.isShown()) {
+            _overlayLayer.removeFromScreen();
+        }
     }
 
     @Subscribe
     public void onShowOverlay(ShowOverlayAction event) {
-        _overlayLayer.addToScreen();
+        if (!_overlayLayer.isShown()) {
+            _overlayLayer.addToScreen();
+        }
     }
 
     private Notification _createNotification() {
