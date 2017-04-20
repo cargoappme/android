@@ -27,9 +27,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     @AfterViews
     void afterViews() {
-        Intent overlayServiceIntent = new Intent(this, OverlayService_.class);
-        startService(overlayServiceIntent);
-
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_journey));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_vehicle));

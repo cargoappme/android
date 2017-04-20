@@ -23,6 +23,21 @@
     <string name="tab_journey">Trajet</string>
     <string name="tab_vehicle">Véhicule</string>
 
+    <!-- Dialogs -->
+    <string name="dialog_vehiclechecks_title">Vérifications du véhicule</string>
+    <string name="dialog_vehiclechecks_text">
+        Vous êtes sur le point de démarrer un trajet de plus de 100km.\n
+        Pour votre sécurité, assurez-vous de vérifier :\n\n
+
+        • La pression de vos pneux\n
+        • Le niveau d\'huile moteur\n
+        • Les essuie-glaces\n\n
+
+        Vous trouverez certaines informations dans l\'onglet \"Véhicule\" sur l\'écran d\'accueil.
+    </string>
+    <string name="dialog_vehiclechecks_action_go">C\'est bon !</string>
+    <string name="dialog_vehiclechecks_action_back">Retour à l\'accueil</string>
+
     <!-- Strings related to Settings -->
     <string name="action_settings">Paramètres</string>
 
