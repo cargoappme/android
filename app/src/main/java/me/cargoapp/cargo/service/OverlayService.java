@@ -2,6 +2,7 @@ package me.cargoapp.cargo.service;
 
 import android.app.Notification;
 import android.app.Service;
+import android.app.usage.UsageEvents;
 import android.content.Intent;
 import android.os.IBinder;
 
@@ -37,12 +38,10 @@ public class OverlayService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (!_overlayLayer.isShown()) {
-            _overlayLayer.addToScreen();
-        }
-
         Notification notification = _createNotification();
         startForeground(FOREGROUND_ID, notification);
+
+        EventBus.getDefault().post(new ShowOverlayAction());
 
         return START_STICKY;
     }
