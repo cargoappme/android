@@ -14,11 +14,13 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.SystemService;
+import org.greenrobot.eventbus.EventBus;
+
+import me.cargoapp.cargo.event.OverlayClickedEvent;
 
 @EBean
 public class OverlayLayer implements View.OnTouchListener {
@@ -73,30 +75,33 @@ public class OverlayLayer implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        // Avoid dead zone
+
+        int x = (int)event.getX();
+        int y = (int)event.getY();
+
+        GradientDrawable drawable = (GradientDrawable) _imageView.getDrawable();
+        Bitmap bitmap = Bitmap.createBitmap(_imageView.getWidth(), _imageView.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+
+        int pixel = bitmap.getPixel(x, y);
+        if (Color.alpha(pixel) == 0) return false;
+
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                int x = (int)event.getX();
-                int y = (int)event.getY();
+                _vibrator.vibrate(100);
 
-                GradientDrawable drawable = (GradientDrawable) _imageView.getDrawable();
-                Bitmap bitmap = Bitmap.createBitmap(_imageView.getWidth(), _imageView.getHeight(), Bitmap.Config.ARGB_8888);
-                Canvas canvas = new Canvas(bitmap);
-                drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-                drawable.draw(canvas);
-
-
-                int pixel = bitmap.getPixel(x, y);
-                if (Color.alpha(pixel) != 0) {
-                    Toast.makeText(_context, "Touché", Toast.LENGTH_SHORT).show();
-                    _vibrator.vibrate(100);
-                    WindowManager.LayoutParams params = (WindowManager.LayoutParams) _layout.getLayoutParams();
-                    params.gravity = params.gravity == Gravity.LEFT ? Gravity.RIGHT : Gravity.LEFT;
-                    _wm.updateViewLayout(_layout, params);
-                    return true;
-                }
+                EventBus.getDefault().post(new OverlayClickedEvent());
                 break;
+            case MotionEvent.ACTION_UP:
+                break;
+
         }
 
-        return false;
+        return true;
     }
 }
