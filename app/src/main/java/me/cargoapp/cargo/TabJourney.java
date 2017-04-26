@@ -127,7 +127,6 @@ public class TabJourney extends Fragment implements
             Status status = PlaceAutocomplete.getStatus(getActivity(), data);
             // TODO: Handle the error.
             Toast.makeText(getActivity(), status.getStatusMessage(), Toast.LENGTH_SHORT).show();
-
         } else if (resultCode == RESULT_CANCELED) {
             // The user canceled the operation.
         }
