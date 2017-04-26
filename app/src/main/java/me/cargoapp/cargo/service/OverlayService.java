@@ -2,7 +2,6 @@ package me.cargoapp.cargo.service;
 
 import android.app.Notification;
 import android.app.Service;
-import android.app.usage.UsageEvents;
 import android.content.Intent;
 import android.os.IBinder;
 
@@ -11,9 +10,11 @@ import org.androidannotations.annotations.EService;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import me.cargoapp.cargo.NavuiActivity_;
 import me.cargoapp.cargo.OverlayLayer;
 import me.cargoapp.cargo.R;
 import me.cargoapp.cargo.event.HideOverlayAction;
+import me.cargoapp.cargo.event.OverlayClickedEvent;
 import me.cargoapp.cargo.event.ShowOverlayAction;
 
 @EService
@@ -68,6 +69,13 @@ public class OverlayService extends Service {
         if (!_overlayLayer.isShown()) {
             _overlayLayer.addToScreen();
         }
+    }
+
+    @Subscribe
+    public void onOverlayClicked(OverlayClickedEvent event) {
+        Intent i = new Intent().setClass(getApplicationContext(), NavuiActivity_.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 
     private Notification _createNotification() {

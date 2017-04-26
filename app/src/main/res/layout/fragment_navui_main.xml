@@ -1,0 +1,62 @@
+<android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageButton
+        android:id="@+id/btn_call"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:scaleType="fitXY"
+        android:background="@null"
+        app:srcCompat="@drawable/navui_phone"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp" />
+    <ImageButton
+        android:id="@+id/btn_message"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:scaleType="fitXY"
+        android:background="@null"
+        app:srcCompat="@drawable/navui_message"
+        tools:layout_editor_absoluteX="240dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <ImageButton
+        android:id="@+id/btn_music"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:scaleType="fitXY"
+        android:background="@null"
+        app:srcCompat="@drawable/navui_music"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="181dp" />
+    <ImageButton
+        android:id="@+id/btn_oil"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:scaleType="fitXY"
+        android:background="@null"
+        app:srcCompat="@drawable/navui_oil"
+        tools:layout_editor_absoluteX="240dp"
+        tools:layout_editor_absoluteY="181dp" />
+    <ImageButton
+        android:id="@+id/btn_parking"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:scaleType="fitXY"
+        android:background="@null"
+        app:srcCompat="@drawable/navui_parking"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="344dp" />
+    <ImageButton
+        android:id="@+id/btn_quit"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:scaleType="fitXY"
+        android:background="@null"
+        app:srcCompat="@drawable/navui_quit"
+        tools:layout_editor_absoluteX="240dp"
+        tools:layout_editor_absoluteY="344dp" />
+</android.support.constraint.ConstraintLayout>
