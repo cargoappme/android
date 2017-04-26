@@ -131,6 +131,8 @@ public class TabJourney extends Fragment implements
 
         Intent overlayServiceIntent = new Intent(getActivity(), OverlayService_.class);
         getActivity().startService(overlayServiceIntent);
+
+        getActivity().finish();
     }
 
     public static class StartJourneyAction {}

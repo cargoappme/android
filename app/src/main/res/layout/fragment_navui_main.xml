@@ -1,62 +1,86 @@
-<android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:layout_editor_absoluteY="8dp"
+    tools:layout_editor_absoluteX="8dp"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ImageButton
-        android:id="@+id/btn_call"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:scaleType="fitXY"
-        android:background="@null"
-        app:srcCompat="@drawable/navui_phone"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp" />
-    <ImageButton
-        android:id="@+id/btn_message"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:scaleType="fitXY"
-        android:background="@null"
-        app:srcCompat="@drawable/navui_message"
-        tools:layout_editor_absoluteX="240dp"
-        tools:layout_editor_absoluteY="16dp" />
+    <LinearLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="horizontal"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ImageButton
-        android:id="@+id/btn_music"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:scaleType="fitXY"
-        android:background="@null"
-        app:srcCompat="@drawable/navui_music"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="181dp" />
-    <ImageButton
-        android:id="@+id/btn_oil"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:scaleType="fitXY"
-        android:background="@null"
-        app:srcCompat="@drawable/navui_oil"
-        tools:layout_editor_absoluteX="240dp"
-        tools:layout_editor_absoluteY="181dp" />
-    <ImageButton
-        android:id="@+id/btn_parking"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:scaleType="fitXY"
-        android:background="@null"
-        app:srcCompat="@drawable/navui_parking"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="344dp" />
-    <ImageButton
-        android:id="@+id/btn_quit"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:scaleType="fitXY"
-        android:background="@null"
-        app:srcCompat="@drawable/navui_quit"
-        tools:layout_editor_absoluteX="240dp"
-        tools:layout_editor_absoluteY="344dp" />
-</android.support.constraint.ConstraintLayout>
+        <ImageButton
+            android:id="@+id/btn_call"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:scaleType="fitXY"
+            android:background="@null"
+            android:src="@drawable/navui_phone" />
+        <ImageButton
+            android:id="@+id/btn_message"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:scaleType="fitXY"
+            android:background="@null"
+            android:layout_marginLeft="30dp"
+            android:src="@drawable/navui_message" />
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="horizontal"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <ImageButton
+            android:id="@+id/btn_music"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:scaleType="fitXY"
+            android:background="@null"
+            android:src="@drawable/navui_music"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="181dp" />
+        <ImageButton
+            android:id="@+id/btn_oil"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:scaleType="fitXY"
+            android:background="@null"
+            android:layout_marginLeft="30dp"
+            android:src="@drawable/navui_oil" />
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="horizontal"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <ImageButton
+            android:id="@+id/btn_parking"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:scaleType="fitXY"
+            android:background="@null"
+            android:src="@drawable/navui_parking" />
+        <ImageButton
+            android:id="@+id/btn_quit"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:scaleType="fitXY"
+            android:background="@null"
+            android:layout_marginLeft="30dp"
+            android:src="@drawable/navui_quit" />
+    </LinearLayout>
+</LinearLayout>

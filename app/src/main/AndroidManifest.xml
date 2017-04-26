@@ -29,9 +29,11 @@
         <activity android:name=".MainActivity_" />
         <activity android:name=".SettingsActivity_" />
         <activity android:name=".ReceivedMessageActivity_"
-            android:theme="@android:style/Theme.Translucent" />
+            android:theme="@android:style/Theme.Translucent"
+            android:excludeFromRecents="true" />
         <activity android:name=".NavuiActivity_"
-            android:theme="@android:style/Theme.Translucent" />
+            android:theme="@android:style/Theme.Translucent"
+            android:excludeFromRecents="true" />
 
         <service
             android:name=".service.OverlayService_"

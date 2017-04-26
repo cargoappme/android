@@ -16,6 +16,7 @@ import me.cargoapp.cargo.R;
 import me.cargoapp.cargo.event.HideOverlayAction;
 import me.cargoapp.cargo.event.OverlayClickedEvent;
 import me.cargoapp.cargo.event.ShowOverlayAction;
+import me.cargoapp.cargo.event.StopOverlayServiceAction;
 
 @EService
 public class OverlayService extends Service {
@@ -51,8 +52,10 @@ public class OverlayService extends Service {
     public void onDestroy() {
         EventBus.getDefault().unregister(this);
 
-        _overlayLayer.removeFromScreen();
-        _overlayLayer = null;
+        if (_overlayLayer.isShown()) {
+            _overlayLayer.removeFromScreen();
+            _overlayLayer = null;
+        }
 
         stopForeground(true);
     }
@@ -69,6 +72,11 @@ public class OverlayService extends Service {
         if (!_overlayLayer.isShown()) {
             _overlayLayer.addToScreen();
         }
+    }
+
+    @Subscribe
+    public void onStopOverlayService(StopOverlayServiceAction event) {
+        stopSelf();
     }
 
     @Subscribe
