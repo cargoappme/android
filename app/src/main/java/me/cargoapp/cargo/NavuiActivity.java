@@ -1,6 +1,8 @@
 package me.cargoapp.cargo;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.view.Window;
 
 import org.androidannotations.annotations.AfterViews;
@@ -9,6 +11,7 @@ import org.androidannotations.annotations.WindowFeature;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import me.cargoapp.cargo.event.NavuiLaunchEvent;
 import me.cargoapp.cargo.event.QuitAction;
 import me.cargoapp.cargo.event.StopOverlayServiceAction;
 import me.cargoapp.cargo.navui.MainFragment_;
@@ -31,6 +34,25 @@ public class NavuiActivity extends Activity {
     @AfterViews
     public void afterViews() {
         getFragmentManager().beginTransaction().add(R.id.fragment_container, MainFragment_.builder().build()).commit();
+    }
+
+    @Subscribe
+    public void onNavuiLaunch(NavuiLaunchEvent event) {
+        Fragment fragment;
+        switch (event.getType()) {
+            case CALL:
+                break;
+            case MESSAGE:
+                break;
+            case MUSIC:
+                break;
+            case OIL:
+                break;
+            case PARKING:
+                break;
+        }
+
+        // getFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
     }
 
     @Subscribe
