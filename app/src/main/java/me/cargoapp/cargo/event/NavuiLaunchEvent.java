@@ -20,6 +20,7 @@ public class NavuiLaunchEvent {
         MESSAGE,
         MUSIC,
         OIL,
-        PARKING
+        PARKING,
+        MENU
     }
 }
