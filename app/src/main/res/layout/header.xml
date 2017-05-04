@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:background="#FC0"
+    android:gravity="center"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Fixed Header"
+    android:textColor="#000"
+    android:textSize="20sp"
+    android:id="@+id/textView2"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_centerVertical="true"
+    android:layout_alignParentStart="true"
+    android:layout_marginStart="29dp" />
+
+    <Button
+        android:id="@+id/yeah"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Je suis là"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="31dp" />
+    </RelativeLayout>

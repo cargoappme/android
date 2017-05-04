@@ -39,7 +39,7 @@ public class NavuiParking extends Fragment implements GoogleApiClient.Connection
     private Location mLastLocation;
     Long latitude;
     Long longitude;
-    
+
     @AfterViews
     void afterViews() {
         _googleClient = new GoogleApiClient.Builder(getContext())
