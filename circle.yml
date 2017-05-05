@@ -1,7 +1,23 @@
 dependencies:
   pre:
+    # Decrypt keystore
+    - openssl aes-256-cbc -d -in ./keystore.ci.jks.enc -k "${KEYSTORE_ENCRYPT_KEY}" >> ./keystore.ci.jks
+
     # Android SDK Build-tools, revision 25.0.2
     - if [ ! -d "/usr/local/android-sdk-linux/build-tools/25.0.2" ]; then echo y | android update sdk --no-ui --all --filter "build-tools-25.0.2"; fi
-
+    # Android Tools latest (has sdkmanager)
+    - if [ ! -f "/usr/local/android-sdk-linux/tools/bin/sdkmanager" ]; then echo y | android update sdk --no-ui --all --filter "tools"; fi
+    # Fix for ConstraintLayout license
+    - if [ ! -d "/usr/local/android-sdk-linux/extras/m2repository/com/android/support/constraint/constraint-layout/1.0.2" ]; then echo y | /usr/local/android-sdk-linux/tools/bin/sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"; fi
+    # Fix for ConstraintLayout Solver license
+    - if [ ! -d "/usr/local/android-sdk-linux/extras/m2repository/com/android/support/constraint/constraint-layout-solver/1.0.2" ]; then echo y | /usr/local/android-sdk-linux/tools/bin/sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"; fi
   cache_directories:
     - /usr/local/android-sdk-linux/build-tools/25.0.2
+    - /usr/local/android-sdk-linux/tools
+    - /usr/local/android-sdk-linux/extras/m2repository/com/android/support/constraint/constraint-layout/1.0.2
+    - /usr/local/android-sdk-linux/extras/m2repository/com/android/support/constraint/constraint-layout-solver/1.0.2
+
+test:
+  override:
+    - ./gradlew assembleRelease -Pandroid.injected.signing.store.file="./keystore.ci.jks" -Pandroid.injected.signing.store.password="${KEYSTORE_PASSWORD}" -Pandroid.injected.signing.key.alias="${KEYSTORE_KEY_ALIAS}" -Pandroid.injected.signing.key.password="${KEYSTORE_KEY_PASSWORD}"
+    - cp app/build/outputs/apk/app-release.apk "${CIRCLE_ARTIFACTS}/cargo.apk"
