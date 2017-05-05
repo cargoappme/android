@@ -2,6 +2,13 @@ dependencies:
   pre:
     # Android SDK Build-tools, revision 25.0.2
     - if [ ! -d "/usr/local/android-sdk-linux/build-tools/25.0.2" ]; then echo y | android update sdk --no-ui --all --filter "build-tools-25.0.2"; fi
-
+    # Android Tools latest (has sdkmanager)
+    - if [ ! -d "/usr/local/android-sdk-linux/tools/bin/sdkmanager" ]; then echo y | android update sdk --no-ui --all --filter "tools"; fi
+    # Fix for ConstraintLayout license
+    - if [ ! -d "/usr/local/android-sdk-linux/extras/m2repository/com/android/support/constraint/constraint-layout/1.0.2" ]; then echo y | /usr/local/android-sdk-linux/tools/bin/sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"; fi
+    # Fix for ConstraintLayout Solver license
+    - if [ ! -d "/usr/local/android-sdk-linux/extras/m2repository/com/android/support/constraint/constraint-layout-solver/1.0.2" ]; then echo y | /usr/local/android-sdk-linux/tools/bin/sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"; fi
   cache_directories:
     - /usr/local/android-sdk-linux/build-tools/25.0.2
+    - /usr/local/android-sdk-linux/tools/bin/sdkmanager
+    - /usr/local/android-sdk-linux/extras/m2mrepository
