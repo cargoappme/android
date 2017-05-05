@@ -56,7 +56,7 @@ public class WelcomeActivity extends AppIntro2 {
             finish();
             return;
         }
-
+        askForPermissions(new String[]{Manifest.permission.READ_CONTACTS}, 1);
         addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_welcome_title), getString(R.string.welcome_welcome_description), R.drawable.welcome_welcome, getResources().getColor(R.color.slide_1_background, null)));
         addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_microphone_title), getString(R.string.welcome_microphone_description), R.drawable.welcome_microphone, getResources().getColor(R.color.slide_2_background, null)));
         askForPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, 2);

@@ -2,18 +2,8 @@ package me.cargoapp.cargo;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.preference.PreferenceManager;
-import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
-
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -25,6 +15,7 @@ import me.cargoapp.cargo.event.NavuiLaunchEvent;
 import me.cargoapp.cargo.event.QuitAction;
 import me.cargoapp.cargo.event.StopOverlayServiceAction;
 import me.cargoapp.cargo.navui.MainFragment_;
+import me.cargoapp.cargo.navui.NavuiCall_;
 import me.cargoapp.cargo.navui.NavuiParking_;
 
 @WindowFeature({ Window.FEATURE_NO_TITLE })
@@ -49,11 +40,14 @@ public class NavuiActivity extends Activity {
 
     @Subscribe
     public void onNavuiLaunch(NavuiLaunchEvent event) {
-        Fragment fragment;
+        Fragment fragment = new Fragment();
+
         switch (event.getType()) {
             case MENU:
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container, MainFragment_.builder().build()).commit();
+                fragment = MainFragment_.builder().build();
+                break;
             case CALL:
+                fragment = NavuiCall_.builder().build();
                 break;
             case MESSAGE:
                 break;
@@ -62,8 +56,13 @@ public class NavuiActivity extends Activity {
             case OIL:
                 break;
             case PARKING:
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container, NavuiParking_.builder().build()).commit();
+                fragment = NavuiParking_.builder().build();
+                break;
+            default:
+                fragment = MainFragment_.builder().build();
         }
+
+        getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
     }
 
     @Subscribe

@@ -14,8 +14,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.app.Fragment;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -24,7 +22,6 @@ import com.google.android.gms.location.LocationServices;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 
 import me.cargoapp.cargo.R;
@@ -39,6 +36,7 @@ public class NavuiParking extends Fragment implements GoogleApiClient.Connection
     private Location mLastLocation;
     Long latitude;
     Long longitude;
+
 
     @AfterViews
     void afterViews() {
@@ -79,13 +77,11 @@ public class NavuiParking extends Fragment implements GoogleApiClient.Connection
                 editor.putLong("latitude", latitude);
                 editor.commit();
                 Toast.makeText(getContext(), "Votre position est bien enregistrée !", Toast.LENGTH_SHORT).show();
-                EventBus.getDefault().post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.MENU));
-
-
             } else {
                 Toast.makeText(getContext(), "Impossible de récupérer votre position :(", Toast.LENGTH_SHORT).show();
-                EventBus.getDefault().post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.MENU));
             }
+
+            EventBus.getDefault().post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.MENU));
         }
     }
 

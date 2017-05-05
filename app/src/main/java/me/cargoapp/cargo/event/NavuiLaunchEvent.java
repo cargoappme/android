@@ -15,7 +15,7 @@ public class NavuiLaunchEvent {
         return _type;
     }
 
-    public static enum Type {
+    public enum Type {
         CALL,
         MESSAGE,
         MUSIC,
