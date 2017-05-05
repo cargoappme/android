@@ -1,5 +1,8 @@
 dependencies:
   pre:
+    # Decrypt keystore
+    - openssl aes-256-cbc -d -in ./keystore.ci.jks.enc -k "${KEYSTORE_ENCRYPT_KEY}" >> ./keystore.ci.jks
+
     # Android SDK Build-tools, revision 25.0.2
     - if [ ! -d "/usr/local/android-sdk-linux/build-tools/25.0.2" ]; then echo y | android update sdk --no-ui --all --filter "build-tools-25.0.2"; fi
     # Android Tools latest (has sdkmanager)
@@ -12,3 +15,8 @@ dependencies:
     - /usr/local/android-sdk-linux/build-tools/25.0.2
     - /usr/local/android-sdk-linux/tools/bin/sdkmanager
     - /usr/local/android-sdk-linux/extras/m2mrepository
+
+test:
+  override:
+    - ./gradlew assembleRelease -Pandroid.injected.signing.store.file="./keystore.ci.jks" -Pandroid.injected.signing.store.password="${KEYSTORE_PASSWORD}" -Pandroid.injected.signing.key.alias="${KEYSTORE_KEY_ALIAS}" -Pandroid.injected.signing.key.password="${KEYSTORE_KEY_PASSWORD}"
+    - cp app/app-release.apk $CIRCLE_ARTIFACTS
