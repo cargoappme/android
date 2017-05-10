@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/header"
+<RelativeLayout android:id="@+id/parking_header_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true"
@@ -9,22 +9,22 @@
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="Vous avez une position de parking !"
+    android:text="@string/parking_available"
     android:textColor="#000"
     android:textSize="15sp"
     android:id="@+id/textView2"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
     android:layout_marginStart="12dp"
-    android:layout_alignBaseline="@+id/findPark"
-    android:layout_alignBottom="@+id/findPark"
+    android:layout_alignBaseline="@+id/go_to_parking"
+    android:layout_alignBottom="@+id/go_to_parking"
     android:layout_alignParentStart="true" />
 
     <Button
-        android:id="@+id/findPark"
+        android:id="@+id/go_to_parking"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Je suis là"
+        android:text="@string/parking_go"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
     </RelativeLayout>

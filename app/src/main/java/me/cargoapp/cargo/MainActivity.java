@@ -38,11 +38,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     @ViewById(R.id.tab_layout)
     TabLayout _tabLayout;
 
-    @ViewById(R.id.include)
+    @ViewById(R.id.parking_header)
     View _parkingHeader;
-
-    @ViewById(R.id.findPark)
-    Button _findPark;
 
     @AfterViews
     void afterViews() {
@@ -114,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         }
     }
 
-    @Click(R.id.findPark)
+    @Click(R.id.go_to_parking)
     void onFind() {
         String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", _parkingStore.latitude().get(), _parkingStore.longitude().get(), "Place de parking");
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
