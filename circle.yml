@@ -21,3 +21,11 @@ test:
   override:
     - ./gradlew assembleRelease -Pandroid.injected.signing.store.file="./keystore.ci.jks" -Pandroid.injected.signing.store.password="${KEYSTORE_PASSWORD}" -Pandroid.injected.signing.key.alias="${KEYSTORE_KEY_ALIAS}" -Pandroid.injected.signing.key.password="${KEYSTORE_KEY_PASSWORD}"
     - cp app/build/outputs/apk/app-release.apk "${CIRCLE_ARTIFACTS}/cargo.apk"
+
+deployment:
+  release:
+    tag: /v[0-9]+(\.[0-9]+)*/
+    owner: cargoappme
+    commands:
+      - go get github.com/tcnksm/ghr
+      - ghr -t "${GITHUB_TOKEN}" "${CIRCLE_TAG}" "${CIRCLE_ARTIFACTS}/cargo.apk"
