@@ -1,15 +1,14 @@
 package me.cargoapp.cargo;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -18,7 +17,9 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.PageSelected;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.util.Locale;
 
@@ -27,60 +28,53 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
 
     private String TAG = this.getClass().getSimpleName();
-    Double longi;
-    Double lat;
+
+    @Pref
+    ParkingStore_ _parkingStore;
 
     @ViewById(R.id.pager)
     ViewPager _viewPager;
 
+    @ViewById(R.id.tab_layout)
+    TabLayout _tabLayout;
+
     @ViewById(R.id.include)
-    View _header;
+    View _parkingHeader;
 
     @ViewById(R.id.findPark)
     Button _findPark;
 
     @AfterViews
     void afterViews() {
-        final TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_journey));
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_vehicle));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (preferences.contains("longitude") && preferences.contains("latitude")) {
-            _header.setVisibility(View.VISIBLE);
-        }
-        else {
-            _header.setVisibility(View.GONE);
-        }
-        final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        _tabLayout.addTab(_tabLayout.newTab().setText(R.string.tab_journey));
+        _tabLayout.addTab(_tabLayout.newTab().setText(R.string.tab_vehicle));
+        _tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        _tabLayout.addOnTabSelectedListener(this);
+
+        final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), _tabLayout.getTabCount());
         _viewPager.setAdapter(adapter);
-        _viewPager.addOnPageChangeListener(
-                new ViewPager.SimpleOnPageChangeListener() {
-                    @Override
-                    public void onPageSelected(int position) {
-                        // When swiping between pages, select the
-                        // corresponding tab.
-                        tabLayout.getTabAt(position).select();
-                    }
-                });
-        tabLayout.addOnTabSelectedListener(this);
     }
+
+    private void _handleParkingHeader() {
+        _parkingHeader.setVisibility(_parkingStore.hasPositionSaved().get() ? View.VISIBLE : View.GONE);
+    }
+
     @Override
     public void onResume(){
         super.onResume();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (preferences.contains("longitude") && preferences.contains("latitude")) {
-            _header.setVisibility(View.VISIBLE);
-        }
-        else {
-            _header.setVisibility(View.GONE);
-        }
-    }
 
+        this._handleParkingHeader();
+    }
 
     @OptionsItem(R.id.action_settings)
     void onActionSettings() {
         startActivity(new Intent(this, SettingsActivity_.class));
+    }
+
+
+    @PageSelected(R.id.pager)
+    void onPageSelected(ViewPager view, int position) {
+        _tabLayout.getTabAt(position).select();
     }
 
     @Override
@@ -122,16 +116,12 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     @Click(R.id.findPark)
     void onFind() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        longi = Double.longBitsToDouble(preferences.getLong("longitude", 0));
-        lat = Double.longBitsToDouble(preferences.getLong("latitude", 0));
-        String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", lat, longi, "Parking");
+        String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", _parkingStore.latitude().get(), _parkingStore.longitude().get(), "Place de parking");
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
         startActivity(intent);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.remove("longitude");
-        editor.remove("latitude");
-        editor.commit();
-        _header.setVisibility(View.GONE);
+
+        _parkingStore.hasPositionSaved().put(false);
+
+        this._handleParkingHeader();
     }
 }

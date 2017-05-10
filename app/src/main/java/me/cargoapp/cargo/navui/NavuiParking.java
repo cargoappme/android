@@ -22,9 +22,11 @@ import com.google.android.gms.location.LocationServices;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.greenrobot.eventbus.EventBus;
 
 import es.dmoral.toasty.Toasty;
+import me.cargoapp.cargo.ParkingStore_;
 import me.cargoapp.cargo.R;
 import me.cargoapp.cargo.event.NavuiLaunchEvent;
 
@@ -34,10 +36,10 @@ import me.cargoapp.cargo.event.NavuiLaunchEvent;
 @EFragment(R.layout.fragment_navui_parking)
 public class NavuiParking extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     GoogleApiClient _googleClient;
-    private Location mLastLocation;
-    Long latitude;
-    Long longitude;
+    private Location _lastLocation;
 
+    @Pref
+    ParkingStore_ _parkingStore;
 
     @AfterViews
     void afterViews() {
@@ -61,22 +63,12 @@ public class NavuiParking extends Fragment implements GoogleApiClient.Connection
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+            _lastLocation = LocationServices.FusedLocationApi.getLastLocation(
                     _googleClient);
-            if (mLastLocation != null) {
-                latitude = Double.doubleToLongBits(mLastLocation.getLatitude());
-                longitude = Double.doubleToLongBits(mLastLocation.getLongitude());
-
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-                Log.i("TAG", String.valueOf(Double.longBitsToDouble(preferences.getLong("longitude", 0))));
-                SharedPreferences.Editor editor = preferences.edit();
-                if (preferences.contains("longitude") && preferences.contains("latitude")) {
-                    editor.remove("longitude");
-                    editor.remove("latitude");
-                }
-                editor.putLong("longitude", longitude);
-                editor.putLong("latitude", latitude);
-                editor.commit();
+            if (_lastLocation != null) {
+                _parkingStore.latitude().put((float)_lastLocation.getLatitude());
+                _parkingStore.longitude().put((float)_lastLocation.getLongitude());
+                _parkingStore.hasPositionSaved().put(true);
                 Toasty.success(getContext(), "Votre position est bien enregistrée !", Toast.LENGTH_LONG, true).show();
             } else {
                 Toasty.error(getContext(), "Impossible de récupérer votre position :(", Toast.LENGTH_LONG, true).show();
