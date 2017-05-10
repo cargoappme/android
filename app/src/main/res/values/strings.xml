@@ -9,17 +9,18 @@
     <string name="welcome_welcome_title">Bienvenue sur Cargo !</string>
     <string name="welcome_welcome_description">Nous espérons que vous vous plairez avec nous.</string>
     <string name="welcome_microphone_title">Microphone</string>
-    <string name="welcome_microphone_description">Cargo utilise votre microphone pour les interactions vocales.</string>
+    <string name="welcome_microphone_description">Requis. Cargo utilise votre microphone pour les interactions vocales.</string>
     <string name="welcome_gps_title">Position</string>
-    <string name="welcome_gps_description">Cargo utilise votre position pour démarrer vos trajets.</string>
+    <string name="welcome_gps_description">Requis. Cargo utilise votre position pour démarrer vos trajets.</string>
     <string name="welcome_contacts_title">Contacts</string>
-    <string name="welcome_contacts_description">Cargo utilise vos contacts pour vous permettre de les joindre facilement.</string>
+    <string name="welcome_contacts_description">Optionnel. Cargo utilise vos contacts pour vous permettre de les joindre facilement.</string>
     <string name="welcome_notifications_title">Notifications</string>
-    <string name="welcome_notifications_description">Cargo lit vos notifications pour interagir avec vos messageries.</string>
+    <string name="welcome_notifications_description">Requis. Cargo lit vos notifications pour interagir avec vos messageries.</string>
     <string name="welcome_overlay_title">Superposition</string>
-    <string name="welcome_overlay_description">Cargo se superpose à vos applications pour être plus facile d\'accès.</string>
+    <string name="welcome_overlay_description">Requis. Cargo se superpose à vos applications pour être plus facile d\'accès.</string>
     <string name="welcome_special_button">Autoriser</string>
     <string name="welcome_enable_permission">Activez l\'option pour Cargo et faites retour</string>
+    <string name="welcome_permission_needed">Vous devez activer l\'option pour continuer</string>
 
     <!-- Tabs -->
     <string name="tab_journey">Trajet</string>

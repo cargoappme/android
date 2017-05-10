@@ -58,13 +58,11 @@ public class WelcomeActivity extends AppIntro2 {
             return;
         }
 
-        addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_welcome_title), getString(R.string.welcome_welcome_description), R.drawable.welcome_welcome, getResources().getColor(R.color.slide_1_background, null)));
-        addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_microphone_title), getString(R.string.welcome_microphone_description), R.drawable.welcome_microphone, getResources().getColor(R.color.slide_2_background, null)));
+        addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_welcome_title), getString(R.string.welcome_welcome_description), R.drawable.welcome_welcome, getResources().getColor(R.color.slide_primary_background, null)));
+        addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_microphone_title), getString(R.string.welcome_microphone_description), R.drawable.welcome_microphone, getResources().getColor(R.color.slide_primary_background, null)));
         askForPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, 2);
-        addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_gps_title), getString(R.string.welcome_gps_description), R.drawable.welcome_maps, getResources().getColor(R.color.slide_3_background, null)));
+        addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_gps_title), getString(R.string.welcome_gps_description), R.drawable.welcome_maps, getResources().getColor(R.color.slide_primary_background, null)));
         askForPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 3);
-        addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_contacts_title), getString(R.string.welcome_contacts_description), R.drawable.welcome_contacts, getResources().getColor(R.color.slide_4_background, null)));
-        askForPermissions(new String[]{Manifest.permission.READ_CONTACTS}, 4);
         Fragment notificationFragment = new WelcomeActivity_.SpecialFragment_();
         Bundle notificationArgs = new Bundle();
         notificationArgs.putBoolean(NOTIFICATION_ARG, true);
@@ -75,6 +73,8 @@ public class WelcomeActivity extends AppIntro2 {
         overlayArgs.putBoolean(NOTIFICATION_ARG, false);
         overlayFragment.setArguments(overlayArgs);
         addSlide(overlayFragment);
+        addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_contacts_title), getString(R.string.welcome_contacts_description), R.drawable.welcome_contacts, getResources().getColor(R.color.slide_secondary_background, null)));
+        askForPermissions(new String[]{Manifest.permission.READ_CONTACTS}, 6);
 
         showSkipButton(false);
 
@@ -122,11 +122,11 @@ public class WelcomeActivity extends AppIntro2 {
         @AfterViews
         public void afterViews() {
             if (_isNotification) {
-                _layout.setBackgroundColor(getResources().getColor(R.color.slide_5_background, null));
+                _layout.setBackgroundColor(getResources().getColor(R.color.slide_primary_background, null));
                 _title.setText(R.string.welcome_notifications_title);
                 _description.setText(R.string.welcome_notifications_description);
             } else {
-                _layout.setBackgroundColor(getResources().getColor(R.color.slide_6_background, null));
+                _layout.setBackgroundColor(getResources().getColor(R.color.slide_primary_background, null));
                 _title.setText(R.string.welcome_overlay_title);
                 _description.setText(R.string.welcome_overlay_description);
             }
@@ -154,6 +154,7 @@ public class WelcomeActivity extends AppIntro2 {
 
         @Override
         public void onUserIllegallyRequestedNextPage() {
+            Toasty.warning(getContext(), getString(R.string.welcome_permission_needed), Toast.LENGTH_LONG, true).show();
         }
     }
 }
