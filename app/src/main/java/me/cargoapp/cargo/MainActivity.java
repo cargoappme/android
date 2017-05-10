@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -42,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     @AfterViews
     void afterViews() {
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        final TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_journey));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_vehicle));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -55,6 +54,15 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         }
         final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         _viewPager.setAdapter(adapter);
+        _viewPager.addOnPageChangeListener(
+                new ViewPager.SimpleOnPageChangeListener() {
+                    @Override
+                    public void onPageSelected(int position) {
+                        // When swiping between pages, select the
+                        // corresponding tab.
+                        tabLayout.getTabAt(position).select();
+                    }
+                });
         tabLayout.addOnTabSelectedListener(this);
     }
     @Override
@@ -111,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             return mNumOfTabs;
         }
     }
+
     @Click(R.id.findPark)
     void onFind() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
