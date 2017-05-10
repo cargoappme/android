@@ -12,6 +12,8 @@
     <string name="welcome_microphone_description">Cargo utilise votre microphone pour les interactions vocales.</string>
     <string name="welcome_gps_title">Position</string>
     <string name="welcome_gps_description">Cargo utilise votre position pour démarrer vos trajets.</string>
+    <string name="welcome_contacts_title">Contacts</string>
+    <string name="welcome_contacts_description">Cargo utilise vos contacts pour vous permettre de les joindre facilement.</string>
     <string name="welcome_notifications_title">Notifications</string>
     <string name="welcome_notifications_description">Cargo lit vos notifications pour interagir avec vos messageries.</string>
     <string name="welcome_overlay_title">Superposition</string>

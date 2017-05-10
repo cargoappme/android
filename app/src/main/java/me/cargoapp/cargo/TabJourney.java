@@ -31,6 +31,7 @@ import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import es.dmoral.toasty.Toasty;
 import me.cargoapp.cargo.service.OverlayService_;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -118,7 +119,7 @@ public class TabJourney extends Fragment implements
         } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
             Status status = PlaceAutocomplete.getStatus(getActivity(), data);
             // TODO: Handle the error.
-            Toast.makeText(getActivity(), status.getStatusMessage(), Toast.LENGTH_SHORT).show();
+            Toasty.error(getActivity(), status.getStatusMessage(), Toast.LENGTH_LONG, true).show();
         } else if (resultCode == RESULT_CANCELED) {
             // The user canceled the operation.
         }

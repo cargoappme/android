@@ -9,8 +9,10 @@
     <!-- Intro slider -->
 
     <color name="slide_1_background">#2ecc71</color>
-    <color name="slide_2_background">#f39c12</color>
+    <color name="slide_2_background">#1abc9c</color>
     <color name="slide_3_background">#e74c3c</color>
     <color name="slide_4_background">#34495e</color>
+    <color name="slide_5_background">#2980b9</color>
+    <color name="slide_6_background">#f39c12</color>
 
 </resources>

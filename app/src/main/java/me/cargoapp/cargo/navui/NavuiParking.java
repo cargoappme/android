@@ -24,6 +24,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.greenrobot.eventbus.EventBus;
 
+import es.dmoral.toasty.Toasty;
 import me.cargoapp.cargo.R;
 import me.cargoapp.cargo.event.NavuiLaunchEvent;
 
@@ -76,9 +77,9 @@ public class NavuiParking extends Fragment implements GoogleApiClient.Connection
                 editor.putLong("longitude", longitude);
                 editor.putLong("latitude", latitude);
                 editor.commit();
-                Toast.makeText(getContext(), "Votre position est bien enregistrée !", Toast.LENGTH_SHORT).show();
+                Toasty.success(getContext(), "Votre position est bien enregistrée !", Toast.LENGTH_LONG, true).show();
             } else {
-                Toast.makeText(getContext(), "Impossible de récupérer votre position :(", Toast.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Impossible de récupérer votre position :(", Toast.LENGTH_LONG, true).show();
             }
 
             EventBus.getDefault().post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.MENU));

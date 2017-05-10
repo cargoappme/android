@@ -28,7 +28,6 @@ public class NavuiCall extends ListFragment {
 
     @AfterViews
     void afterViews() {
-        Toast.makeText(getContext(),"DDDDDDDDDDDDDD", Toast.LENGTH_SHORT).show();
         cursor1 = getContext().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, "starred=?", new String[] {"1"}, null);
         getActivity().startManagingCursor(cursor1);
         String[] from = {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone._ID};
