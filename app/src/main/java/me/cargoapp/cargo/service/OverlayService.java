@@ -25,6 +25,8 @@ public class OverlayService extends Service {
 
     private final static int FOREGROUND_ID = 999;
 
+    public static boolean isStarted = false;
+
     @Bean
     OverlayLayer _overlayLayer;
 
@@ -45,6 +47,8 @@ public class OverlayService extends Service {
 
         EventBus.getDefault().post(new ShowOverlayAction());
 
+        OverlayService.isStarted = true;
+
         return START_STICKY;
     }
 
@@ -56,6 +60,8 @@ public class OverlayService extends Service {
             _overlayLayer.removeFromScreen();
             _overlayLayer = null;
         }
+
+        OverlayService.isStarted = false;
 
         stopForeground(true);
     }

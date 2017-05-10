@@ -44,6 +44,7 @@ public class NotificationReaderService extends NotificationListenerService {
     public void onNotificationPosted(StatusBarNotification sbn) {
         Logger.i("onNotificationPosted");
 
+        if (!OverlayService.isStarted) return;
         if (!_prefs.getBoolean("pref_notifications", true)) return;
 
         final NotificationParser.NotificationParserResult result = NotificationParser.parseNotification(sbn);
@@ -62,6 +63,7 @@ public class NotificationReaderService extends NotificationListenerService {
     public void onNotificationRemoved(StatusBarNotification sbn) {
         Logger.i("onNotificationRemoved");
 
+        if (!OverlayService.isStarted) return;
         if (!_prefs.getBoolean("pref_notifications", true)) return;
     }
 
