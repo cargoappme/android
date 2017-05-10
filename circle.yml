@@ -28,4 +28,4 @@ deployment:
     owner: cargoappme
     commands:
       - go get github.com/tcnksm/ghr
-      - ghr -t "${GITHUB_TOKEN}" "${CIRCLE_TAG}" "${CIRCLE_ARTIFACTS}/cargo.apk"
+      - ghr -t "${GITHUB_TOKEN}" -u "${CIRCLE_PROJECT_USERNAME}" -r "${CIRCLE_PROJECT_REPONAME}" "${CIRCLE_TAG}" "${CIRCLE_ARTIFACTS}/cargo.apk"
