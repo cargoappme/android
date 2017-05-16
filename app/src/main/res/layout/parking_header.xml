@@ -4,38 +4,51 @@
     android:layout_height="60dp"
     android:layout_alignParentTop="true"
     android:background="@color/accent"
-    android:gravity="center"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fancy="http://schemas.android.com/apk/res-auto">
+
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/parking_available"
     android:textColor="@color/white"
     android:textSize="15sp"
-    android:id="@+id/textView2"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
-    android:layout_marginStart="15dp"
+    android:id="@+id/txt_parking"
+    android:layout_marginStart="16dp"
     android:layout_centerVertical="true"
     android:layout_alignParentStart="true" />
 
     <mehdi.sakout.fancybuttons.FancyButton
-        android:id="@+id/go_to_parking"
+        android:id="@+id/btn_go_to_parking"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:paddingTop="10dp"
-        fancy:fb_borderColor="#FFFFFF"
-        fancy:fb_borderWidth="1dp"
+        android:layout_marginStart="16dp"
         fancy:fb_defaultColor="#fff"
-        fancy:fb_focusColor="#fff"
         fancy:fb_radius="30dp"
         fancy:fb_text="Go"
         fancy:fb_textColor="#000"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/textView2"
-        android:layout_marginStart="14dp" />
+        android:layout_toEndOf="@+id/txt_parking" />
+
+    <mehdi.sakout.fancybuttons.FancyButton
+        android:id="@+id/btn_delete_parking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        android:layout_marginStart="16dp"
+        fancy:fb_defaultColor="@android:color/holo_red_light"
+        fancy:fb_radius="30dp"
+        fancy:fb_fontIconResource="&#xf00d;"
+        fancy:fb_text=""
+        fancy:fb_textColor="@color/white"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/btn_go_to_parking" />
+
     </RelativeLayout>

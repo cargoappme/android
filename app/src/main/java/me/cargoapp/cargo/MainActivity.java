@@ -111,13 +111,16 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         }
     }
 
-    @Click(R.id.go_to_parking)
-    void onFind() {
+    @Click(R.id.btn_go_to_parking)
+    void onGoToParking() {
         double lat = _parkingStore.latitude().get();
         double lon = _parkingStore.longitude().get();
         Intent intent = IntentHelper.createNavigationIntent(lat, lon, lat + "," + lon + "(Parking)");
         startActivity(intent);
+    }
 
+    @Click(R.id.btn_delete_parking)
+    void onDeleteParking() {
         _parkingStore.hasPositionSaved().put(false);
 
         this._handleParkingHeader();
