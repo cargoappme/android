@@ -1,27 +1,49 @@
 package me.cargoapp.cargo.navui;
 
 import android.app.Fragment;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import com.facebook.litho.Component;
-import com.facebook.litho.ComponentContext;
-import com.facebook.litho.LithoView;
+import com.tmtron.greenannotations.EventBusGreenRobot;
 
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
-import me.cargoapp.cargo.components.navui.Main;
+import org.greenrobot.eventbus.EventBus;
 
-@EFragment
+import me.cargoapp.cargo.R;
+import me.cargoapp.cargo.event.NavuiLaunchEvent;
+
+@EFragment(R.layout.navui_main)
 public class MainFragment extends Fragment {
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final ComponentContext c = new ComponentContext(getContext());
 
-        final Component mainLayer = Main.create(c)
-                .build();
+    @EventBusGreenRobot
+    EventBus _eventBus;
 
-        return LithoView.create(getContext(), mainLayer);
+    @Click(R.id.phone)
+    void onPhone() {
+        _eventBus.post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.CALL));
+    }
+
+    @Click(R.id.message)
+    void onMessage() {
+        _eventBus.post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.MESSAGE));
+    }
+
+    @Click(R.id.music)
+    void onMusic() {
+        _eventBus.post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.MUSIC));
+    }
+
+    @Click(R.id.oil)
+    void onOil() {
+        _eventBus.post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.OIL));
+    }
+
+    @Click(R.id.parking)
+    void onParking() {
+        _eventBus.post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.PARKING));
+    }
+
+    @Click(R.id.quit)
+    void onQuit() {
+        _eventBus.post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.QUIT));
     }
 }

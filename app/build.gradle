@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 
 def AAVersion = '4.3.0'
-def lithoVersion = '0.2.0'
 
 android {
     compileSdkVersion 25
@@ -26,6 +25,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.google.code.findbugs'
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
@@ -33,21 +33,18 @@ dependencies {
     annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
 
-    // Litho
-    compile "com.facebook.litho:litho-core:$lithoVersion"
-    compile "com.facebook.litho:litho-widget:$lithoVersion"
-    provided "com.facebook.litho:litho-annotations:$lithoVersion"
-
-    annotationProcessor "com.facebook.litho:litho-processor:$lithoVersion"
+    //Yoga
+    def YogaVersion = '1.5.0'
+    compile "com.facebook.yoga:yoga:$YogaVersion"
+    compile "com.facebook.yoga.android:yoga-layout:$YogaVersion"
 
     // SoLoader
-    compile "com.facebook.soloader:soloader:$lithoVersion"
+    compile 'com.facebook.soloader:soloader:0.2.0'
 
     // Google play services
     compile 'com.google.android.gms:play-services:10.2.1'
 
     // Android support
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
 

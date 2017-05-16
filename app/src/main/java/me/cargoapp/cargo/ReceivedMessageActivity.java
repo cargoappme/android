@@ -12,15 +12,15 @@ import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.view.Window;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.facebook.litho.Component;
-import com.facebook.litho.ComponentContext;
-import com.facebook.litho.LithoView;
 import com.orhanobut.logger.Logger;
 import com.tmtron.greenannotations.EventBusGreenRobot;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.WindowFeature;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -29,7 +29,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import me.cargoapp.cargo.components.MessageLayer;
 import me.cargoapp.cargo.event.HandleMessageQueueAction;
 import me.cargoapp.cargo.event.HideOverlayAction;
 import me.cargoapp.cargo.event.MessageReceivedEvent;
@@ -38,13 +37,22 @@ import me.cargoapp.cargo.event.ShowOverlayAction;
 import static android.R.id.message;
 
 @WindowFeature({ Window.FEATURE_NO_TITLE })
-@EActivity
+@EActivity(R.layout.activity_received_message)
 public class ReceivedMessageActivity extends Activity {
 
     private String TAG = this.getClass().getSimpleName();
 
     @EventBusGreenRobot
     EventBus _eventBus;
+
+    @ViewById(R.id.application_image)
+    ImageView _applicationImage;
+
+    @ViewById(R.id.contact_image)
+    ImageView _contactImage;
+
+    @ViewById(R.id.contact_text)
+    TextView _contactText;
 
     private TextToSpeech _tts;
     private SpeechRecognizer _stt;
@@ -108,18 +116,18 @@ public class ReceivedMessageActivity extends Activity {
 
         _eventBus.post(new HideOverlayAction());
 
-        final ComponentContext c = new ComponentContext(this);
+        int applicationResId;
+        switch (event.result.application) {
+            case MESSENGER:
+                applicationResId= R.drawable.messenger;
+                break;
+            default:
+                applicationResId = R.drawable.sms;
+        }
+        _applicationImage.setImageResource(applicationResId);
 
-        final Component messageLayer = MessageLayer
-                .create(c)
-                .application(event.result.application)
-                .picture(event.result.picture)
-                .author(event.result.author)
-                .build();
-
-        final LithoView lithoView = LithoView.create(this, messageLayer);
-
-        setContentView(lithoView);
+        _contactImage.setImageBitmap(event.result.picture);
+        _contactText.setText(event.result.author);
 
         _message = event.result.message;
 
