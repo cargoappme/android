@@ -28,8 +28,7 @@
 
     <!-- Dialogs -->
     <string name="dialog_vehiclechecks_title">Vérifications du véhicule</string>
-    <string name="dialog_vehiclechecks_text">
-        Vous êtes sur le point de démarrer un <b>trajet de plus de 100km</b>.
+    <string name="dialog_vehiclechecks_text">Vous êtes sur le point de démarrer un <b>trajet de plus de 100km</b>.
 
         \n\nPour votre <b>sécurité</b>, assurez-vous de vérifier :
 

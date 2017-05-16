@@ -68,6 +68,9 @@ dependencies {
     // Toasty
     compile 'com.github.GrenderG:Toasty:1.2.3'
 
+    // Fancybuttons
+    compile 'com.github.medyo:fancybuttons:1.8.3'
+
     testCompile 'junit:junit:4.12'
 }
 

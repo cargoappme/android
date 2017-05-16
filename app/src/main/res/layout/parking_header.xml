@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:id="@+id/parking_header_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="60dp"
     android:layout_alignParentTop="true"
     android:background="@color/accent"
     android:gravity="center"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto">
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -15,17 +16,26 @@
     android:id="@+id/textView2"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
-    android:layout_marginStart="12dp"
-    android:layout_alignBaseline="@+id/go_to_parking"
-    android:layout_alignBottom="@+id/go_to_parking"
+    android:layout_marginStart="15dp"
+    android:layout_centerVertical="true"
     android:layout_alignParentStart="true" />
 
-    <Button
+    <mehdi.sakout.fancybuttons.FancyButton
         android:id="@+id/go_to_parking"
-        style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:text="@string/parking_go" />
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        fancy:fb_borderColor="#FFFFFF"
+        fancy:fb_borderWidth="1dp"
+        fancy:fb_defaultColor="#fff"
+        fancy:fb_focusColor="#fff"
+        fancy:fb_radius="30dp"
+        fancy:fb_text="Go"
+        fancy:fb_textColor="#000"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/textView2"
+        android:layout_marginStart="14dp" />
     </RelativeLayout>
