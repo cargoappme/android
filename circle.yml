@@ -9,13 +9,15 @@ dependencies:
     # Android SDK Build-tools, revision 25.0.2
     - if [ ! -d "/usr/local/android-sdk-linux/build-tools/25.0.2" ]; then echo y | /usr/local/android-sdk-linux/tools/bin/sdkmanager "build-tools;25.0.2"; fi
     # Android Support Repository
-    - echo y | /usr/local/android-sdk-linux/tools/bin/sdkmanager "extras;android;m2repository"
+    - if ! $(grep -q "Revision=47.0.0" /usr/local/android-sdk-linux/extras/android/m2repository/source.properties); then echo y | /usr/local/android-sdk-linux/tools/bin/sdkmanager "extras;android;m2repository"; fi
     # Google Repository
-    - echo y | /usr/local/android-sdk-linux/tools/bin/sdkmanager "extras;google;m2repository"
+    - if ! $(grep -q "Revision=47" /usr/local/android-sdk-linux/extras/android/m2repository/source.properties); then echo y | /usr/local/android-sdk-linux/tools/bin/sdkmanager "extras;google;m2repository"; fi
   cache_directories:
     - /usr/local/android-sdk-linux/tools
 
     - /usr/local/android-sdk-linux/build-tools/25.0.2
+    - /usr/local/android-sdk-linux/extras/android/m2mrepository
+    - /usr/local/android-sdk-linux/extras/google/m2mrepository
 
 test:
   override:
