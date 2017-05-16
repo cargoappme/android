@@ -1,10 +1,6 @@
 apply plugin: 'com.android.application'
 
 def AAVersion = '4.3.0'
-dependencies {
-    annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
-    compile "org.androidannotations:androidannotations-api:$AAVersion"
-}
 
 android {
     compileSdkVersion 25
@@ -29,16 +25,45 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.google.code.findbugs'
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.orhanobut:logger:1.15'
-    compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.github.paolorotolo:appintro:4.1.0'
-    compile 'com.github.GrenderG:Toasty:1.2.3'
-    compile 'com.android.support:design:25.3.1'
+
+    // AA
+    annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
+    compile "org.androidannotations:androidannotations-api:$AAVersion"
+
+    //Yoga
+    def YogaVersion = '1.5.0'
+    compile "com.facebook.yoga:yoga:$YogaVersion"
+    compile "com.facebook.yoga.android:yoga-layout:$YogaVersion"
+
+    // SoLoader
+    compile 'com.facebook.soloader:soloader:0.2.0'
+
+    // Google play services
     compile 'com.google.android.gms:play-services:10.2.1'
+
+    // Android support
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+
+    // Logger
+    compile 'com.orhanobut:logger:1.15'
+
+    // Eventbus
+    compile 'org.greenrobot:eventbus:3.0.0'
+
+    // AA Eventbus annotations
+    def AAEventbusVersion = '1.0.1'
+    compile "com.tmtron:green-annotations-api:$AAEventbusVersion"
+    annotationProcessor "com.tmtron:green-annotations:$AAEventbusVersion"
+
+    // AppIntro
+    compile 'com.github.paolorotolo:appintro:4.1.0'
+
+    // Toasty
+    compile 'com.github.GrenderG:Toasty:1.2.3'
 
     testCompile 'junit:junit:4.12'
 }

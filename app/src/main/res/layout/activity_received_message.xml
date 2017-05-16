@@ -1,23 +1,29 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8" ?>
+<com.facebook.yoga.android.YogaLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:yoga="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#80000000">
+    android:background="#80000000"
+    yoga:yg_flexDirection="column"
+    yoga:yg_justifyContent="center">
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/application_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/contact_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:orientation="vertical">
-        <ImageView
-            android:id="@+id/contact_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        yoga:yg_marginTop="-50dp"
+        yoga:yg_marginLeft="50dp" />
 
-        <TextView
-            android:id="@+id/contact_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-</RelativeLayout>
+    <TextView
+        android:id="@+id/contact_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textSize="25dp" />
+</com.facebook.yoga.android.YogaLayout>

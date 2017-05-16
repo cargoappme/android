@@ -2,43 +2,48 @@ package me.cargoapp.cargo.navui;
 
 import android.app.Fragment;
 
+import com.tmtron.greenannotations.EventBusGreenRobot;
+
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.greenrobot.eventbus.EventBus;
 
 import me.cargoapp.cargo.R;
 import me.cargoapp.cargo.event.NavuiLaunchEvent;
-import me.cargoapp.cargo.event.QuitAction;
 
-@EFragment(R.layout.fragment_navui_main)
+@EFragment(R.layout.navui_main)
 public class MainFragment extends Fragment {
-    @Click(R.id.btn_call)
-    public void onCall() {
-        EventBus.getDefault().post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.CALL));
+
+    @EventBusGreenRobot
+    EventBus _eventBus;
+
+    @Click(R.id.phone)
+    void onPhone() {
+        _eventBus.post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.CALL));
     }
 
-    @Click(R.id.btn_message)
-    public void onMessage() {
-        EventBus.getDefault().post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.MESSAGE));
+    @Click(R.id.message)
+    void onMessage() {
+        _eventBus.post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.MESSAGE));
     }
 
-    @Click(R.id.btn_music)
-    public void onMusic() {
-        EventBus.getDefault().post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.MUSIC));
+    @Click(R.id.music)
+    void onMusic() {
+        _eventBus.post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.MUSIC));
     }
 
-    @Click(R.id.btn_oil)
-    public void onOil() {
-        EventBus.getDefault().post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.OIL));
+    @Click(R.id.oil)
+    void onOil() {
+        _eventBus.post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.OIL));
     }
 
-    @Click(R.id.btn_parking)
-    public void onParking() {
-        EventBus.getDefault().post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.PARKING));
+    @Click(R.id.parking)
+    void onParking() {
+        _eventBus.post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.PARKING));
     }
 
-    @Click(R.id.btn_quit)
-    public void onQuit() {
-        EventBus.getDefault().post(new QuitAction());
+    @Click(R.id.quit)
+    void onQuit() {
+        _eventBus.post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.QUIT));
     }
 }

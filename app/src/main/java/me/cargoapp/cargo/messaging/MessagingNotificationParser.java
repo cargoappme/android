@@ -4,16 +4,16 @@ import android.app.Notification;
 import android.graphics.Bitmap;
 import android.service.notification.StatusBarNotification;
 
-public class NotificationParser {
+public class MessagingNotificationParser {
     static public class NotificationParserResult {
-        public Application application;
+        public MessagingApplication application;
         public String author;
         public String message;
         public Bitmap picture;
         public StatusBarNotification sbn;
 
         NotificationParserResult (StatusBarNotification sbn) {
-            application = Application.NONE;
+            application = MessagingApplication.NONE;
             this.sbn = sbn;
         }
     }
@@ -30,7 +30,7 @@ public class NotificationParser {
 
         switch (pkg) {
             case "com.google.android.apps.messaging":
-                result.application = Application.SMS;
+                result.application = MessagingApplication.SMS;
                 result.author = title;
                 result.message = text;
                 result.picture = picture;
@@ -38,7 +38,7 @@ public class NotificationParser {
             case "com.facebook.orca":
                 if (notification.priority == Notification.PRIORITY_MIN) break; // foreground notification
 
-                result.application = Application.MESSENGER;
+                result.application = MessagingApplication.MESSENGER;
                 result.author = title;
                 result.message = text;
                 result.picture = picture;

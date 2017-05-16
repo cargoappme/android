@@ -3,7 +3,6 @@ package me.cargoapp.cargo;
 import android.app.Activity;
 import android.app.Fragment;
 import android.view.Window;
-import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -12,7 +11,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import me.cargoapp.cargo.event.NavuiLaunchEvent;
-import me.cargoapp.cargo.event.QuitAction;
 import me.cargoapp.cargo.event.StopOverlayServiceAction;
 import me.cargoapp.cargo.navui.MainFragment_;
 import me.cargoapp.cargo.navui.NavuiCall_;
@@ -40,6 +38,12 @@ public class NavuiActivity extends Activity {
 
     @Subscribe
     public void onNavuiLaunch(NavuiLaunchEvent event) {
+        if (event.getType() == NavuiLaunchEvent.Type.QUIT) {
+            EventBus.getDefault().post(new StopOverlayServiceAction());
+            finish();
+            return;
+        }
+
         Fragment fragment = new Fragment();
 
         switch (event.getType()) {
@@ -63,11 +67,5 @@ public class NavuiActivity extends Activity {
         }
 
         getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-    }
-
-    @Subscribe
-    public void onQuit(QuitAction event) {
-        EventBus.getDefault().post(new StopOverlayServiceAction());
-        finish();
     }
 }
