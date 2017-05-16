@@ -11,9 +11,9 @@ import org.greenrobot.eventbus.EventBus;
 
 import me.cargoapp.cargo.event.DismissMessageNotificationAction;
 
-public class NotificationInteracter {
-    static public boolean reply (Context context, NotificationParser.NotificationParserResult result, String text) {
-        if (result.application == Application.NONE) return false;
+public class MessagingNotificationInteracter {
+    static public boolean reply (Context context, MessagingNotificationParser.NotificationParserResult result, String text) {
+        if (result.application == MessagingApplication.NONE) return false;
         if (TextUtils.isEmpty(text.trim())) return false;
 
         int actionIndex;
@@ -47,7 +47,7 @@ public class NotificationInteracter {
         }
     }
 
-    static public void dismiss (NotificationParser.NotificationParserResult result) {
+    static public void dismiss (MessagingNotificationParser.NotificationParserResult result) {
         EventBus.getDefault().post(new DismissMessageNotificationAction(result));
     }
 }

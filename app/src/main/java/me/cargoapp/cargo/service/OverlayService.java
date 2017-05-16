@@ -25,7 +25,7 @@ public class OverlayService extends Service {
 
     private final static int FOREGROUND_ID = 999;
 
-    public static boolean isStarted = false;
+    public static boolean isStarted = true;
 
     @Bean
     OverlayLayer _overlayLayer;

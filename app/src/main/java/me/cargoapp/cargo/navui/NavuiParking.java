@@ -20,6 +20,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.sharedpreferences.Pref;
@@ -33,7 +34,7 @@ import me.cargoapp.cargo.event.NavuiLaunchEvent;
 /**
  * Created by Mathieu on 04/05/2017.
  */
-@EFragment(R.layout.fragment_navui_parking)
+@EFragment
 public class NavuiParking extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     GoogleApiClient _googleClient;
     private Location _lastLocation;
@@ -41,8 +42,8 @@ public class NavuiParking extends Fragment implements GoogleApiClient.Connection
     @Pref
     ParkingStore_ _parkingStore;
 
-    @AfterViews
-    void afterViews() {
+    @AfterInject
+    void afterInject() {
         _googleClient = new GoogleApiClient.Builder(getContext())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)

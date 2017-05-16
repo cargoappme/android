@@ -1,11 +1,11 @@
 package me.cargoapp.cargo.event;
 
-import me.cargoapp.cargo.messaging.NotificationParser;
+import me.cargoapp.cargo.messaging.MessagingNotificationParser;
 
 public class MessageReceivedEvent {
-    public NotificationParser.NotificationParserResult result;
+    public MessagingNotificationParser.NotificationParserResult result;
 
-    public MessageReceivedEvent (NotificationParser.NotificationParserResult result) {
+    public MessageReceivedEvent (MessagingNotificationParser.NotificationParserResult result) {
         this.result = result;
     }
 }

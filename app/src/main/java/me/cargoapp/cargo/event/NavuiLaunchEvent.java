@@ -21,6 +21,7 @@ public class NavuiLaunchEvent {
         MUSIC,
         OIL,
         PARKING,
-        MENU
+        MENU,
+        QUIT
     }
 }
