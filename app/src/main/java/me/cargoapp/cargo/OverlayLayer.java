@@ -1,5 +1,6 @@
 package me.cargoapp.cargo;
 
+import android.app.usage.UsageEvents;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -15,12 +16,16 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.tmtron.greenannotations.EventBusGreenRobot;
+
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.SystemService;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import me.cargoapp.cargo.event.OverlayClickedEvent;
+import me.cargoapp.cargo.event.OverlaySetBackIconAction;
 
 @EBean
 public class OverlayLayer implements View.OnTouchListener {
@@ -40,6 +45,7 @@ public class OverlayLayer implements View.OnTouchListener {
     private FrameLayout _layout;
 
     ImageView _imageView;
+    ImageView _icon;
 
     public OverlayLayer(Context context) {
         _context = context;
@@ -50,6 +56,8 @@ public class OverlayLayer implements View.OnTouchListener {
     public void afterInject() {
         _layoutInflater.inflate(R.layout.navui_overlay, _layout);
         _imageView = (ImageView) _layout.findViewById(R.id.overlay);
+        _icon = (ImageView) _layout.findViewById(R.id.icon);
+
         _imageView.setOnTouchListener(this); // cannot use annotation as we use an inflater and not activity
     }
 
@@ -71,6 +79,14 @@ public class OverlayLayer implements View.OnTouchListener {
 
     public void removeFromScreen() {
         _wm.removeView(_layout);
+    }
+
+    public void setBackIcon(boolean back) {
+        int resId = R.drawable.ic_chevron_left_white_50dp;
+
+        if (!back) resId = R.drawable.ic_notification;
+
+        _icon.setImageResource(resId);
     }
 
     @Override

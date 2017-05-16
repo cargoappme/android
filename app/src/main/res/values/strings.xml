@@ -22,6 +22,16 @@
     <string name="welcome_enable_permission">Activez l\'option pour Cargo et faites retour</string>
     <string name="welcome_permission_needed">Vous devez activer l\'option pour continuer</string>
 
+    <!-- Journey -->
+    <string name="journey_welcome"><b>Bienvenue sur Cargo</b>.
+
+        \n\n<i>Démarrez un trajet</i> en cliquant sur l\'icône en bas à droite
+
+        \n\n<i>Consultez des informations sur les véhicules</i> en sélectionnant l\'onglet à droite
+
+        \n\nAimez la route, avec Cargo.
+    </string>
+
     <!-- Tabs -->
     <string name="tab_journey">Trajet</string>
     <string name="tab_vehicle">Véhicule</string>

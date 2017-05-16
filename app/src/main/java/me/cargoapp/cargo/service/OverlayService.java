@@ -15,6 +15,7 @@ import me.cargoapp.cargo.OverlayLayer;
 import me.cargoapp.cargo.R;
 import me.cargoapp.cargo.event.HideOverlayAction;
 import me.cargoapp.cargo.event.OverlayClickedEvent;
+import me.cargoapp.cargo.event.OverlaySetBackIconAction;
 import me.cargoapp.cargo.event.ShowOverlayAction;
 import me.cargoapp.cargo.event.StopOverlayServiceAction;
 
@@ -81,12 +82,19 @@ public class OverlayService extends Service {
     }
 
     @Subscribe
+    public void onOverlaySetBackIcon(OverlaySetBackIconAction action) {
+        _overlayLayer.setBackIcon(action.getBack());
+    }
+
+    @Subscribe
     public void onStopOverlayService(StopOverlayServiceAction event) {
         stopSelf();
     }
 
     @Subscribe
     public void onOverlayClicked(OverlayClickedEvent event) {
+        if (NavuiActivity_.active) return;
+
         Intent i = new Intent().setClass(getApplicationContext(), NavuiActivity_.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
