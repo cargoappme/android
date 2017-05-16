@@ -32,6 +32,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import es.dmoral.toasty.Toasty;
+import me.cargoapp.cargo.helper.IntentHelper;
 import me.cargoapp.cargo.service.OverlayService_;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -124,7 +125,7 @@ public class TabJourney extends Fragment implements
 
     @Subscribe
     public void onStartJourney(StartJourneyAction action) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + _targetPlace.getAddress()));
+        Intent intent = IntentHelper.createNavigationIntent(_targetPlace.getLatLng().latitude, _targetPlace.getLatLng().longitude, _targetPlace.getAddress().toString());
         startActivity(intent);
 
         Intent overlayServiceIntent = new Intent(getActivity(), OverlayService_.class);

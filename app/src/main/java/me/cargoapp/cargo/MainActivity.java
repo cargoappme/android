@@ -21,6 +21,8 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.util.Locale;
 
+import me.cargoapp.cargo.helper.IntentHelper;
+
 @EActivity(R.layout.activity_main)
 @OptionsMenu(R.menu.main)
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
@@ -111,8 +113,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     @Click(R.id.go_to_parking)
     void onFind() {
-        String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", _parkingStore.latitude().get(), _parkingStore.longitude().get(), "Place de parking");
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        double lat = _parkingStore.latitude().get();
+        double lon = _parkingStore.longitude().get();
+        Intent intent = IntentHelper.createNavigationIntent(lat, lon, lat + "," + lon + "(Parking)");
         startActivity(intent);
 
         _parkingStore.hasPositionSaved().put(false);
