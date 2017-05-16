@@ -1,6 +1,9 @@
 apply plugin: 'com.android.application'
 
+def PlayServicesVersion = '10.2.4'
+def SupportVersion = '25.3.1'
 def AAVersion = '4.3.0'
+def YogaVersion = '1.5.0'
 
 android {
     compileSdkVersion 25
@@ -34,7 +37,6 @@ dependencies {
     compile "org.androidannotations:androidannotations-api:$AAVersion"
 
     //Yoga
-    def YogaVersion = '1.5.0'
     compile "com.facebook.yoga:yoga:$YogaVersion"
     compile "com.facebook.yoga.android:yoga-layout:$YogaVersion"
 
@@ -42,11 +44,12 @@ dependencies {
     compile 'com.facebook.soloader:soloader:0.2.0'
 
     // Google play services
-    compile 'com.google.android.gms:play-services:10.2.1'
+    compile "com.google.android.gms:play-services-places:$PlayServicesVersion"
+    compile "com.google.android.gms:play-services-location:$PlayServicesVersion"
 
     // Android support
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
+    compile "com.android.support:appcompat-v7:$SupportVersion"
+    compile "com.android.support:design:$SupportVersion"
 
     // Logger
     compile 'com.orhanobut:logger:1.15'
