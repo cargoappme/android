@@ -3,13 +3,19 @@ dependencies:
     # Decrypt keystore
     - openssl aes-256-cbc -d -in ./keystore.ci.jks.enc -k "${KEYSTORE_ENCRYPT_KEY}" >> ./keystore.ci.jks
 
-    # Android SDK Build-tools, revision 25.0.2
-    - if [ ! -d "/usr/local/android-sdk-linux/build-tools/25.0.2" ]; then echo y | android update sdk --no-ui --all --filter "build-tools-25.0.2"; fi
     # Android Tools latest (has sdkmanager)
     - if [ ! -f "/usr/local/android-sdk-linux/tools/bin/sdkmanager" ]; then echo y | android update sdk --no-ui --all --filter "tools"; fi
+
+    # Android SDK Build-tools, revision 25.0.2
+    - if [ ! -d "/usr/local/android-sdk-linux/build-tools/25.0.2" ]; then echo y | /usr/local/android-sdk-linux/tools/bin/sdkmanager "build-tools;25.0.2"; fi
+    # Android Support Repository
+    - echo y | /usr/local/android-sdk-linux/tools/bin/sdkmanager "extras;android;m2repository"
+    # Google Repository
+    - echo y | /usr/local/android-sdk-linux/tools/bin/sdkmanager "extras;google;m2repository"
   cache_directories:
-    - /usr/local/android-sdk-linux/build-tools/25.0.2
     - /usr/local/android-sdk-linux/tools
+
+    - /usr/local/android-sdk-linux/build-tools/25.0.2
 
 test:
   override:
