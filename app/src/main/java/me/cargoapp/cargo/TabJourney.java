@@ -43,9 +43,6 @@ public class TabJourney extends Fragment implements
     final int AUTOCOMPLETE_REQUEST_CODE = 1;
     final String CAR_CHECKS_DIALOG_TAG = "CAR_CHECKS_DIALOG";
 
-    @ViewById(R.id.go)
-    Button _btn;
-
     GoogleApiClient _googleClient;
     Location _currentLocation;
     Place _targetPlace;
@@ -90,7 +87,7 @@ public class TabJourney extends Fragment implements
     @Override
     public void onConnectionSuspended(int code) {}
 
-    @Click(R.id.go)
+    @Click(R.id.btn_go)
     void onGo() {
         try {
             Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY).build(getActivity());

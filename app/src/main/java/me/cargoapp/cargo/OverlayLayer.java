@@ -48,7 +48,7 @@ public class OverlayLayer implements View.OnTouchListener {
 
     @AfterInject
     public void afterInject() {
-        _layoutInflater.inflate(R.layout.overlay, _layout);
+        _layoutInflater.inflate(R.layout.navui_overlay, _layout);
         _imageView = (ImageView) _layout.findViewById(R.id.overlay);
         _imageView.setOnTouchListener(this); // cannot use annotation as we use an inflater and not activity
     }

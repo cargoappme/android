@@ -2,7 +2,6 @@ package me.cargoapp.cargo.service;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.MessageQueue;
 import android.preference.PreferenceManager;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;

@@ -29,14 +29,15 @@
     <!-- Dialogs -->
     <string name="dialog_vehiclechecks_title">Vérifications du véhicule</string>
     <string name="dialog_vehiclechecks_text">
-        Vous êtes sur le point de démarrer un trajet de plus de 100km.\n
-        Pour votre sécurité, assurez-vous de vérifier :\n\n
+        Vous êtes sur le point de démarrer un <b>trajet de plus de 100km</b>.
 
-        • La pression de vos pneux\n
-        • Le niveau d\'huile moteur\n
-        • Les essuie-glaces\n\n
+        \n\nPour votre <b>sécurité</b>, assurez-vous de vérifier :
 
-        Vous trouverez certaines informations dans l\'onglet \"Véhicule\" sur l\'écran d\'accueil.
+        \n\n• La pression de vos pneux
+        \n• Le niveau d\'huile moteur
+        \n• Les essuie-glaces
+
+        \n\nVous trouverez certaines informations dans l\'onglet <i>Véhicule</i> sur l\'écran d\'accueil.
     </string>
     <string name="dialog_vehiclechecks_action_go">C\'est bon !</string>
     <string name="dialog_vehiclechecks_action_back">Retour à l\'accueil</string>

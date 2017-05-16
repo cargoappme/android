@@ -3,14 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true"
-    android:background="#FC0"
+    android:background="@color/accent"
     android:gravity="center"
     xmlns:android="http://schemas.android.com/apk/res/android">
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/parking_available"
-    android:textColor="#000"
+    android:textColor="@color/white"
     android:textSize="15sp"
     android:id="@+id/textView2"
     android:layout_marginLeft="5dp"
@@ -22,9 +22,10 @@
 
     <Button
         android:id="@+id/go_to_parking"
+        style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/parking_go"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
+        android:text="@string/parking_go" />
     </RelativeLayout>

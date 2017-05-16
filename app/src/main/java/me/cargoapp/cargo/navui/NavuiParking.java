@@ -4,16 +4,13 @@ package me.cargoapp.cargo.navui;
  * Created by Mathieu on 04/05/2017.
  */
 
-import android.content.SharedPreferences;
+import android.app.Fragment;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.app.Fragment;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -21,14 +18,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
 import org.androidannotations.annotations.AfterInject;
-import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.greenrobot.eventbus.EventBus;
 
 import es.dmoral.toasty.Toasty;
 import me.cargoapp.cargo.ParkingStore_;
-import me.cargoapp.cargo.R;
 import me.cargoapp.cargo.event.NavuiLaunchEvent;
 
 /**
