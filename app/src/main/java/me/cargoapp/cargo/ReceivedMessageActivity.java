@@ -34,8 +34,6 @@ import me.cargoapp.cargo.event.HideOverlayAction;
 import me.cargoapp.cargo.event.MessageReceivedEvent;
 import me.cargoapp.cargo.event.ShowOverlayAction;
 
-import static android.R.id.message;
-
 @WindowFeature({ Window.FEATURE_NO_TITLE })
 @EActivity(R.layout.activity_received_message)
 public class ReceivedMessageActivity extends Activity {
