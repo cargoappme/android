@@ -26,7 +26,7 @@ public class OverlayService extends Service {
 
     private final static int FOREGROUND_ID = 999;
 
-    public static boolean isStarted = true;
+    public static boolean active = false;
 
     @Bean
     OverlayLayer _overlayLayer;
@@ -38,23 +38,29 @@ public class OverlayService extends Service {
 
     @Override
     public void onCreate() {
+        super.onCreate();
+
         EventBus.getDefault().register(this);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        super.onStartCommand(intent, flags, startId);
+
         Notification notification = _createNotification();
         startForeground(FOREGROUND_ID, notification);
 
         EventBus.getDefault().post(new ShowOverlayAction());
 
-        OverlayService.isStarted = true;
+        active = true;
 
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
+
         EventBus.getDefault().unregister(this);
 
         if (_overlayLayer.isShown()) {
@@ -62,7 +68,7 @@ public class OverlayService extends Service {
             _overlayLayer = null;
         }
 
-        OverlayService.isStarted = false;
+        active = false;
 
         stopForeground(true);
     }
@@ -95,9 +101,7 @@ public class OverlayService extends Service {
     public void onOverlayClicked(OverlayClickedEvent event) {
         if (NavuiActivity_.active) return;
 
-        Intent i = new Intent().setClass(getApplicationContext(), NavuiActivity_.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(i);
+        NavuiActivity_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).start();
     }
 
     private Notification _createNotification() {

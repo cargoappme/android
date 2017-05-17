@@ -12,20 +12,21 @@ public class MessagingNotificationParser {
         public Bitmap picture;
         public StatusBarNotification sbn;
 
-        NotificationParserResult (StatusBarNotification sbn) {
+        NotificationParserResult(StatusBarNotification sbn) {
             application = MessagingApplication.NONE;
             this.sbn = sbn;
         }
     }
 
-    static public NotificationParserResult parseNotification (StatusBarNotification sbn) {
+    static public NotificationParserResult parseNotification(StatusBarNotification sbn) {
         NotificationParserResult result = new NotificationParserResult(sbn);
 
         Notification notification = sbn.getNotification();
         final String pkg = sbn.getPackageName();
         final String title = notification.extras.getString(Notification.EXTRA_TITLE);
         final String text = notification.extras.getString(Notification.EXTRA_TEXT);
-        final Bitmap picture = (Bitmap) notification.extras.get(Notification.EXTRA_LARGE_ICON);;
+        final Bitmap picture = (Bitmap) notification.extras.get(Notification.EXTRA_LARGE_ICON);
+        ;
         final Notification.Action[] actions = notification.actions;
 
         switch (pkg) {
@@ -36,7 +37,8 @@ public class MessagingNotificationParser {
                 result.picture = picture;
                 break;
             case "com.facebook.orca":
-                if (notification.priority == Notification.PRIORITY_MIN) break; // foreground notification
+                if (notification.priority == Notification.PRIORITY_MIN)
+                    break; // foreground notification
 
                 result.application = MessagingApplication.MESSENGER;
                 result.author = title;

@@ -28,8 +28,7 @@ import es.dmoral.toasty.Toasty;
 import me.cargoapp.cargo.helper.PermissionHelper;
 
 
-
-@WindowFeature({ Window.FEATURE_NO_TITLE })
+@WindowFeature({Window.FEATURE_NO_TITLE})
 @EActivity
 public class WelcomeActivity extends AppIntro2 {
 

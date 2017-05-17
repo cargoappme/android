@@ -9,15 +9,15 @@ import java.util.ArrayList;
 public class MessagingQueue {
     static ArrayList<MessagingNotificationParser.NotificationParserResult> _messagesQueue = new ArrayList<MessagingNotificationParser.NotificationParserResult>();
 
-    public static void add (MessagingNotificationParser.NotificationParserResult result) {
+    public static void add(MessagingNotificationParser.NotificationParserResult result) {
         _messagesQueue.add(result);
     }
 
-    public static boolean isFilled () {
+    public static boolean isFilled() {
         return _messagesQueue.size() != 0;
     }
 
-    public static MessagingNotificationParser.NotificationParserResult get () {
+    public static MessagingNotificationParser.NotificationParserResult get() {
         return _messagesQueue.remove(0);
     }
 }

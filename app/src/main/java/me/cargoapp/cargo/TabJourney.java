@@ -24,6 +24,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OnActivityResult;
@@ -83,10 +84,12 @@ public class TabJourney extends Fragment implements
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult result) {}
+    public void onConnectionFailed(ConnectionResult result) {
+    }
 
     @Override
-    public void onConnectionSuspended(int code) {}
+    public void onConnectionSuspended(int code) {
+    }
 
     @Click(R.id.btn_go)
     void onGo() {
@@ -128,12 +131,15 @@ public class TabJourney extends Fragment implements
         Intent intent = IntentHelper.createNavigationIntent(_targetPlace.getLatLng().latitude, _targetPlace.getLatLng().longitude, _targetPlace.getAddress().toString());
         startActivity(intent);
 
+        Application_.isJourneyStarted = true;
         Intent overlayServiceIntent = new Intent(getActivity(), OverlayService_.class);
         getActivity().startService(overlayServiceIntent);
         getActivity().finish();
     }
 
-    public static class StartJourneyAction {}
+    public static class StartJourneyAction {
+    }
+
     public static class CarChecksDialogFragment extends DialogFragment {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {

@@ -27,10 +27,10 @@ public class NavuiCall extends ListFragment {
 
     @AfterViews
     void afterViews() {
-        cursor1 = getContext().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, "starred=?", new String[] {"1"}, null);
+        cursor1 = getContext().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, "starred=?", new String[]{"1"}, null);
         getActivity().startManagingCursor(cursor1);
         String[] from = {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone._ID};
-        int[] to = {android.R.id.text1,android.R.id.text2};
+        int[] to = {android.R.id.text1, android.R.id.text2};
         SimpleCursorAdapter listAdapter = new SimpleCursorAdapter(getContext(), android.R.layout.simple_list_item_2, cursor1, from, to);
         setListAdapter(listAdapter);
         lv = getListView();
@@ -43,7 +43,7 @@ public class NavuiCall extends ListFragment {
                 TextView textView = (TextView) view.findViewById(android.R.id.text2);
                 String text = textView.getText().toString();
                 Intent callIntent = new Intent(Intent.ACTION_CALL);
-                callIntent.setData(Uri.parse("tel:"+ text));
+                callIntent.setData(Uri.parse("tel:" + text));
                 startActivity(callIntent);
             }
         });

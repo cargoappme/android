@@ -12,7 +12,7 @@ import org.greenrobot.eventbus.EventBus;
 import me.cargoapp.cargo.event.DismissMessageNotificationAction;
 
 public class MessagingNotificationInteracter {
-    static public boolean reply (Context context, MessagingNotificationParser.NotificationParserResult result, String text) {
+    static public boolean reply(Context context, MessagingNotificationParser.NotificationParserResult result, String text) {
         if (result.application == MessagingApplication.NONE) return false;
         if (TextUtils.isEmpty(text.trim())) return false;
 
@@ -47,7 +47,7 @@ public class MessagingNotificationInteracter {
         }
     }
 
-    static public void dismiss (MessagingNotificationParser.NotificationParserResult result) {
+    static public void dismiss(MessagingNotificationParser.NotificationParserResult result) {
         EventBus.getDefault().post(new DismissMessageNotificationAction(result));
     }
 }
