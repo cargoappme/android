@@ -21,6 +21,7 @@ import me.cargoapp.cargo.event.StopOverlayServiceAction;
 import me.cargoapp.cargo.navui.MainFragment_;
 import me.cargoapp.cargo.navui.NavuiCall_;
 import me.cargoapp.cargo.navui.NavuiParking_;
+import me.cargoapp.cargo.navui.NavuiMessages_;
 
 @WindowFeature({ Window.FEATURE_NO_TITLE })
 @EActivity(R.layout.activity_navui)
@@ -79,7 +80,7 @@ public class NavuiActivity extends Activity {
                 fragment = NavuiCall_.builder().build();
                 break;
             case MESSAGE:
-                break;
+                fragment = NavuiMessages_.builder().build();
             case MUSIC:
                 break;
             case OIL:
