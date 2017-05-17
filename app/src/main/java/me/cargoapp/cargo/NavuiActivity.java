@@ -2,7 +2,6 @@ package me.cargoapp.cargo;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Intent;
 import android.view.View;
 import android.view.Window;
 
@@ -20,9 +19,10 @@ import me.cargoapp.cargo.event.OverlaySetBackIconAction;
 import me.cargoapp.cargo.event.StopOverlayServiceAction;
 import me.cargoapp.cargo.navui.MainFragment_;
 import me.cargoapp.cargo.navui.NavuiCall_;
+import me.cargoapp.cargo.navui.NavuiMessage_;
 import me.cargoapp.cargo.navui.NavuiParking_;
 
-@WindowFeature({ Window.FEATURE_NO_TITLE })
+@WindowFeature({Window.FEATURE_NO_TITLE})
 @EActivity(R.layout.activity_navui)
 public class NavuiActivity extends Activity {
 
@@ -32,6 +32,12 @@ public class NavuiActivity extends Activity {
 
     @EventBusGreenRobot
     EventBus _eventBus;
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
 
     @Override
     public void onStart() {
@@ -64,6 +70,8 @@ public class NavuiActivity extends Activity {
     @Subscribe
     public void onNavuiLaunch(NavuiLaunchEvent event) {
         if (event.getType() == NavuiLaunchEvent.Type.QUIT) {
+            Application_.isJourneyStarted = false;
+
             _eventBus.post(new StopOverlayServiceAction());
             finish();
             return;
@@ -79,6 +87,7 @@ public class NavuiActivity extends Activity {
                 fragment = NavuiCall_.builder().build();
                 break;
             case MESSAGE:
+                fragment = NavuiMessage_.builder().build();
                 break;
             case MUSIC:
                 break;

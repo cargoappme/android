@@ -11,6 +11,7 @@ import com.orhanobut.logger.Logger;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import me.cargoapp.cargo.Application_;
 import me.cargoapp.cargo.ReceivedMessageActivity_;
 import me.cargoapp.cargo.event.DismissMessageNotificationAction;
 import me.cargoapp.cargo.event.HandleMessageQueueAction;
@@ -22,6 +23,7 @@ import me.cargoapp.cargo.messaging.MessagingQueue;
 public class NotificationReaderService extends NotificationListenerService {
 
     private String TAG = this.getClass().getSimpleName();
+    public static boolean active = false;
     SharedPreferences _prefs;
 
     boolean _messageActivityShown = false;
@@ -35,6 +37,8 @@ public class NotificationReaderService extends NotificationListenerService {
         EventBus.getDefault().register(this);
 
         _prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        active = true;
     }
 
     @Override
@@ -42,13 +46,15 @@ public class NotificationReaderService extends NotificationListenerService {
         super.onDestroy();
 
         EventBus.getDefault().unregister(this);
+
+        active = false;
     }
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
         Logger.i("onNotificationPosted");
 
-        if (!OverlayService.isStarted) return;
+        if (!Application_.isJourneyStarted) return;
         if (!_prefs.getBoolean("pref_notifications", true)) return;
 
         final MessagingNotificationParser.NotificationParserResult result = MessagingNotificationParser.parseNotification(sbn);
@@ -65,7 +71,7 @@ public class NotificationReaderService extends NotificationListenerService {
     public void onNotificationRemoved(StatusBarNotification sbn) {
         Logger.i("onNotificationRemoved");
 
-        if (!OverlayService.isStarted) return;
+        if (!Application_.isJourneyStarted) return;
         if (!_prefs.getBoolean("pref_notifications", true)) return;
     }
 

@@ -9,7 +9,7 @@ import android.net.Uri;
 
 public class IntentHelper {
 
-    public static Intent createNavigationIntent (double lat, double lon, String query) {
+    public static Intent createNavigationIntent(double lat, double lon, String query) {
         Uri intentUri = Uri.parse("geo:" + lat + "," + lon + "?q=" + query);
         Intent navigationIntent = new Intent(Intent.ACTION_VIEW, intentUri);
 

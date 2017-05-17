@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 
         this._handleParkingHeader();
@@ -80,10 +80,12 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     }
 
     @Override
-    public void onTabUnselected(TabLayout.Tab tab) {}
+    public void onTabUnselected(TabLayout.Tab tab) {
+    }
 
     @Override
-    public void onTabReselected(TabLayout.Tab tab) {}
+    public void onTabReselected(TabLayout.Tab tab) {
+    }
 
     public class PagerAdapter extends FragmentStatePagerAdapter {
         int mNumOfTabs;

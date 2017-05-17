@@ -57,14 +57,15 @@ public class NavuiParking extends Fragment implements GoogleApiClient.Connection
         super.onStop();
         _googleClient.disconnect();
     }
+
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             _lastLocation = LocationServices.FusedLocationApi.getLastLocation(
                     _googleClient);
             if (_lastLocation != null) {
-                _parkingStore.latitude().put((float)_lastLocation.getLatitude());
-                _parkingStore.longitude().put((float)_lastLocation.getLongitude());
+                _parkingStore.latitude().put((float) _lastLocation.getLatitude());
+                _parkingStore.longitude().put((float) _lastLocation.getLongitude());
                 _parkingStore.hasPositionSaved().put(true);
                 Toasty.success(getContext(), "Votre position est bien enregistrée !", Toast.LENGTH_LONG, true).show();
             } else {
@@ -76,9 +77,11 @@ public class NavuiParking extends Fragment implements GoogleApiClient.Connection
     }
 
     @Override
-    public void onConnectionSuspended(int i) {}
+    public void onConnectionSuspended(int i) {
+    }
 
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+    }
 }
 

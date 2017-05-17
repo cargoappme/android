@@ -36,7 +36,7 @@ import me.cargoapp.cargo.event.MessageReceivedEvent;
 import me.cargoapp.cargo.event.OverlaySetBackIconAction;
 import me.cargoapp.cargo.event.ShowOverlayAction;
 
-@WindowFeature({ Window.FEATURE_NO_TITLE })
+@WindowFeature({Window.FEATURE_NO_TITLE})
 @EActivity(R.layout.activity_received_message)
 public class ReceivedMessageActivity extends Activity {
 
@@ -132,7 +132,7 @@ public class ReceivedMessageActivity extends Activity {
         int applicationResId;
         switch (event.result.application) {
             case MESSENGER:
-                applicationResId= R.drawable.messenger;
+                applicationResId = R.drawable.messenger;
                 break;
             default:
                 applicationResId = R.drawable.sms;
@@ -161,30 +161,32 @@ public class ReceivedMessageActivity extends Activity {
                 _tts = new TextToSpeech(appContext, new TextToSpeech.OnInitListener() {
                     @Override
                     public void onInit(int status) {
-                    if (status == TextToSpeech.SUCCESS) {
-                        Logger.i("TTS initialized");
+                        if (status == TextToSpeech.SUCCESS) {
+                            Logger.i("TTS initialized");
 
-                        _tts.setLanguage(Locale.getDefault());
-                        _tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
-                            @Override
-                            public void onStart(String utteranceId) {}
-
-                            @Override
-                            public void onError(String utteranceId) {}
-
-                            @Override
-                            public void onDone(String utteranceId) {
-                                Logger.i("TTS done speaking, utteranceId: " + utteranceId);
-                                if (utteranceId.equals(MESSAGE_ASKING)) {
-                                    listenOnMainThread();
-                                } else if (utteranceId.equals(MESSAGE_READING)) {
-                                    EventBus.getDefault().post(new HandleMessageQueueAction(HandleMessageQueueAction.Type.DONE));
-                                    finish();
+                            _tts.setLanguage(Locale.getDefault());
+                            _tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                                @Override
+                                public void onStart(String utteranceId) {
                                 }
-                            }
-                        });
-                        speakOnMainThread("Nouveau message de " + event.result.author + ". Voulez-vous le lire ?", MESSAGE_ASKING);
-                    }
+
+                                @Override
+                                public void onError(String utteranceId) {
+                                }
+
+                                @Override
+                                public void onDone(String utteranceId) {
+                                    Logger.i("TTS done speaking, utteranceId: " + utteranceId);
+                                    if (utteranceId.equals(MESSAGE_ASKING)) {
+                                        listenOnMainThread();
+                                    } else if (utteranceId.equals(MESSAGE_READING)) {
+                                        EventBus.getDefault().post(new HandleMessageQueueAction(HandleMessageQueueAction.Type.DONE));
+                                        finish();
+                                    }
+                                }
+                            });
+                            speakOnMainThread("Nouveau message de " + event.result.author + ". Voulez-vous le lire ?", MESSAGE_ASKING);
+                        }
                     }
                 });
             }
@@ -192,31 +194,38 @@ public class ReceivedMessageActivity extends Activity {
     }
 
 
-    protected class SpeechRecognitionListener implements RecognitionListener
-    {
+    protected class SpeechRecognitionListener implements RecognitionListener {
         @Override
-        public void onBeginningOfSpeech() {}
+        public void onBeginningOfSpeech() {
+        }
 
         @Override
-        public void onBufferReceived(byte[] buffer) {}
+        public void onBufferReceived(byte[] buffer) {
+        }
 
         @Override
-        public void onEndOfSpeech() {}
+        public void onEndOfSpeech() {
+        }
 
         @Override
-        public void onError(int error) {}
+        public void onError(int error) {
+        }
 
         @Override
-        public void onEvent(int eventType, Bundle params) {}
+        public void onEvent(int eventType, Bundle params) {
+        }
 
         @Override
-        public void onPartialResults(Bundle partialResults) {}
+        public void onPartialResults(Bundle partialResults) {
+        }
 
         @Override
-        public void onReadyForSpeech(Bundle params) {}
+        public void onReadyForSpeech(Bundle params) {
+        }
 
         @Override
-        public void onRmsChanged(float rmsdB) {}
+        public void onRmsChanged(float rmsdB) {
+        }
 
         @Override
         public void onResults(Bundle results) {
