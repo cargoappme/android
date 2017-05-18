@@ -46,6 +46,8 @@ public class WelcomeActivity extends AppIntro2 {
         String[] dangerousAndSpecialPermissions = {
                 Manifest.permission.RECORD_AUDIO,
                 Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.SEND_SMS,
+                Manifest.permission.READ_CONTACTS,
                 Manifest.permission.SYSTEM_ALERT_WINDOW,
                 Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE
         };
@@ -74,6 +76,8 @@ public class WelcomeActivity extends AppIntro2 {
         addSlide(overlayFragment);
         addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_contacts_title), getString(R.string.welcome_contacts_description), R.drawable.welcome_contacts, getResources().getColor(R.color.slide_secondary_background, null)));
         askForPermissions(new String[]{Manifest.permission.READ_CONTACTS}, 6);
+        addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_sms_title), getString(R.string.welcome_sms_description), R.drawable.welcome_sms, getResources().getColor(R.color.slide_secondary_background, null)));
+        askForPermissions(new String[]{Manifest.permission.SEND_SMS}, 7);
 
         showSkipButton(false);
 

@@ -10,15 +10,27 @@
 
     <ImageView
         android:id="@+id/contact_image"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp" />
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        yoga:yg_width="100%" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="#60000000"
+        yoga:yg_positionType="absolute"
+        yoga:yg_positionTop="0" />
 
     <TextView
         android:id="@+id/contact_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
         android:textAlignment="center"
+        android:gravity="center"
         android:textColor="@android:color/white"
-        android:textSize="25sp"
-        yoga:yg_width="100%" />
+        android:textSize="30sp"
+        android:fontFamily="sans-serif-light"
+        yoga:yg_positionType="absolute"
+        yoga:yg_positionTop="0" />
 </com.facebook.yoga.android.YogaLayout>
