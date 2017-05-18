@@ -6,8 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.ContactsContract;
 import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
+import android.speech.tts.Voice;
 import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,133 +25,113 @@ import android.widget.Toast;
 
 import com.facebook.yoga.android.YogaLayout;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 import me.cargoapp.cargo.R;
+import me.cargoapp.cargo.helper.ContactsHelper;
+import me.cargoapp.cargo.helper.IntentHelper;
+import me.cargoapp.cargo.navui.adapter.ContactsAdapter;
 
 import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by Mathieu on 05/05/2017.
  */
-@EFragment(R.layout.fragment_navui_message)
-public class NavuiMessage extends Fragment {
+@EFragment(R.layout.fragment_navui_contacts)
+public class NavuiMessage extends Fragment implements TextToSpeech.OnInitListener {
 
-    private final int REQ_CODE_SPEECH_INPUT = 100;
+    private final int REQ_MESSAGE_SPEECH_INPUT = 1;
+    private final int REQ_VALIDATION_SPEECH_INPUT = 2;
+
+    private final String UTTERANCE_MESSAGE = "MESSAGE";
+    private final String UTTERANCE_VALIDATION = "VALIDATION";
+    private final String UTTERANCE_DONE = "DONE";
 
     @ViewById(R.id.grid_view)
     GridView _gridView;
 
+    private TextToSpeech _tts;
+
     String _numberToSendTo;
+    String _message;
 
     @AfterViews
     void afterViews() {
-        Cursor contactsCursor = getContext().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, "starred=1", null, null);
-        final ArrayList<ContactRepresentation> contacts = new ArrayList<>(contactsCursor.getColumnCount());
-        while (contactsCursor.moveToNext()) {
-            ContactRepresentation representation = new ContactRepresentation();
-            representation.name = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-            representation.phoneNumber = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-            representation.photoUri = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI));
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                _tts = new TextToSpeech(getActivity(), NavuiMessage.this);
+            }
+        });
+        //_tts = new TextToSpeech(getActivity(), this);
 
-            contacts.add(representation);
-        }
-        contactsCursor.close();
+        final ArrayList<ContactsAdapter.ContactRepresentation> contacts = ContactsHelper.getStarred(getActivity());
 
         _gridView.setAdapter(new ContactsAdapter(getActivity(), contacts));
 
         _gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                _numberToSendTo = contacts.get(position).phoneNumber;
-                askForContent();
+                ContactsAdapter.ContactRepresentation contact = contacts.get(position);
+                _numberToSendTo = contact.phoneNumber;
+
+                _tts.speak("Je vais envoyer un SMS à " + contact.name + ". Quel message voulez-vous envoyer ?", TextToSpeech.QUEUE_FLUSH, null, UTTERANCE_MESSAGE);
             }
         });
     }
 
-    private void askForContent() {
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
-                "Votre message");
-        try {
-            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
-        } catch (ActivityNotFoundException a) {
-
-        }
-    }
-
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void onInit(int initStatus) {
+        if (initStatus == TextToSpeech.SUCCESS) {
+            _tts.setLanguage(Locale.getDefault());
+            _tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                @Override
+                public void onStart(String utteranceId) {}
 
-        switch (requestCode) {
-            case REQ_CODE_SPEECH_INPUT: {
-                if (resultCode == RESULT_OK && null != data) {
-                    ArrayList<String> result = data
-                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    SmsManager smsManager = SmsManager.getDefault();
-                    smsManager.sendTextMessage(_numberToSendTo, null, result.get(0), null, null);
+                @Override
+                public void onDone(String utteranceId) {
+                    switch (utteranceId) {
+                        case UTTERANCE_MESSAGE:
+                            startActivityForResult(IntentHelper.recognizeSpeechIntent("Contenu du message", Locale.getDefault()), REQ_MESSAGE_SPEECH_INPUT);
+                            break;
+                        case UTTERANCE_VALIDATION:
+                            startActivityForResult(IntentHelper.recognizeSpeechIntent("Envoyer ?", Locale.getDefault()), REQ_VALIDATION_SPEECH_INPUT);
+                            break;
+                    }
                 }
-                break;
-            }
 
+                @Override
+                public void onError(String utteranceId) {}
+            });
         }
     }
 
-    public static class ContactRepresentation {
-        public String photoUri;
-        public String name;
-        public String phoneNumber;
+    @OnActivityResult(REQ_MESSAGE_SPEECH_INPUT)
+    void onMessageSpeech(int resultCode, @OnActivityResult.Extra(value = RecognizerIntent.EXTRA_RESULTS) ArrayList<String> results) {
+        _message = results.get(0);
+
+        _tts.speak("J'ai compris le message suivant : " + _message + ". Voulez-vous l'envoyer ?", TextToSpeech.QUEUE_FLUSH, null, UTTERANCE_VALIDATION);
     }
 
-    public class ContactsAdapter extends BaseAdapter {
-        private Context _context;
+    @OnActivityResult(REQ_VALIDATION_SPEECH_INPUT)
+    void onValidationSpeech(int resultCode, @OnActivityResult.Extra(value = RecognizerIntent.EXTRA_RESULTS) ArrayList<String> results) {
+        String text = results.get(0).toLowerCase().trim();
 
-        private ArrayList<ContactRepresentation> _contacts;
-
-        public ContactsAdapter(Context c, ArrayList<ContactRepresentation> contacts) {
-            _context = c;
-
-            _contacts = contacts;
-        }
-
-        public int getCount() {
-            return _contacts.size();
-        }
-
-        public Object getItem(int position) {
-            return null;
-        }
-
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            YogaLayout layout;
-            // set the view's size, margins, paddings and layout parameters
-            if (convertView == null) {
-                layout = (YogaLayout) LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_navui_contact, parent, false);
-            } else {
-                layout = (YogaLayout) convertView;
-            }
-
-            ImageView image = (ImageView) layout.findViewById(R.id.contact_image);
-            TextView text = (TextView) layout.findViewById(R.id.contact_text);
-
-            text.setText(_contacts.get(position).name);
-            image.setImageURI(Uri.parse(_contacts.get(position).photoUri));
-
-            return layout;
+        if (text.contains("oui")) {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(_numberToSendTo, null, results.get(0), null, null);
+            _tts.speak("Le message a été envoyé.", TextToSpeech.QUEUE_FLUSH, null, UTTERANCE_DONE);
+        } else if (text.contains("non")) {
+            _tts.speak("Très bien, j'annule.", TextToSpeech.QUEUE_FLUSH, null, UTTERANCE_DONE);
+        } else {
+            _tts.speak("Je n'ai pas compris. Voulez-vous envoyer le message ? Répondez par oui ou par non.", TextToSpeech.QUEUE_FLUSH, null, UTTERANCE_VALIDATION);
         }
     }
 }
