@@ -11,6 +11,7 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
+import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ import java.util.Locale;
 import me.cargoapp.cargo.event.HandleMessageQueueAction;
 import me.cargoapp.cargo.event.HideOverlayAction;
 import me.cargoapp.cargo.event.MessageReceivedEvent;
+import me.cargoapp.cargo.event.OverlaySetBackIconAction;
 import me.cargoapp.cargo.event.ShowOverlayAction;
 
 @WindowFeature({ Window.FEATURE_NO_TITLE })
@@ -39,6 +41,7 @@ import me.cargoapp.cargo.event.ShowOverlayAction;
 public class ReceivedMessageActivity extends Activity {
 
     private String TAG = this.getClass().getSimpleName();
+    public static boolean active = false;
 
     @EventBusGreenRobot
     EventBus _eventBus;
@@ -60,6 +63,18 @@ public class ReceivedMessageActivity extends Activity {
 
     private final String MESSAGE_ASKING = "MESSAGE_ASKING";
     private final String MESSAGE_READING = "MESSAGE_READING";
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        active = true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        active = false;
+    }
 
     @Override
     public void onPause() {

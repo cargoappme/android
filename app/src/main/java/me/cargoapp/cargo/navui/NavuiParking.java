@@ -45,6 +45,7 @@ public class NavuiParking extends Fragment implements GoogleApiClient.Connection
                 .addApi(LocationServices.API)
                 .build();
     }
+
     @Override
     public void onStart() {
         super.onStart();
