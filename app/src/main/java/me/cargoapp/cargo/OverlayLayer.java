@@ -1,6 +1,5 @@
 package me.cargoapp.cargo;
 
-import android.app.usage.UsageEvents;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -22,10 +21,8 @@ import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.SystemService;
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import me.cargoapp.cargo.event.OverlayClickedEvent;
-import me.cargoapp.cargo.event.OverlaySetBackIconAction;
 
 @EBean
 public class OverlayLayer implements View.OnTouchListener {

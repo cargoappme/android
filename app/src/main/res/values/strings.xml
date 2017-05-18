@@ -29,9 +29,9 @@
     <!-- Journey -->
     <string name="journey_welcome"><b>Bienvenue sur Cargo</b>.
 
-        \n\n<i>Démarrez un trajet</i> en cliquant sur l\'icône en bas à droite
+        \n\nDémarrez un trajet en cliquant sur l\'icône en bas à droite
 
-        \n\n<i>Consultez des informations sur les véhicules</i> en sélectionnant l\'onglet à droite
+        \n\nConsultez des informations sur les véhicules en sélectionnant l\'onglet à droite
 
         \n\nAimez la route, avec Cargo.
     </string>
@@ -62,6 +62,26 @@
     <string name="pref_notifications_summ">Cargo peut lire vos notifications pour vous proposer de lire et de répondre dynamiquement à vos messages.</string>
 
     <!-- Parking -->
+    <string name="parking_save_success">Position de parking enregistrée</string>
+    <string name="parking_save_failure">Impossible de déterminer votre position</string>
     <string name="parking_available">Position de parking enregistrée</string>
     <string name="parking_go">S\'y rendre</string>
+
+    <!-- Speech to text -->
+    <string name="stt_yes">oui</string>
+    <string name="stt_no">no</string>
+    <string name="stt_message_content_prompt">Contenu du message</string>
+    <string name="stt_message_send_prompt">Envoyer le message ?</string>
+
+    <!-- Text to speech -->
+    <string name="tts_message_content">Je vais envoyer un SMS à %s. Quel message voulez-vous envoyer ?</string>
+    <string name="tts_message_validation">J\'ai compris le message suivant : %s. Voulez-vous l\'envoyer ?</string>
+    <string name="tts_message_validation_repeat">Je n\'ai pas compris. Voulez-vous envoyer le message ? Répondez par oui ou par non.</string>
+    <string name="tts_message_sent">Le message a été envoyé.</string>
+    <string name="tts_message_cancel">Très bien, j\'annule.</string>
+
+    <string name="tts_received_message_confirmation">Nouveau message de %s. Voulez-vous le lire ?</string>
+    <string name="tts_received_message_confirmation_repeat">Je n\'ai pas compris. Voulez-vous lire le message ? Répondez par oui ou non.</string>
+    <string name="tts_received_message_reading">Voici le message : %s</string>
+    <string name="tts_received_message_ignore">D\'accord, j\'ignore le message.</string>
 </resources>

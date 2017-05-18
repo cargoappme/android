@@ -1,7 +1,6 @@
 package me.cargoapp.cargo;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,8 +17,6 @@ import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.PageSelected;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
-
-import java.util.Locale;
 
 import me.cargoapp.cargo.helper.IntentHelper;
 

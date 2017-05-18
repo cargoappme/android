@@ -36,6 +36,7 @@ public class NavuiCall extends Fragment {
                                     int position, long id) {
 
                 startActivity(IntentHelper.createCallIntent(contacts.get(position).phoneNumber));
+                getActivity().finish();
             }
         });
     }

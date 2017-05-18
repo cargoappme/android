@@ -11,7 +11,6 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
-import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,7 +32,6 @@ import java.util.Locale;
 import me.cargoapp.cargo.event.HandleMessageQueueAction;
 import me.cargoapp.cargo.event.HideOverlayAction;
 import me.cargoapp.cargo.event.MessageReceivedEvent;
-import me.cargoapp.cargo.event.OverlaySetBackIconAction;
 import me.cargoapp.cargo.event.ShowOverlayAction;
 
 @WindowFeature({Window.FEATURE_NO_TITLE})
@@ -125,8 +123,6 @@ public class ReceivedMessageActivity extends Activity {
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onMessageReceived(final MessageReceivedEvent event) {
-        Logger.i("Received message");
-
         _eventBus.post(new HideOverlayAction());
 
         int applicationResId;
@@ -176,7 +172,6 @@ public class ReceivedMessageActivity extends Activity {
 
                                 @Override
                                 public void onDone(String utteranceId) {
-                                    Logger.i("TTS done speaking, utteranceId: " + utteranceId);
                                     if (utteranceId.equals(MESSAGE_ASKING)) {
                                         listenOnMainThread();
                                     } else if (utteranceId.equals(MESSAGE_READING)) {
@@ -185,7 +180,7 @@ public class ReceivedMessageActivity extends Activity {
                                     }
                                 }
                             });
-                            speakOnMainThread("Nouveau message de " + event.result.author + ". Voulez-vous le lire ?", MESSAGE_ASKING);
+                            speakOnMainThread(getString(R.string.tts_received_message_confirmation, event.result.author), MESSAGE_ASKING);
                         }
                     }
                 });
@@ -231,18 +226,16 @@ public class ReceivedMessageActivity extends Activity {
         public void onResults(Bundle results) {
             ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 
-            String match = matches.get(0);
+            String match = matches.get(0).toLowerCase().trim();
 
-            Logger.i("STT done", match);
-
-            if (match.toLowerCase().trim().contains("oui")) {
-                speakOnMainThread("Voici le message : " + ReceivedMessageActivity.this._message, MESSAGE_READING);
-            } else if (match.toLowerCase().trim().contains("non")) {
-                speakOnMainThread("Très bien, j'ignore le message.", MESSAGE_READING);
+            if (match.contains(getString(R.string.stt_yes))) {
+                speakOnMainThread(getString(R.string.tts_received_message_reading, ReceivedMessageActivity.this._message), MESSAGE_READING);
+            } else if (match.contains(getString(R.string.stt_no))) {
+                speakOnMainThread(getString(R.string.tts_received_message_ignore), MESSAGE_READING);
                 _eventBus.post(new HandleMessageQueueAction(HandleMessageQueueAction.Type.DONE));
                 finish();
             } else {
-                speakOnMainThread("Je n'ai pas compris. Voulez-vous lire le message, oui ou non ?", MESSAGE_ASKING);
+                speakOnMainThread(getString(R.string.tts_received_message_confirmation_repeat), MESSAGE_ASKING);
             }
         }
     }

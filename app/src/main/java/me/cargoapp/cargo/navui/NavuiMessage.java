@@ -1,32 +1,15 @@
 package me.cargoapp.cargo.navui;
 
 import android.app.Fragment;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
-import android.speech.tts.Voice;
 import android.telephony.SmsManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.facebook.yoga.android.YogaLayout;
-
-import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
@@ -40,8 +23,6 @@ import me.cargoapp.cargo.R;
 import me.cargoapp.cargo.helper.ContactsHelper;
 import me.cargoapp.cargo.helper.IntentHelper;
 import me.cargoapp.cargo.navui.adapter.ContactsAdapter;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by Mathieu on 05/05/2017.
@@ -80,10 +61,10 @@ public class NavuiMessage extends Fragment implements TextToSpeech.OnInitListene
         _gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                ContactsAdapter.ContactRepresentation contact = contacts.get(position);
-                _numberToSendTo = contact.phoneNumber;
+            ContactsAdapter.ContactRepresentation contact = contacts.get(position);
+            _numberToSendTo = contact.phoneNumber;
 
-                _tts.speak("Je vais envoyer un SMS à " + contact.name + ". Quel message voulez-vous envoyer ?", TextToSpeech.QUEUE_FLUSH, null, UTTERANCE_MESSAGE);
+            _tts.speak(getString(R.string.tts_message_content, contact.name), TextToSpeech.QUEUE_FLUSH, null, UTTERANCE_MESSAGE);
             }
         });
     }
@@ -101,10 +82,10 @@ public class NavuiMessage extends Fragment implements TextToSpeech.OnInitListene
                 public void onDone(String utteranceId) {
                     switch (utteranceId) {
                         case UTTERANCE_MESSAGE:
-                            startActivityForResult(IntentHelper.recognizeSpeechIntent("Contenu du message", Locale.getDefault()), REQ_MESSAGE_SPEECH_INPUT);
+                            startActivityForResult(IntentHelper.recognizeSpeechIntent(getString(R.string.stt_message_content_prompt), Locale.getDefault()), REQ_MESSAGE_SPEECH_INPUT);
                             break;
                         case UTTERANCE_VALIDATION:
-                            startActivityForResult(IntentHelper.recognizeSpeechIntent("Envoyer ?", Locale.getDefault()), REQ_VALIDATION_SPEECH_INPUT);
+                            startActivityForResult(IntentHelper.recognizeSpeechIntent(getString(R.string.stt_message_send_prompt), Locale.getDefault()), REQ_VALIDATION_SPEECH_INPUT);
                             break;
                     }
                 }
@@ -119,21 +100,21 @@ public class NavuiMessage extends Fragment implements TextToSpeech.OnInitListene
     void onMessageSpeech(int resultCode, @OnActivityResult.Extra(value = RecognizerIntent.EXTRA_RESULTS) ArrayList<String> results) {
         _message = results.get(0);
 
-        _tts.speak("J'ai compris le message suivant : " + _message + ". Voulez-vous l'envoyer ?", TextToSpeech.QUEUE_FLUSH, null, UTTERANCE_VALIDATION);
+        _tts.speak(getString(R.string.tts_message_validation, _message), TextToSpeech.QUEUE_FLUSH, null, UTTERANCE_VALIDATION);
     }
 
     @OnActivityResult(REQ_VALIDATION_SPEECH_INPUT)
     void onValidationSpeech(int resultCode, @OnActivityResult.Extra(value = RecognizerIntent.EXTRA_RESULTS) ArrayList<String> results) {
         String text = results.get(0).toLowerCase().trim();
 
-        if (text.contains("oui")) {
+        if (text.contains(getString(R.string.stt_yes))) {
             SmsManager smsManager = SmsManager.getDefault();
             smsManager.sendTextMessage(_numberToSendTo, null, _message, null, null);
-            _tts.speak("Le message a été envoyé.", TextToSpeech.QUEUE_FLUSH, null, UTTERANCE_DONE);
-        } else if (text.contains("non")) {
-            _tts.speak("Très bien, j'annule.", TextToSpeech.QUEUE_FLUSH, null, UTTERANCE_DONE);
+            _tts.speak(getString(R.string.tts_message_sent), TextToSpeech.QUEUE_FLUSH, null, UTTERANCE_DONE);
+        } else if (text.contains(getString(R.string.stt_no))) {
+            _tts.speak(getString(R.string.tts_message_cancel), TextToSpeech.QUEUE_FLUSH, null, UTTERANCE_DONE);
         } else {
-            _tts.speak("Je n'ai pas compris. Voulez-vous envoyer le message ? Répondez par oui ou par non.", TextToSpeech.QUEUE_FLUSH, null, UTTERANCE_VALIDATION);
+            _tts.speak(getString(R.string.tts_message_validation_repeat), TextToSpeech.QUEUE_FLUSH, null, UTTERANCE_VALIDATION);
         }
     }
 }

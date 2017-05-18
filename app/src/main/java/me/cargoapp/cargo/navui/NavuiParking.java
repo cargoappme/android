@@ -25,6 +25,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import es.dmoral.toasty.Toasty;
 import me.cargoapp.cargo.ParkingStore_;
+import me.cargoapp.cargo.R;
 import me.cargoapp.cargo.event.NavuiLaunchEvent;
 
 /**
@@ -74,9 +75,9 @@ public class NavuiParking extends Fragment implements GoogleApiClient.Connection
                 _parkingStore.latitude().put((float) _lastLocation.getLatitude());
                 _parkingStore.longitude().put((float) _lastLocation.getLongitude());
                 _parkingStore.hasPositionSaved().put(true);
-                Toasty.success(getContext(), "Votre position est bien enregistrée !", Toast.LENGTH_LONG, true).show();
+                Toasty.success(getContext(), getString(R.string.parking_save_success), Toast.LENGTH_LONG, true).show();
             } else {
-                Toasty.error(getContext(), "Impossible de récupérer votre position :(", Toast.LENGTH_LONG, true).show();
+                Toasty.error(getContext(), getString(R.string.parking_save_failure), Toast.LENGTH_LONG, true).show();
             }
 
             _eventBus.post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.MENU));
@@ -84,11 +85,9 @@ public class NavuiParking extends Fragment implements GoogleApiClient.Connection
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
-    }
+    public void onConnectionSuspended(int i) {}
 
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-    }
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
 }
 
