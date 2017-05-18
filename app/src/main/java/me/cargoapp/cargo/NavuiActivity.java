@@ -100,7 +100,10 @@ public class NavuiActivity extends Activity {
                 fragment = MainFragment_.builder().build();
         }
 
-        getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+        getFragmentManager().beginTransaction()
+                .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                .replace(R.id.fragment_container, fragment)
+                .commit();
 
         _onMenu = event.getType() == NavuiLaunchEvent.Type.MENU;
     }
