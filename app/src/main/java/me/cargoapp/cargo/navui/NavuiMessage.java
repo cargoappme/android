@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
@@ -27,6 +28,7 @@ import com.facebook.yoga.android.YogaLayout;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
@@ -57,21 +59,20 @@ public class NavuiMessage extends Fragment implements TextToSpeech.OnInitListene
     @ViewById(R.id.grid_view)
     GridView _gridView;
 
-    private TextToSpeech _tts;
+    TextToSpeech _tts;
 
     String _numberToSendTo;
     String _message;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        _tts = new TextToSpeech(getActivity(), this);
+    }
+
     @AfterViews
     void afterViews() {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                _tts = new TextToSpeech(getActivity(), NavuiMessage.this);
-            }
-        });
-        //_tts = new TextToSpeech(getActivity(), this);
-
         final ArrayList<ContactsAdapter.ContactRepresentation> contacts = ContactsHelper.getStarred(getActivity());
 
         _gridView.setAdapter(new ContactsAdapter(getActivity(), contacts));
@@ -88,6 +89,7 @@ public class NavuiMessage extends Fragment implements TextToSpeech.OnInitListene
     }
 
     @Override
+    @Background
     public void onInit(int initStatus) {
         if (initStatus == TextToSpeech.SUCCESS) {
             _tts.setLanguage(Locale.getDefault());
@@ -126,7 +128,7 @@ public class NavuiMessage extends Fragment implements TextToSpeech.OnInitListene
 
         if (text.contains("oui")) {
             SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(_numberToSendTo, null, results.get(0), null, null);
+            smsManager.sendTextMessage(_numberToSendTo, null, _message, null, null);
             _tts.speak("Le message a été envoyé.", TextToSpeech.QUEUE_FLUSH, null, UTTERANCE_DONE);
         } else if (text.contains("non")) {
             _tts.speak("Très bien, j'annule.", TextToSpeech.QUEUE_FLUSH, null, UTTERANCE_DONE);
