@@ -56,7 +56,9 @@ public class ContactsAdapter extends BaseAdapter {
         TextView text = (TextView) layout.findViewById(R.id.contact_text);
 
         text.setText(_contacts.get(position).name);
-        image.setImageURI(Uri.parse(_contacts.get(position).photoUri != null ? _contacts.get(position).photoUri : ""));
+
+        String photoUri = _contacts.get(position).photoUri;
+        if (photoUri != null) image.setImageURI(Uri.parse(photoUri));
 
         return layout;
     }
