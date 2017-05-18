@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.tmtron.greenannotations.EventBusGreenRobot;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EFragment;
@@ -31,8 +32,12 @@ import me.cargoapp.cargo.event.NavuiLaunchEvent;
  */
 @EFragment
 public class NavuiParking extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
     GoogleApiClient _googleClient;
     private Location _lastLocation;
+
+    @EventBusGreenRobot
+    EventBus _eventBus;
 
     @Pref
     ParkingStore_ _parkingStore;
@@ -49,12 +54,14 @@ public class NavuiParking extends Fragment implements GoogleApiClient.Connection
     @Override
     public void onStart() {
         super.onStart();
+
         _googleClient.connect();
     }
 
     @Override
     public void onStop() {
         super.onStop();
+
         _googleClient.disconnect();
     }
 
@@ -72,7 +79,7 @@ public class NavuiParking extends Fragment implements GoogleApiClient.Connection
                 Toasty.error(getContext(), "Impossible de récupérer votre position :(", Toast.LENGTH_LONG, true).show();
             }
 
-            EventBus.getDefault().post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.MENU));
+            _eventBus.post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.MENU));
         }
     }
 

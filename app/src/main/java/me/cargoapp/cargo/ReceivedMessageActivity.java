@@ -180,7 +180,7 @@ public class ReceivedMessageActivity extends Activity {
                                     if (utteranceId.equals(MESSAGE_ASKING)) {
                                         listenOnMainThread();
                                     } else if (utteranceId.equals(MESSAGE_READING)) {
-                                        EventBus.getDefault().post(new HandleMessageQueueAction(HandleMessageQueueAction.Type.DONE));
+                                        _eventBus.post(new HandleMessageQueueAction(HandleMessageQueueAction.Type.DONE));
                                         finish();
                                     }
                                 }
@@ -239,7 +239,7 @@ public class ReceivedMessageActivity extends Activity {
                 speakOnMainThread("Voici le message : " + ReceivedMessageActivity.this._message, MESSAGE_READING);
             } else if (match.toLowerCase().trim().contains("non")) {
                 speakOnMainThread("Très bien, j'ignore le message.", MESSAGE_READING);
-                EventBus.getDefault().post(new HandleMessageQueueAction(HandleMessageQueueAction.Type.DONE));
+                _eventBus.post(new HandleMessageQueueAction(HandleMessageQueueAction.Type.DONE));
                 finish();
             } else {
                 speakOnMainThread("Je n'ai pas compris. Voulez-vous lire le message, oui ou non ?", MESSAGE_ASKING);

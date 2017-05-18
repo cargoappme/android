@@ -32,6 +32,9 @@ public class OverlayLayer implements View.OnTouchListener {
 
     private String TAG = this.getClass().getSimpleName();
 
+    @EventBusGreenRobot
+    EventBus _eventBus;
+
     @SystemService
     WindowManager _wm;
 
@@ -111,7 +114,7 @@ public class OverlayLayer implements View.OnTouchListener {
             case MotionEvent.ACTION_DOWN:
                 _vibrator.vibrate(100);
 
-                EventBus.getDefault().post(new OverlayClickedEvent());
+                _eventBus.post(new OverlayClickedEvent());
                 break;
             case MotionEvent.ACTION_UP:
                 break;

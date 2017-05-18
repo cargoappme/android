@@ -22,6 +22,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.tmtron.greenannotations.EventBusGreenRobot;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
@@ -42,8 +43,12 @@ import static android.app.Activity.RESULT_OK;
 @EFragment(R.layout.tab_journey)
 public class TabJourney extends Fragment implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
     final int AUTOCOMPLETE_REQUEST_CODE = 1;
     final String CAR_CHECKS_DIALOG_TAG = "CAR_CHECKS_DIALOG";
+
+    @EventBusGreenRobot
+    EventBus _eventBus;
 
     GoogleApiClient _googleClient;
     Location _currentLocation;
@@ -62,7 +67,6 @@ public class TabJourney extends Fragment implements
     public void onStart() {
         super.onStart();
 
-        EventBus.getDefault().register(this);
         _googleClient.connect();
     }
 
@@ -70,7 +74,6 @@ public class TabJourney extends Fragment implements
     public void onStop() {
         super.onStop();
 
-        EventBus.getDefault().unregister(this);
         _googleClient.disconnect();
     }
 
@@ -115,7 +118,7 @@ public class TabJourney extends Fragment implements
             if (distanceInMeters >= 100 * 1000) {
                 new CarChecksDialogFragment().show(getFragmentManager(), CAR_CHECKS_DIALOG_TAG);
             } else {
-                EventBus.getDefault().post(new StartJourneyAction());
+                _eventBus.post(new StartJourneyAction());
             }
         } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
             Status status = PlaceAutocomplete.getStatus(getActivity(), data);

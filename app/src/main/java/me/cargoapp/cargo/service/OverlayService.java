@@ -5,6 +5,8 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+import com.tmtron.greenannotations.EventBusGreenRobot;
+
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EService;
 import org.greenrobot.eventbus.EventBus;
@@ -28,6 +30,9 @@ public class OverlayService extends Service {
 
     public static boolean active = false;
 
+    @EventBusGreenRobot
+    EventBus _eventBus;
+
     @Bean
     OverlayLayer _overlayLayer;
 
@@ -37,20 +42,13 @@ public class OverlayService extends Service {
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
         Notification notification = _createNotification();
         startForeground(FOREGROUND_ID, notification);
 
-        EventBus.getDefault().post(new ShowOverlayAction());
+        _eventBus.post(new ShowOverlayAction());
 
         active = true;
 
@@ -60,8 +58,6 @@ public class OverlayService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-        EventBus.getDefault().unregister(this);
 
         if (_overlayLayer.isShown()) {
             _overlayLayer.removeFromScreen();

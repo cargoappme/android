@@ -24,6 +24,8 @@ public class NotificationReaderService extends NotificationListenerService {
 
     private String TAG = this.getClass().getSimpleName();
     public static boolean active = false;
+
+    EventBus _eventBus;
     SharedPreferences _prefs;
 
     boolean _messageActivityShown = false;
@@ -34,7 +36,8 @@ public class NotificationReaderService extends NotificationListenerService {
 
         Logger.init(TAG);
 
-        EventBus.getDefault().register(this);
+        _eventBus = EventBus.getDefault();
+        _eventBus.register(this);
 
         _prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -45,7 +48,7 @@ public class NotificationReaderService extends NotificationListenerService {
     public void onDestroy() {
         super.onDestroy();
 
-        EventBus.getDefault().unregister(this);
+        _eventBus.unregister(this);
 
         active = false;
     }
@@ -59,11 +62,11 @@ public class NotificationReaderService extends NotificationListenerService {
 
         final MessagingNotificationParser.NotificationParserResult result = MessagingNotificationParser.parseNotification(sbn);
         if (result.application != MessagingApplication.NONE) {
-            EventBus.getDefault().post(new DismissMessageNotificationAction(result));
+            _eventBus.post(new DismissMessageNotificationAction(result));
 
             MessagingQueue.add(result);
 
-            EventBus.getDefault().post(new HandleMessageQueueAction(HandleMessageQueueAction.Type.RECEIVED));
+            _eventBus.post(new HandleMessageQueueAction(HandleMessageQueueAction.Type.RECEIVED));
         }
     }
 
@@ -84,11 +87,11 @@ public class NotificationReaderService extends NotificationListenerService {
             if (_messageActivityShown) return;
 
             _messageActivityShown = true;
-            EventBus.getDefault().postSticky(new MessageReceivedEvent(MessagingQueue.get()));
+            _eventBus.postSticky(new MessageReceivedEvent(MessagingQueue.get()));
             startActivity(i);
         } else if (action.getType() == HandleMessageQueueAction.Type.DONE) {
             if (MessagingQueue.isFilled()) {
-                EventBus.getDefault().postSticky(new MessageReceivedEvent(MessagingQueue.get()));
+                _eventBus.postSticky(new MessageReceivedEvent(MessagingQueue.get()));
                 startActivity(i);
             } else {
                 _messageActivityShown = false;
