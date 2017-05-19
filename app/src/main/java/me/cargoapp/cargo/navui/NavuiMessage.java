@@ -19,7 +19,6 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
-import org.androidannotations.annotations.ViewsById;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -55,6 +54,7 @@ public class NavuiMessage extends Fragment {
     @ViewById(R.id.grid_view)
     GridView _gridView;
 
+    @ViewById(R.id.contact)
     YogaLayout _contactView;
 
     ImageView _contactImage;
@@ -70,7 +70,6 @@ public class NavuiMessage extends Fragment {
 
     @AfterViews
     void afterViews() {
-        _contactView = (YogaLayout) getActivity().findViewById(R.id.contact);
         _contactView.setVisibility(View.GONE);
         _contactImage = (ImageView) _contactView.findViewById(R.id.contact_image);
         _contactText = (TextView) _contactView.findViewById(R.id.contact_text);

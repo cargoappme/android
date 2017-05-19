@@ -38,6 +38,9 @@
 
         \n\nAimez la route, avec Cargo.
     </string>
+    <string name="journey_fab_close">Fermer</string>
+    <string name="journey_fab_go">Démarrer avec partage de position</string>
+    <string name="journey_fab_start">Démarrer sans partage de position</string>
 
     <!-- Tabs -->
     <string name="tab_journey">Trajet</string>

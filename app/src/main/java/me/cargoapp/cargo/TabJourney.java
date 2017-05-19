@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -26,6 +27,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OnActivityResult;
+import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -45,6 +47,9 @@ public class TabJourney extends Fragment implements
 
     @EventBusGreenRobot
     EventBus _eventBus;
+
+    @ViewById(R.id.fab_menu)
+    FloatingActionMenu _fabMenu;
 
     GoogleApiClient _googleClient;
     Location _currentLocation;
@@ -92,6 +97,8 @@ public class TabJourney extends Fragment implements
 
     @Click(R.id.btn_go)
     void onGo() {
+        _fabMenu.close(true);
+
         try {
             Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY).build(getActivity());
             startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
@@ -100,6 +107,11 @@ public class TabJourney extends Fragment implements
         } catch (GooglePlayServicesNotAvailableException e) {
             // TODO: Handle the error.
         }
+    }
+
+    @Click(R.id.btn_start)
+    void onBtnStart() {
+        _fabMenu.close(true);
     }
 
     @OnActivityResult(AUTOCOMPLETE_REQUEST_CODE)

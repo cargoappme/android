@@ -71,6 +71,9 @@ dependencies {
     // Fancybuttons
     compile 'com.github.medyo:fancybuttons:1.8.3'
 
+    // Floating action button
+    compile 'com.github.clans:fab:1.6.4'
+
     testCompile 'junit:junit:4.12'
 }
 
