@@ -29,10 +29,10 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import me.cargoapp.cargo.event.HandleMessageQueueAction;
-import me.cargoapp.cargo.event.HideOverlayAction;
-import me.cargoapp.cargo.event.MessageReceivedEvent;
-import me.cargoapp.cargo.event.ShowOverlayAction;
+import me.cargoapp.cargo.event.message.HandleMessageQueueAction;
+import me.cargoapp.cargo.event.message.MessageReceivedEvent;
+import me.cargoapp.cargo.event.overlay.HideOverlayAction;
+import me.cargoapp.cargo.event.overlay.ShowOverlayAction;
 
 @WindowFeature({Window.FEATURE_NO_TITLE})
 @EActivity(R.layout.activity_received_message)

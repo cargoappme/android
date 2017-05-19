@@ -1,13 +1,13 @@
-package me.cargoapp.cargo.event;
+package me.cargoapp.cargo.event.navui;
 
 /**
  * Created by Marvin on 26/04/2017.
  */
 
-public class NavuiLaunchEvent {
+public class HandleNavuiActionAction {
     Type _type;
 
-    public NavuiLaunchEvent(Type type) {
+    public HandleNavuiActionAction(Type type) {
         _type = type;
     }
 

@@ -1,4 +1,4 @@
-package me.cargoapp.cargo.event;
+package me.cargoapp.cargo.event.message;
 
 /**
  * Created by Marvin on 10/05/2017.

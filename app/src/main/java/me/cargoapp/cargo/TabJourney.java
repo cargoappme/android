@@ -31,7 +31,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import es.dmoral.toasty.Toasty;
 import me.cargoapp.cargo.helper.IntentHelper;
-import me.cargoapp.cargo.service.OverlayService_;
+import me.cargoapp.cargo.service.JourneyService_;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -131,7 +131,7 @@ public class TabJourney extends Fragment implements
         startActivity(intent);
 
         Application_.isJourneyStarted = true;
-        Intent overlayServiceIntent = new Intent(getActivity(), OverlayService_.class);
+        Intent overlayServiceIntent = new Intent(getActivity(), JourneyService_.class);
         getActivity().startService(overlayServiceIntent);
         getActivity().finish();
     }

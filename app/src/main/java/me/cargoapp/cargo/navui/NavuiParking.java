@@ -26,7 +26,7 @@ import org.greenrobot.eventbus.EventBus;
 import es.dmoral.toasty.Toasty;
 import me.cargoapp.cargo.ParkingStore_;
 import me.cargoapp.cargo.R;
-import me.cargoapp.cargo.event.NavuiLaunchEvent;
+import me.cargoapp.cargo.event.navui.HandleNavuiActionAction;
 
 /**
  * Created by Mathieu on 04/05/2017.
@@ -80,7 +80,7 @@ public class NavuiParking extends Fragment implements GoogleApiClient.Connection
                 Toasty.error(getContext(), getString(R.string.parking_save_failure), Toast.LENGTH_LONG, true).show();
             }
 
-            _eventBus.post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.MENU));
+            _eventBus.post(new HandleNavuiActionAction(HandleNavuiActionAction.Type.MENU));
         }
     }
 

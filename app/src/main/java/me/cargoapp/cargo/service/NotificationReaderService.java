@@ -13,9 +13,9 @@ import org.greenrobot.eventbus.Subscribe;
 
 import me.cargoapp.cargo.Application_;
 import me.cargoapp.cargo.ReceivedMessageActivity_;
-import me.cargoapp.cargo.event.DismissMessageNotificationAction;
-import me.cargoapp.cargo.event.HandleMessageQueueAction;
-import me.cargoapp.cargo.event.MessageReceivedEvent;
+import me.cargoapp.cargo.event.message.DismissMessageNotificationAction;
+import me.cargoapp.cargo.event.message.HandleMessageQueueAction;
+import me.cargoapp.cargo.event.message.MessageReceivedEvent;
 import me.cargoapp.cargo.messaging.MessagingApplication;
 import me.cargoapp.cargo.messaging.MessagingNotificationParser;
 import me.cargoapp.cargo.messaging.MessagingQueue;
@@ -79,7 +79,7 @@ public class NotificationReaderService extends NotificationListenerService {
     }
 
     @Subscribe()
-    public void onHandleMessageQueueAction(HandleMessageQueueAction action) {
+    public void onHandleMessageQueue(HandleMessageQueueAction action) {
         Intent i = new Intent().setClass(getApplicationContext(), ReceivedMessageActivity_.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
@@ -100,7 +100,7 @@ public class NotificationReaderService extends NotificationListenerService {
     }
 
     @Subscribe()
-    public void onMessageNotificationDismiss(DismissMessageNotificationAction event) {
+    public void onDismissMessageNotification(DismissMessageNotificationAction event) {
         this.cancelNotification(event.result.sbn.getKey());
     }
 }

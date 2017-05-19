@@ -1,4 +1,4 @@
-package me.cargoapp.cargo.event;
+package me.cargoapp.cargo.event.message;
 
 import me.cargoapp.cargo.messaging.MessagingNotificationParser;
 

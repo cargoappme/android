@@ -9,7 +9,7 @@ import android.text.TextUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
-import me.cargoapp.cargo.event.DismissMessageNotificationAction;
+import me.cargoapp.cargo.event.message.DismissMessageNotificationAction;
 
 public class MessagingNotificationInteracter {
     static public boolean reply(Context context, MessagingNotificationParser.NotificationParserResult result, String text) {

@@ -13,20 +13,26 @@ import org.androidannotations.annotations.WindowFeature;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import me.cargoapp.cargo.event.NavuiLaunchEvent;
-import me.cargoapp.cargo.event.OverlayClickedEvent;
-import me.cargoapp.cargo.event.OverlaySetBackIconAction;
-import me.cargoapp.cargo.event.StopOverlayServiceAction;
+import me.cargoapp.cargo.event.navui.HandleNavuiActionAction;
+import me.cargoapp.cargo.event.overlay.OverlayClickedEvent;
+import me.cargoapp.cargo.event.overlay.OverlaySetBackIconAction;
+import me.cargoapp.cargo.event.overlay.StopOverlayServiceAction;
+import me.cargoapp.cargo.event.vibrator.VibrateAction;
+import me.cargoapp.cargo.event.voice.SpeakAction;
 import me.cargoapp.cargo.navui.MainFragment_;
 import me.cargoapp.cargo.navui.NavuiCall_;
 import me.cargoapp.cargo.navui.NavuiMessage_;
 import me.cargoapp.cargo.navui.NavuiParking_;
+
+import static me.cargoapp.cargo.event.navui.HandleNavuiActionAction.Type.MENU;
 
 @WindowFeature({Window.FEATURE_NO_TITLE})
 @EActivity(R.layout.activity_navui)
 public class NavuiActivity extends Activity {
 
     public static boolean active = false;
+
+    final String UTTERANCE_NAVUI_SPEAK_ITEM = "NAVUI_SPEAK_ITEM";
 
     boolean _onMenu = true;
 
@@ -63,13 +69,13 @@ public class NavuiActivity extends Activity {
 
     @Subscribe
     public void onOverlayClick(OverlayClickedEvent event) {
-        if (!_onMenu) _eventBus.post(new NavuiLaunchEvent(NavuiLaunchEvent.Type.MENU));
+        if (!_onMenu) _eventBus.post(new HandleNavuiActionAction(MENU));
         else finish();
     }
 
     @Subscribe
-    public void onNavuiLaunch(NavuiLaunchEvent event) {
-        if (event.getType() == NavuiLaunchEvent.Type.QUIT) {
+    public void onHandleNavuiAction(HandleNavuiActionAction action) {
+        if (action.getType() == HandleNavuiActionAction.Type.QUIT) {
             Application_.isJourneyStarted = false;
 
             _eventBus.post(new StopOverlayServiceAction());
@@ -77,27 +83,31 @@ public class NavuiActivity extends Activity {
             return;
         }
 
-        Fragment fragment = new Fragment();
+        Fragment fragment = MainFragment_.builder().build();
+        String item = "";
 
-        switch (event.getType()) {
+        switch (action.getType()) {
             case MENU:
-                fragment = MainFragment_.builder().build();
+                item = "Menu";
                 break;
             case CALL:
                 fragment = NavuiCall_.builder().build();
+                item = "Téléphone";
                 break;
             case MESSAGE:
                 fragment = NavuiMessage_.builder().build();
+                item = "SMS";
                 break;
             case MUSIC:
+                item = "Musique";
                 break;
             case OIL:
+                item = "Stations-services";
                 break;
             case PARKING:
+                item = "Parking";
                 fragment = NavuiParking_.builder().build();
                 break;
-            default:
-                fragment = MainFragment_.builder().build();
         }
 
         getFragmentManager().beginTransaction()
@@ -105,6 +115,9 @@ public class NavuiActivity extends Activity {
                 .replace(R.id.fragment_container, fragment)
                 .commit();
 
-        _onMenu = event.getType() == NavuiLaunchEvent.Type.MENU;
+        _eventBus.post(new SpeakAction(UTTERANCE_NAVUI_SPEAK_ITEM, item));
+        _eventBus.post(new VibrateAction());
+
+        _onMenu = action.getType() == MENU;
     }
 }

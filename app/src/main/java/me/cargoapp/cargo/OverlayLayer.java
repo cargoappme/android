@@ -22,7 +22,7 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.SystemService;
 import org.greenrobot.eventbus.EventBus;
 
-import me.cargoapp.cargo.event.OverlayClickedEvent;
+import me.cargoapp.cargo.event.overlay.OverlayClickedEvent;
 
 @EBean
 public class OverlayLayer implements View.OnTouchListener {
