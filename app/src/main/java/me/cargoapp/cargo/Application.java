@@ -1,5 +1,7 @@
 package me.cargoapp.cargo;
 
+import android.location.Location;
+
 import com.facebook.soloader.SoLoader;
 
 import org.androidannotations.annotations.EApplication;
@@ -11,6 +13,8 @@ import org.androidannotations.annotations.EApplication;
 @EApplication
 public class Application extends android.app.Application {
     public static boolean isJourneyStarted = false;
+    public static boolean journeyWithSharing = false;
+    public static Location journeyDestination;
 
     @Override
     public void onCreate() {

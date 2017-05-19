@@ -53,6 +53,7 @@ public class TabJourney extends Fragment implements
 
     GoogleApiClient _googleClient;
     Location _currentLocation;
+    Location _targetLocation;
     Place _targetPlace;
 
     @AfterViews
@@ -112,21 +113,23 @@ public class TabJourney extends Fragment implements
     @Click(R.id.btn_start)
     void onBtnStart() {
         _fabMenu.close(true);
+
+       _eventBus.post(new StartJourneyAction(false));
     }
 
     @OnActivityResult(AUTOCOMPLETE_REQUEST_CODE)
     void onResult(int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             _targetPlace = PlaceAutocomplete.getPlace(getActivity(), data);
-            Location targetLocation = new Location("");
-            targetLocation.setLatitude(_targetPlace.getLatLng().latitude);
-            targetLocation.setLongitude(_targetPlace.getLatLng().longitude);
-            float distanceInMeters = targetLocation.distanceTo(_currentLocation);
+            _targetLocation = new Location("");
+            _targetLocation.setLatitude(_targetPlace.getLatLng().latitude);
+            _targetLocation.setLongitude(_targetPlace.getLatLng().longitude);
+            float distanceInMeters = _targetLocation.distanceTo(_currentLocation);
 
             if (distanceInMeters >= 100 * 1000) {
                 new CarChecksDialogFragment().show(getFragmentManager(), CAR_CHECKS_DIALOG_TAG);
             } else {
-                _eventBus.post(new StartJourneyAction());
+                _eventBus.post(new StartJourneyAction(true));
             }
         } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
             Status status = PlaceAutocomplete.getStatus(getActivity(), data);
@@ -139,16 +142,25 @@ public class TabJourney extends Fragment implements
 
     @Subscribe
     public void onStartJourney(StartJourneyAction action) {
-        Intent intent = IntentHelper.createNavigationIntent(_targetPlace.getLatLng().latitude, _targetPlace.getLatLng().longitude, _targetPlace.getAddress().toString());
-        startActivity(intent);
+        if (action.withSharing) {
+            Intent intent = IntentHelper.createNavigationIntent(_targetPlace.getLatLng().latitude, _targetPlace.getLatLng().longitude, _targetPlace.getAddress().toString());
+            startActivity(intent);
+        }
 
         Application_.isJourneyStarted = true;
+        Application_.journeyWithSharing = action.withSharing;
+        Application_.journeyDestination = _targetLocation;
         Intent overlayServiceIntent = new Intent(getActivity(), JourneyService_.class);
         getActivity().startService(overlayServiceIntent);
         getActivity().finish();
     }
 
     public static class StartJourneyAction {
+        public boolean withSharing;
+
+        public StartJourneyAction(boolean withSharing) {
+            this.withSharing = withSharing;
+        }
     }
 
     public static class CarChecksDialogFragment extends DialogFragment {
@@ -161,7 +173,7 @@ public class TabJourney extends Fragment implements
                     .setView(R.layout.dialog_vehicle_checks)
                     .setPositiveButton(R.string.dialog_vehiclechecks_action_go, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            EventBus.getDefault().post(new StartJourneyAction());
+                            EventBus.getDefault().post(new StartJourneyAction(true));
                         }
                     })
                     .setNegativeButton(R.string.dialog_vehiclechecks_action_back, new DialogInterface.OnClickListener() {
