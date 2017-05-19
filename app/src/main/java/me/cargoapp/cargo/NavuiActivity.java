@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.view.View;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.tmtron.greenannotations.EventBusGreenRobot;
 
@@ -21,6 +22,7 @@ import me.cargoapp.cargo.navui.MainFragment_;
 import me.cargoapp.cargo.navui.NavuiCall_;
 import me.cargoapp.cargo.navui.NavuiMessage_;
 import me.cargoapp.cargo.navui.NavuiParking_;
+import me.cargoapp.cargo.navui.NavuiMusic_;
 
 @WindowFeature({Window.FEATURE_NO_TITLE})
 @EActivity(R.layout.activity_navui)
@@ -90,6 +92,7 @@ public class NavuiActivity extends Activity {
                 fragment = NavuiMessage_.builder().build();
                 break;
             case MUSIC:
+                fragment = NavuiMusic_.builder().build();
                 break;
             case OIL:
                 break;
