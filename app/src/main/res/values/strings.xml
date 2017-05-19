@@ -4,6 +4,9 @@
     <string name="notification_title">Cargo est lancé</string>
     <string name="notification_text">Profitez de la route en toute sécurité.</string>
 
+    <!-- Generic -->
+    <string name="generic_error">Une erreur est survenue</string>
+
 
     <!-- Welcome -->
     <string name="welcome_welcome_title">Bienvenue sur Cargo !</string>
@@ -91,6 +94,6 @@
     <string name="navui_item_phone">Téléphone</string>
     <string name="navui_item_sms">SMS</string>
     <string name="navui_item_music">Musique</string>
-    <string name="navui_item_oil">Stations-services</string>
+    <string name="navui_item_oil">Stations-service</string>
     <string name="navui_item_parking">Parking</string>
 </resources>

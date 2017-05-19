@@ -22,6 +22,7 @@ import me.cargoapp.cargo.event.voice.SpeakAction;
 import me.cargoapp.cargo.navui.MainFragment_;
 import me.cargoapp.cargo.navui.NavuiCall_;
 import me.cargoapp.cargo.navui.NavuiMessage_;
+import me.cargoapp.cargo.navui.NavuiOil_;
 import me.cargoapp.cargo.navui.NavuiParking_;
 
 import static me.cargoapp.cargo.event.navui.HandleNavuiActionAction.Type.MENU;
@@ -102,6 +103,7 @@ public class NavuiActivity extends Activity {
                 item = getString(R.string.navui_item_music);
                 break;
             case OIL:
+                fragment = NavuiOil_.builder().build();
                 item = getString(R.string.navui_item_oil);
                 break;
             case PARKING:
