@@ -88,24 +88,24 @@ public class NavuiActivity extends Activity {
 
         switch (action.getType()) {
             case MENU:
-                item = "Menu";
+                item = getString(R.string.navui_item_menu);
                 break;
             case CALL:
                 fragment = NavuiCall_.builder().build();
-                item = "Téléphone";
+                item = getString(R.string.navui_item_phone);
                 break;
             case MESSAGE:
                 fragment = NavuiMessage_.builder().build();
-                item = "SMS";
+                item = getString(R.string.navui_item_sms);
                 break;
             case MUSIC:
-                item = "Musique";
+                item = getString(R.string.navui_item_music);
                 break;
             case OIL:
-                item = "Stations-services";
+                item = getString(R.string.navui_item_oil);
                 break;
             case PARKING:
-                item = "Parking";
+                item = getString(R.string.navui_item_parking);
                 fragment = NavuiParking_.builder().build();
                 break;
         }

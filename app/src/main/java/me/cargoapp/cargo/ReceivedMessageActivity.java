@@ -11,6 +11,7 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
+import android.telephony.SmsManager;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import com.tmtron.greenannotations.EventBusGreenRobot;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.WindowFeature;
 import org.greenrobot.eventbus.EventBus;
@@ -33,6 +35,9 @@ import me.cargoapp.cargo.event.message.HandleMessageQueueAction;
 import me.cargoapp.cargo.event.message.MessageReceivedEvent;
 import me.cargoapp.cargo.event.overlay.HideOverlayAction;
 import me.cargoapp.cargo.event.overlay.ShowOverlayAction;
+import me.cargoapp.cargo.event.voice.SpeakAction;
+import me.cargoapp.cargo.event.voice.SpeechDoneEvent;
+import me.cargoapp.cargo.helper.IntentHelper;
 
 @WindowFeature({Window.FEATURE_NO_TITLE})
 @EActivity(R.layout.activity_received_message)
@@ -40,6 +45,11 @@ public class ReceivedMessageActivity extends Activity {
 
     private String TAG = this.getClass().getSimpleName();
     public static boolean active = false;
+
+    final int REQ_VALIDATION_SPEECH_INPUT = 1;
+
+    private final String UTTERANCE_MESSAGE_ASKING = "NAVUI_MESSAGE_RECEIVED_ASKING";
+    private final String UTTERANCE_MESSAGE_READING = "NAVUI_MESSAGE_RECEIVED_READING";
 
     @EventBusGreenRobot
     EventBus _eventBus;
@@ -53,24 +63,26 @@ public class ReceivedMessageActivity extends Activity {
     @ViewById(R.id.contact_text)
     TextView _contactText;
 
-    private TextToSpeech _tts;
-    private SpeechRecognizer _stt;
-    private Intent _sttIntent;
-
     private String _message;
 
-    private final String MESSAGE_ASKING = "MESSAGE_ASKING";
-    private final String MESSAGE_READING = "MESSAGE_READING";
+    @Override
+    public void onCreate(Bundle savedInstanceParams) {
+        super.onCreate(savedInstanceParams);
+
+        Logger.init(TAG);
+    }
 
     @Override
     public void onStart() {
         super.onStart();
+
         active = true;
     }
 
     @Override
     public void onStop() {
         super.onStop();
+
         active = false;
     }
 
@@ -79,46 +91,6 @@ public class ReceivedMessageActivity extends Activity {
         super.onPause();
 
         _eventBus.post(new ShowOverlayAction());
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        if (_tts != null) {
-            _tts.stop();
-            _tts.shutdown();
-        }
-    }
-
-    @AfterInject
-    void onInject() {
-        Logger.init(TAG);
-
-        _sttIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        _sttIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        _sttIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-    }
-
-    private void listenOnMainThread() {
-        Handler loopHandler = new Handler(Looper.getMainLooper());
-        loopHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                _stt.startListening(_sttIntent);
-            }
-        });
-    }
-
-    private void speakOnMainThread(final String text, final String utteranceId) {
-        Handler loopHandler = new Handler(Looper.getMainLooper());
-        loopHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                _tts.speak(text, TextToSpeech.QUEUE_ADD, null, utteranceId);
-            }
-        });
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
@@ -140,103 +112,32 @@ public class ReceivedMessageActivity extends Activity {
 
         _message = event.result.message;
 
-        final Context appContext = getApplicationContext();
-
-        Handler loopHandler = new Handler(Looper.getMainLooper());
-        loopHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                // Recognition
-
-                _stt = SpeechRecognizer.createSpeechRecognizer(appContext);
-                SpeechRecognitionListener listener = new SpeechRecognitionListener();
-                _stt.setRecognitionListener(listener);
-
-                // Text to speech
-
-                _tts = new TextToSpeech(appContext, new TextToSpeech.OnInitListener() {
-                    @Override
-                    public void onInit(int status) {
-                        if (status == TextToSpeech.SUCCESS) {
-                            Logger.i("TTS initialized");
-
-                            _tts.setLanguage(Locale.getDefault());
-                            _tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
-                                @Override
-                                public void onStart(String utteranceId) {
-                                }
-
-                                @Override
-                                public void onError(String utteranceId) {
-                                }
-
-                                @Override
-                                public void onDone(String utteranceId) {
-                                    if (utteranceId.equals(MESSAGE_ASKING)) {
-                                        listenOnMainThread();
-                                    } else if (utteranceId.equals(MESSAGE_READING)) {
-                                        _eventBus.post(new HandleMessageQueueAction(HandleMessageQueueAction.Type.DONE));
-                                        finish();
-                                    }
-                                }
-                            });
-                            speakOnMainThread(getString(R.string.tts_received_message_confirmation, event.result.author), MESSAGE_ASKING);
-                        }
-                    }
-                });
-            }
-        });
+        _eventBus.post(new SpeakAction(UTTERANCE_MESSAGE_ASKING, getString(R.string.tts_received_message_confirmation, event.result.author)));
     }
 
-
-    protected class SpeechRecognitionListener implements RecognitionListener {
-        @Override
-        public void onBeginningOfSpeech() {
-        }
-
-        @Override
-        public void onBufferReceived(byte[] buffer) {
-        }
-
-        @Override
-        public void onEndOfSpeech() {
-        }
-
-        @Override
-        public void onError(int error) {
-        }
-
-        @Override
-        public void onEvent(int eventType, Bundle params) {
-        }
-
-        @Override
-        public void onPartialResults(Bundle partialResults) {
-        }
-
-        @Override
-        public void onReadyForSpeech(Bundle params) {
-        }
-
-        @Override
-        public void onRmsChanged(float rmsdB) {
-        }
-
-        @Override
-        public void onResults(Bundle results) {
-            ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-
-            String match = matches.get(0).toLowerCase().trim();
-
-            if (match.contains(getString(R.string.stt_yes))) {
-                speakOnMainThread(getString(R.string.tts_received_message_reading, ReceivedMessageActivity.this._message), MESSAGE_READING);
-            } else if (match.contains(getString(R.string.stt_no))) {
-                speakOnMainThread(getString(R.string.tts_received_message_ignore), MESSAGE_READING);
+    @Subscribe
+    void onSpeechDone(SpeechDoneEvent event) {
+        switch (event.utteranceId) {
+            case UTTERANCE_MESSAGE_ASKING:
+                startActivityForResult(IntentHelper.recognizeSpeechIntent(getString(R.string.stt_received_message_read_prompt)), REQ_VALIDATION_SPEECH_INPUT);
+                break;
+            case UTTERANCE_MESSAGE_READING:
                 _eventBus.post(new HandleMessageQueueAction(HandleMessageQueueAction.Type.DONE));
                 finish();
-            } else {
-                speakOnMainThread(getString(R.string.tts_received_message_confirmation_repeat), MESSAGE_ASKING);
-            }
+                break;
+        }
+    }
+
+    @OnActivityResult(REQ_VALIDATION_SPEECH_INPUT)
+    void onValidationSpeech(int resultCode, @OnActivityResult.Extra(value = RecognizerIntent.EXTRA_RESULTS) ArrayList<String> results) {
+        String text = results.get(0).toLowerCase().trim();
+
+        if (text.contains(getString(R.string.stt_yes))) {
+            _eventBus.post(new SpeakAction(UTTERANCE_MESSAGE_READING, getString(R.string.tts_received_message_reading, ReceivedMessageActivity.this._message)));
+        } else if (text.contains(getString(R.string.stt_no))) {
+            _eventBus.post(new SpeakAction(UTTERANCE_MESSAGE_READING, getString(R.string.tts_received_message_ignore)));
+        } else {
+            _eventBus.post(new SpeakAction(UTTERANCE_MESSAGE_ASKING, getString(R.string.tts_received_message_confirmation_repeat)));
         }
     }
 }
