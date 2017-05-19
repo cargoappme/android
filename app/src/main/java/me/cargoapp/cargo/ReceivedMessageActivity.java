@@ -1,17 +1,8 @@
 package me.cargoapp.cargo;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
-import android.speech.SpeechRecognizer;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.UtteranceProgressListener;
-import android.telephony.SmsManager;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,7 +10,6 @@ import android.widget.TextView;
 import com.orhanobut.logger.Logger;
 import com.tmtron.greenannotations.EventBusGreenRobot;
 
-import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
@@ -29,7 +19,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import me.cargoapp.cargo.event.message.HandleMessageQueueAction;
 import me.cargoapp.cargo.event.message.MessageReceivedEvent;
@@ -93,7 +82,7 @@ public class ReceivedMessageActivity extends Activity {
         _eventBus.post(new ShowOverlayAction());
     }
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    @Subscribe(sticky = true)
     public void onMessageReceived(final MessageReceivedEvent event) {
         _eventBus.post(new HideOverlayAction());
 

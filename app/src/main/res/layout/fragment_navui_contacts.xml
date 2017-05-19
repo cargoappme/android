@@ -10,4 +10,6 @@
         android:numColumns="2"
         android:listSelector="@android:color/transparent"/>
 
+    <include layout="@layout/item_navui_contact" />
+
 </LinearLayout>
