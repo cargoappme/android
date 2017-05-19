@@ -72,6 +72,7 @@
     <string name="stt_no">no</string>
     <string name="stt_message_content_prompt">Contenu du message</string>
     <string name="stt_message_send_prompt">Envoyer le message ?</string>
+    <string name="stt_received_message_read_prompt">Lire le message ?</string>
 
     <!-- Text to speech -->
     <string name="tts_message_content">Je vais envoyer un SMS à %s. Quel message voulez-vous envoyer ?</string>
@@ -84,4 +85,12 @@
     <string name="tts_received_message_confirmation_repeat">Je n\'ai pas compris. Voulez-vous lire le message ? Répondez par oui ou non.</string>
     <string name="tts_received_message_reading">Voici le message : %s</string>
     <string name="tts_received_message_ignore">D\'accord, j\'ignore le message.</string>
+
+    <!-- NavUI -->
+    <string name="navui_item_menu">Menu</string>
+    <string name="navui_item_phone">Téléphone</string>
+    <string name="navui_item_sms">SMS</string>
+    <string name="navui_item_music">Musique</string>
+    <string name="navui_item_oil">Stations-services</string>
+    <string name="navui_item_parking">Parking</string>
 </resources>
