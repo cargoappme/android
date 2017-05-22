@@ -82,9 +82,9 @@ public class OverlayLayer implements View.OnTouchListener {
     }
 
     public void setBackIcon(boolean back) {
-        int resId = R.drawable.ic_chevron_left_white_50dp;
+        int resId = R.drawable.ic_chevron_left_black_24dp;
 
-        if (!back) resId = R.drawable.ic_notification;
+        if (!back) resId = R.drawable.ic_cargo_c;
 
         _icon.setImageResource(resId);
     }

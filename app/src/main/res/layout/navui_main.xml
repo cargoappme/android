@@ -9,67 +9,131 @@
 
     <com.facebook.yoga.android.YogaLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        yoga:yg_flexDirection="row"
-        yoga:yg_justifyContent="space_around">
+        android:layout_height="match_parent"
+        yoga:yg_flexGrow="1"
+        yoga:yg_flexDirection="row">
 
-        <ImageView
+        <com.facebook.yoga.android.YogaLayout
             android:id="@+id/phone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/navui_phone"
-            yoga:yg_width="40%" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient_navui_phone"
+            yoga:yg_justifyContent="center"
+            yoga:yg_alignItems="center">
 
-        <ImageView
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_call_black_24dp"
+                android:tint="@android:color/white"
+                android:scaleType="fitXY"
+                yoga:yg_width="50%"
+                yoga:yg_aspectRatio="1" />
+        </com.facebook.yoga.android.YogaLayout>
+
+        <com.facebook.yoga.android.YogaLayout
             android:id="@+id/message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/navui_message"
-            yoga:yg_width="40%" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient_navui_sms"
+            yoga:yg_justifyContent="center"
+            yoga:yg_alignItems="center">
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_sms_black_24dp"
+                android:tint="@android:color/white"
+                android:scaleType="fitXY"
+                yoga:yg_width="50%"
+                yoga:yg_aspectRatio="1" />
+        </com.facebook.yoga.android.YogaLayout>
     </com.facebook.yoga.android.YogaLayout>
 
     <com.facebook.yoga.android.YogaLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        yoga:yg_flexDirection="row"
-        yoga:yg_justifyContent="space_around">
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient_navui_music"
+        yoga:yg_flexGrow="1"
+        yoga:yg_flexDirection="row">
 
-        <ImageView
+        <com.facebook.yoga.android.YogaLayout
             android:id="@+id/music"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/navui_music"
-            yoga:yg_width="40%" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            yoga:yg_justifyContent="center"
+            yoga:yg_alignItems="center">
 
-        <ImageView
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_library_music_black_24dp"
+                android:tint="@android:color/white"
+                android:scaleType="fitXY"
+                yoga:yg_width="50%"
+                yoga:yg_aspectRatio="1" />
+        </com.facebook.yoga.android.YogaLayout>
+
+        <com.facebook.yoga.android.YogaLayout
             android:id="@+id/oil"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/navui_oil"
-            yoga:yg_width="40%" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient_navui_gas"
+            yoga:yg_justifyContent="center"
+            yoga:yg_alignItems="center">
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_local_gas_station_black_24dp"
+                android:tint="@android:color/white"
+                android:scaleType="fitXY"
+                yoga:yg_width="50%"
+                yoga:yg_aspectRatio="1" />
+        </com.facebook.yoga.android.YogaLayout>
     </com.facebook.yoga.android.YogaLayout>
 
     <com.facebook.yoga.android.YogaLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        yoga:yg_flexDirection="row"
-        yoga:yg_justifyContent="space_around">
+        android:layout_height="match_parent"
+        yoga:yg_flexGrow="1"
+        yoga:yg_flexDirection="row">
 
-        <ImageView
+        <com.facebook.yoga.android.YogaLayout
             android:id="@+id/parking"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/navui_parking"
-            yoga:yg_width="40%" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient_navui_parking"
+            yoga:yg_flexGrow="1"
+            yoga:yg_justifyContent="center"
+            yoga:yg_alignItems="center">
 
-        <ImageView
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_local_parking_black_24dp"
+                android:tint="@android:color/white"
+                android:scaleType="fitXY"
+                yoga:yg_width="50%"
+                yoga:yg_aspectRatio="1" />
+        </com.facebook.yoga.android.YogaLayout>
+
+        <com.facebook.yoga.android.YogaLayout
             android:id="@+id/quit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/navui_quit"
-            yoga:yg_width="40%" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient_navui_quit"
+            yoga:yg_justifyContent="center"
+            yoga:yg_alignItems="center">
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_exit_to_app_black_24dp"
+                android:tint="@android:color/white"
+                android:scaleType="fitXY"
+                yoga:yg_width="50%"
+                yoga:yg_aspectRatio="1" />
+        </com.facebook.yoga.android.YogaLayout>
     </com.facebook.yoga.android.YogaLayout>
 </com.facebook.yoga.android.YogaLayout>

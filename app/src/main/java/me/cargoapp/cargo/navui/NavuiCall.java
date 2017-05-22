@@ -27,7 +27,7 @@ public class NavuiCall extends Fragment {
 
     @AfterViews
     void afterViews() {
-        final ArrayList<ContactsAdapter.ContactRepresentation> contacts = ContactsHelper.getStarred(getActivity());
+        final ArrayList<ContactsAdapter.ContactRepresentation> contacts = ContactsHelper.INSTANCE.getStarred(getActivity());
 
         _gridView.setAdapter(new ContactsAdapter(getActivity(), contacts));
 
@@ -35,7 +35,7 @@ public class NavuiCall extends Fragment {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
 
-                startActivity(IntentHelper.createCallIntent(contacts.get(position).phoneNumber));
+                startActivity(IntentHelper.INSTANCE.createCallIntent(contacts.get(position).phoneNumber));
                 getActivity().finish();
             }
         });

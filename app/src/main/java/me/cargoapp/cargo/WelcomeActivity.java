@@ -54,7 +54,7 @@ public class WelcomeActivity extends AppIntro2 {
         };
 
         // Checking for first time launch or all perms - before calling setContentView()
-        if (!_preferences.isFirstRun().get() && PermissionHelper.isPermittedTo(this, dangerousAndSpecialPermissions)) {
+        if (!_preferences.isFirstRun().get() && PermissionHelper.INSTANCE.isPermittedTo(this, dangerousAndSpecialPermissions)) {
             launchHomeScreen();
             finish();
             return;
@@ -151,9 +151,9 @@ public class WelcomeActivity extends AppIntro2 {
         @Override
         public boolean isPolicyRespected() {
             if (_isNotification) {
-                return PermissionHelper.isPermittedTo(getContext(), Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE);
+                return PermissionHelper.INSTANCE.isPermittedTo(getContext(), Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE);
             } else {
-                return PermissionHelper.isPermittedTo(getContext(), Manifest.permission.SYSTEM_ALERT_WINDOW);
+                return PermissionHelper.INSTANCE.isPermittedTo(getContext(), Manifest.permission.SYSTEM_ALERT_WINDOW);
             }
         }
 

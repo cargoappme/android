@@ -60,11 +60,11 @@ public class NotificationReaderService extends NotificationListenerService {
         if (!Application_.isJourneyStarted) return;
         if (!_prefs.getBoolean("pref_notifications", true)) return;
 
-        final MessagingNotificationParser.NotificationParserResult result = MessagingNotificationParser.parseNotification(sbn);
-        if (result.application != MessagingApplication.NONE) {
+        final MessagingNotificationParser.NotificationParserResult result = MessagingNotificationParser.INSTANCE.parseNotification(sbn);
+        if (result.getApplication() != MessagingApplication.NONE) {
             _eventBus.post(new DismissMessageNotificationAction(result));
 
-            MessagingQueue.add(result);
+            MessagingQueue.INSTANCE.add(result);
 
             _eventBus.post(new HandleMessageQueueAction(HandleMessageQueueAction.Type.RECEIVED));
         }
@@ -87,11 +87,11 @@ public class NotificationReaderService extends NotificationListenerService {
             if (_messageActivityShown) return;
 
             _messageActivityShown = true;
-            _eventBus.postSticky(new MessageReceivedEvent(MessagingQueue.get()));
+            _eventBus.postSticky(new MessageReceivedEvent(MessagingQueue.INSTANCE.get()));
             startActivity(i);
         } else if (action.getType() == HandleMessageQueueAction.Type.DONE) {
-            if (MessagingQueue.isFilled()) {
-                _eventBus.postSticky(new MessageReceivedEvent(MessagingQueue.get()));
+            if (MessagingQueue.INSTANCE.isFilled()) {
+                _eventBus.postSticky(new MessageReceivedEvent(MessagingQueue.INSTANCE.get()));
                 startActivity(i);
             } else {
                 _messageActivityShown = false;
@@ -101,6 +101,6 @@ public class NotificationReaderService extends NotificationListenerService {
 
     @Subscribe()
     public void onDismissMessageNotification(DismissMessageNotificationAction event) {
-        this.cancelNotification(event.result.sbn.getKey());
+        this.cancelNotification(event.getResult().getSbn().getKey());
     }
 }

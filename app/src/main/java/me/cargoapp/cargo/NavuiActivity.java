@@ -88,9 +88,6 @@ public class NavuiActivity extends Activity {
         String item = "";
 
         switch (action.getType()) {
-            case MENU:
-                item = getString(R.string.navui_item_menu);
-                break;
             case CALL:
                 fragment = NavuiCall_.builder().build();
                 item = getString(R.string.navui_item_phone);

@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     void onGoToParking() {
         double lat = _parkingStore.latitude().get();
         double lon = _parkingStore.longitude().get();
-        Intent intent = IntentHelper.createNavigationIntent(lat, lon, lat + "," + lon + "(Parking)");
+        Intent intent = IntentHelper.INSTANCE.createNavigationIntent(lat, lon, lat + "," + lon + "(Parking)");
         startActivity(intent);
     }
 

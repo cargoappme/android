@@ -143,7 +143,7 @@ public class TabJourney extends Fragment implements
     @Subscribe
     public void onStartJourney(StartJourneyAction action) {
         if (action.withSharing) {
-            Intent intent = IntentHelper.createNavigationIntent(_targetPlace.getLatLng().latitude, _targetPlace.getLatLng().longitude, _targetPlace.getAddress().toString());
+            Intent intent = IntentHelper.INSTANCE.createNavigationIntent(_targetPlace.getLatLng().latitude, _targetPlace.getLatLng().longitude, _targetPlace.getAddress().toString());
             startActivity(intent);
         }
 

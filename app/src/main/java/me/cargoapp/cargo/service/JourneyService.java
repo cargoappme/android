@@ -134,7 +134,7 @@ public class JourneyService extends Service implements TextToSpeech.OnInitListen
 
     @Subscribe
     void onSpeak(SpeakAction action) {
-        _tts.speak(action.text, TextToSpeech.QUEUE_ADD, null, action.utteranceId);
+        _tts.speak(action.getText(), TextToSpeech.QUEUE_ADD, null, action.getUtteranceId());
     }
 
     /**

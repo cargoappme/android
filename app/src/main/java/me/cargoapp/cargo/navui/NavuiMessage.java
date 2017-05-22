@@ -74,7 +74,7 @@ public class NavuiMessage extends Fragment {
         _contactImage = (ImageView) _contactView.findViewById(R.id.contact_image);
         _contactText = (TextView) _contactView.findViewById(R.id.contact_text);
 
-        final ArrayList<ContactsAdapter.ContactRepresentation> contacts = ContactsHelper.getStarred(getActivity());
+        final ArrayList<ContactsAdapter.ContactRepresentation> contacts = ContactsHelper.INSTANCE.getStarred(getActivity());
 
         _gridView.setAdapter(new ContactsAdapter(getActivity(), contacts));
 
@@ -105,13 +105,13 @@ public class NavuiMessage extends Fragment {
     }
 
     @Subscribe
-    void onSpeechDone(SpeechDoneEvent event) {
-        switch (event.utteranceId) {
+    public void onSpeechDone(SpeechDoneEvent event) {
+        switch (event.getUtteranceId()) {
             case UTTERANCE_MESSAGE:
-                startActivityForResult(IntentHelper.recognizeSpeechIntent(getString(R.string.stt_message_content_prompt)), REQ_MESSAGE_SPEECH_INPUT);
+                startActivityForResult(IntentHelper.INSTANCE.recognizeSpeechIntent(getString(R.string.stt_message_content_prompt)), REQ_MESSAGE_SPEECH_INPUT);
                 break;
             case UTTERANCE_VALIDATION:
-                startActivityForResult(IntentHelper.recognizeSpeechIntent(getString(R.string.stt_message_send_prompt)), REQ_VALIDATION_SPEECH_INPUT);
+                startActivityForResult(IntentHelper.INSTANCE.recognizeSpeechIntent(getString(R.string.stt_message_send_prompt)), REQ_VALIDATION_SPEECH_INPUT);
                 break;
         }
     }

@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
-def PlayServicesVersion = '10.2.4'
+def PlayServicesVersion = '10.2.6'
 def SupportVersion = '25.3.1'
 def AAVersion = '4.3.0'
 def YogaVersion = '1.5.0'
@@ -31,6 +32,9 @@ dependencies {
         exclude group: 'com.google.code.findbugs'
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
+    // Kotlin
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
     // AA
     annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
@@ -78,3 +82,6 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
+repositories {
+    mavenCentral()
+}

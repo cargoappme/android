@@ -86,7 +86,7 @@ public class ReceivedMessageActivity extends Activity {
         _eventBus.post(new HideOverlayAction());
 
         int applicationResId;
-        switch (event.result.application) {
+        switch (event.getResult().getApplication()) {
             case MESSENGER:
                 applicationResId = R.drawable.messenger;
                 break;
@@ -95,19 +95,19 @@ public class ReceivedMessageActivity extends Activity {
         }
         _applicationImage.setImageResource(applicationResId);
 
-        _contactImage.setImageBitmap(event.result.picture);
-        _contactText.setText(event.result.author);
+        _contactImage.setImageBitmap(event.getResult().getPicture());
+        _contactText.setText(event.getResult().getAuthor());
 
-        _message = event.result.message;
+        _message = event.getResult().getMessage();
 
-        _eventBus.post(new SpeakAction(UTTERANCE_MESSAGE_ASKING, getString(R.string.tts_received_message_confirmation, event.result.author)));
+        _eventBus.post(new SpeakAction(UTTERANCE_MESSAGE_ASKING, getString(R.string.tts_received_message_confirmation, event.getResult().getAuthor())));
     }
 
     @Subscribe
     void onSpeechDone(SpeechDoneEvent event) {
-        switch (event.utteranceId) {
+        switch (event.getUtteranceId()) {
             case UTTERANCE_MESSAGE_ASKING:
-                startActivityForResult(IntentHelper.recognizeSpeechIntent(getString(R.string.stt_received_message_read_prompt)), REQ_VALIDATION_SPEECH_INPUT);
+                startActivityForResult(IntentHelper.INSTANCE.recognizeSpeechIntent(getString(R.string.stt_received_message_read_prompt)), REQ_VALIDATION_SPEECH_INPUT);
                 break;
             case UTTERANCE_MESSAGE_READING:
                 _eventBus.post(new HandleMessageQueueAction(HandleMessageQueueAction.Type.DONE));
