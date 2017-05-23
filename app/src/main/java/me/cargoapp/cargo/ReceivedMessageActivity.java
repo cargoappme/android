@@ -22,9 +22,9 @@ import java.util.ArrayList;
 import me.cargoapp.cargo.event.message.HandleMessageQueueAction;
 import me.cargoapp.cargo.event.message.MessageReceivedEvent;
 import me.cargoapp.cargo.event.overlay.SetOverlayVisibilityAction;
-import me.cargoapp.cargo.event.voice.SpeakAction;
 import me.cargoapp.cargo.event.voice.SpeechDoneEvent;
 import me.cargoapp.cargo.helper.IntentHelper;
+import me.cargoapp.cargo.helper.VoiceHelper;
 
 @WindowFeature({Window.FEATURE_NO_TITLE})
 @EActivity(R.layout.activity_received_message)
@@ -99,7 +99,7 @@ public class ReceivedMessageActivity extends Activity {
 
         _message = event.getResult().getMessage();
 
-        _eventBus.post(new SpeakAction(UTTERANCE_MESSAGE_ASKING, getString(R.string.tts_received_message_confirmation, event.getResult().getAuthor())));
+        VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_ASKING, getString(R.string.tts_received_message_confirmation, event.getResult().getAuthor()));
     }
 
     @Subscribe
@@ -120,11 +120,11 @@ public class ReceivedMessageActivity extends Activity {
         String text = results.get(0).toLowerCase().trim();
 
         if (text.contains(getString(R.string.stt_yes))) {
-            _eventBus.post(new SpeakAction(UTTERANCE_MESSAGE_READING, getString(R.string.tts_received_message_reading, ReceivedMessageActivity.this._message)));
+            VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_READING, getString(R.string.tts_received_message_reading, ReceivedMessageActivity.this._message));
         } else if (text.contains(getString(R.string.stt_no))) {
-            _eventBus.post(new SpeakAction(UTTERANCE_MESSAGE_READING, getString(R.string.tts_received_message_ignore)));
+            VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_READING, getString(R.string.tts_received_message_ignore));
         } else {
-            _eventBus.post(new SpeakAction(UTTERANCE_MESSAGE_ASKING, getString(R.string.tts_received_message_confirmation_repeat)));
+            VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_ASKING, getString(R.string.tts_received_message_confirmation_repeat));
         }
     }
 }

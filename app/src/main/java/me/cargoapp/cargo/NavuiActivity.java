@@ -20,7 +20,7 @@ import me.cargoapp.cargo.event.navui.HandleNavuiActionAction;
 import me.cargoapp.cargo.event.overlay.SetOverlayVisibilityAction;
 import me.cargoapp.cargo.event.service.StopBackgroundServiceAction;
 import me.cargoapp.cargo.event.vibrator.VibrateAction;
-import me.cargoapp.cargo.event.voice.SpeakAction;
+import me.cargoapp.cargo.helper.VoiceHelper;
 import me.cargoapp.cargo.navui.NavuiCall_;
 import me.cargoapp.cargo.navui.NavuiMenu_;
 import me.cargoapp.cargo.navui.NavuiMessage_;
@@ -35,7 +35,7 @@ public class NavuiActivity extends Activity {
 
     public static boolean active = false;
 
-    final String UTTERANCE_NAVUI_SPEAK_ITEM = "NAVUI_SPEAK_ITEM";
+    final String UTTERANCE_SPEAK_ITEM = "NAVUI_SPEAK_ITEM";
 
     boolean _onMenu = true;
 
@@ -119,7 +119,8 @@ public class NavuiActivity extends Activity {
                 .replace(R.id.fragment_container, fragment)
                 .commit();
 
-        _eventBus.post(new SpeakAction(UTTERANCE_NAVUI_SPEAK_ITEM, item));
+        VoiceHelper.INSTANCE.speak(UTTERANCE_SPEAK_ITEM, item);
+
         _eventBus.post(new VibrateAction());
 
         _onMenu = action.getType() == MENU;

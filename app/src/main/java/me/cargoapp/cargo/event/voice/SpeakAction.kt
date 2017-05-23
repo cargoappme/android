@@ -1,3 +1,3 @@
 package me.cargoapp.cargo.event.voice
 
-data class SpeakAction(var utteranceId: String, var text: String)
+data class SpeakAction(val utteranceId: String, val text: String)

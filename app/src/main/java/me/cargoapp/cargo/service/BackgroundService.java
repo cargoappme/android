@@ -27,8 +27,10 @@ import me.cargoapp.cargo.event.overlay.OverlayClickedEvent;
 import me.cargoapp.cargo.event.overlay.SetOverlayVisibilityAction;
 import me.cargoapp.cargo.event.service.StopBackgroundServiceAction;
 import me.cargoapp.cargo.event.vibrator.VibrateAction;
+import me.cargoapp.cargo.event.voice.ListenAction;
 import me.cargoapp.cargo.event.voice.SpeakAction;
 import me.cargoapp.cargo.event.voice.SpeechDoneEvent;
+import me.cargoapp.cargo.lib.SpeechRecognizer;
 
 @EService
 public class BackgroundService extends Service implements TextToSpeech.OnInitListener {
@@ -48,6 +50,7 @@ public class BackgroundService extends Service implements TextToSpeech.OnInitLis
     OverlayLayer _overlayLayer;
 
     TextToSpeech _tts;
+    SpeechRecognizer _stt;
 
     /**
      * Service
@@ -58,6 +61,7 @@ public class BackgroundService extends Service implements TextToSpeech.OnInitLis
         Logger.init(TAG);
 
         _tts = new TextToSpeech(getApplicationContext(), this);
+        _stt = new SpeechRecognizer(getApplicationContext());
     }
 
     @Override
@@ -131,6 +135,13 @@ public class BackgroundService extends Service implements TextToSpeech.OnInitLis
     @Subscribe
     void onSpeak(SpeakAction action) {
         _tts.speak(action.getText(), TextToSpeech.QUEUE_ADD, null, action.getUtteranceId());
+    }
+
+    // STT
+
+    @Subscribe
+    void onListen(ListenAction action) {
+        _stt.listen(action.getListeningId());
     }
 
     /**
