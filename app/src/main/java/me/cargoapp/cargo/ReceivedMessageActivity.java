@@ -21,8 +21,7 @@ import java.util.ArrayList;
 
 import me.cargoapp.cargo.event.message.HandleMessageQueueAction;
 import me.cargoapp.cargo.event.message.MessageReceivedEvent;
-import me.cargoapp.cargo.event.overlay.HideOverlayAction;
-import me.cargoapp.cargo.event.overlay.ShowOverlayAction;
+import me.cargoapp.cargo.event.overlay.SetOverlayVisibilityAction;
 import me.cargoapp.cargo.event.voice.SpeakAction;
 import me.cargoapp.cargo.event.voice.SpeechDoneEvent;
 import me.cargoapp.cargo.helper.IntentHelper;
@@ -78,12 +77,12 @@ public class ReceivedMessageActivity extends Activity {
     public void onPause() {
         super.onPause();
 
-        _eventBus.post(new ShowOverlayAction());
+        _eventBus.post(new SetOverlayVisibilityAction(true));
     }
 
     @Subscribe(sticky = true)
     public void onMessageReceived(final MessageReceivedEvent event) {
-        _eventBus.post(new HideOverlayAction());
+        _eventBus.post(new SetOverlayVisibilityAction(false));
 
         int applicationResId;
         switch (event.getResult().getApplication()) {

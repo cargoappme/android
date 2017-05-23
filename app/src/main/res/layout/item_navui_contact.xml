@@ -5,6 +5,7 @@
     android:id="@+id/contact"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#000000"
     yoga:yg_flexDirection="column"
     yoga:yg_justifyContent="center"
     yoga:yg_alignItems="center">

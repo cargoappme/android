@@ -3,8 +3,7 @@ package me.cargoapp.cargo.helper
 import android.content.Intent
 import android.net.Uri
 import android.speech.RecognizerIntent
-
-import java.util.Locale
+import java.util.*
 
 /**
  * Created by Marvin on 16/05/2017.

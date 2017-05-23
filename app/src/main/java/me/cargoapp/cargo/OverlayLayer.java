@@ -23,6 +23,7 @@ import org.androidannotations.annotations.SystemService;
 import org.greenrobot.eventbus.EventBus;
 
 import me.cargoapp.cargo.event.overlay.OverlayClickedEvent;
+import me.cargoapp.cargo.event.vibrator.VibrateAction;
 
 @EBean
 public class OverlayLayer implements View.OnTouchListener {
@@ -45,7 +46,6 @@ public class OverlayLayer implements View.OnTouchListener {
     private FrameLayout _layout;
 
     ImageView _imageView;
-    ImageView _icon;
 
     public OverlayLayer(Context context) {
         _context = context;
@@ -56,7 +56,6 @@ public class OverlayLayer implements View.OnTouchListener {
     public void afterInject() {
         _layoutInflater.inflate(R.layout.navui_overlay, _layout);
         _imageView = (ImageView) _layout.findViewById(R.id.overlay);
-        _icon = (ImageView) _layout.findViewById(R.id.icon);
 
         _imageView.setOnTouchListener(this); // cannot use annotation as we use an inflater and not activity
     }
@@ -81,14 +80,6 @@ public class OverlayLayer implements View.OnTouchListener {
         _wm.removeView(_layout);
     }
 
-    public void setBackIcon(boolean back) {
-        int resId = R.drawable.ic_chevron_left_black_24dp;
-
-        if (!back) resId = R.drawable.ic_cargo_c;
-
-        _icon.setImageResource(resId);
-    }
-
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         // Avoid dead zone
@@ -109,7 +100,7 @@ public class OverlayLayer implements View.OnTouchListener {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                _vibrator.vibrate(100);
+                _eventBus.post(new VibrateAction());
 
                 _eventBus.post(new OverlayClickedEvent());
                 break;

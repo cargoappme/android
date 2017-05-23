@@ -5,6 +5,22 @@
     android:background="#80000000">
 
     <FrameLayout
+        android:id="@+id/nav_menu"
+        android:layout_width="75dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient_navui_nav"
+        android:layout_marginLeft="0dp">
+        
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="@dimen/overlay_logo_size"
+            android:layout_height="@dimen/overlay_logo_size"
+            android:src="@drawable/ic_cargo_c"
+            android:tint="@android:color/white"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
+    <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

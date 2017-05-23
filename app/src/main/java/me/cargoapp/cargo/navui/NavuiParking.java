@@ -27,12 +27,16 @@ import es.dmoral.toasty.Toasty;
 import me.cargoapp.cargo.ParkingStore_;
 import me.cargoapp.cargo.R;
 import me.cargoapp.cargo.event.navui.HandleNavuiActionAction;
+import me.cargoapp.cargo.event.voice.SpeakAction;
 
 /**
  * Created by Mathieu on 04/05/2017.
  */
 @EFragment
 public class NavuiParking extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+    final String UTTERANCE_SUCCESS = "NAVUI_PARKING_SUCCESS";
+    final String UTTERANCE_FAILURE = "NAVUI_PARKING_FAILURE";
 
     GoogleApiClient _googleClient;
     private Location _lastLocation;
@@ -76,8 +80,10 @@ public class NavuiParking extends Fragment implements GoogleApiClient.Connection
                 _parkingStore.longitude().put((float) _lastLocation.getLongitude());
                 _parkingStore.hasPositionSaved().put(true);
                 Toasty.success(getContext(), getString(R.string.parking_save_success), Toast.LENGTH_LONG, true).show();
+                _eventBus.post(new SpeakAction(UTTERANCE_SUCCESS, getString(R.string.tts_parking_success)));
             } else {
                 Toasty.error(getContext(), getString(R.string.parking_save_failure), Toast.LENGTH_LONG, true).show();
+                _eventBus.post(new SpeakAction(UTTERANCE_FAILURE, getString(R.string.tts_parking_failure)));
             }
 
             _eventBus.post(new HandleNavuiActionAction(HandleNavuiActionAction.Type.MENU));

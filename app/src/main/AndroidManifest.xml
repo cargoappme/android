@@ -39,7 +39,7 @@
             android:excludeFromRecents="true" />
 
         <service
-            android:name=".service.JourneyService_"
+            android:name=".service.BackgroundService_"
             android:enabled="true"
             android:exported="false" />
         <service

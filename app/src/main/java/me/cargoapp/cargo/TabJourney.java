@@ -23,7 +23,6 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.tmtron.greenannotations.EventBusGreenRobot;
 
-import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OnActivityResult;
@@ -32,8 +31,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import es.dmoral.toasty.Toasty;
+import me.cargoapp.cargo.event.overlay.SetOverlayVisibilityAction;
 import me.cargoapp.cargo.helper.IntentHelper;
-import me.cargoapp.cargo.service.JourneyService_;
+import me.cargoapp.cargo.service.BackgroundService_;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -56,13 +56,19 @@ public class TabJourney extends Fragment implements
     Location _targetLocation;
     Place _targetPlace;
 
-    @AfterViews
-    void afterViews() {
+    Intent _backgroundServiceIntent;
+
+    @Override
+    public void onCreate(Bundle savedInstanceBundle) {
+        super.onCreate(savedInstanceBundle);
+
         _googleClient = new GoogleApiClient.Builder(getContext())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
+
+        _backgroundServiceIntent = new Intent(getActivity(), BackgroundService_.class);
     }
 
     @Override
@@ -70,6 +76,8 @@ public class TabJourney extends Fragment implements
         super.onStart();
 
         _googleClient.connect();
+
+        getActivity().startService(_backgroundServiceIntent);
     }
 
     @Override
@@ -77,6 +85,8 @@ public class TabJourney extends Fragment implements
         super.onStop();
 
         _googleClient.disconnect();
+
+        if (!Application_.isJourneyStarted) getActivity().stopService(_backgroundServiceIntent);
     }
 
     @Override
@@ -96,6 +106,13 @@ public class TabJourney extends Fragment implements
     public void onConnectionSuspended(int code) {
     }
 
+    @Click(R.id.btn_start)
+    void onBtnStart() {
+        _fabMenu.close(true);
+
+        _eventBus.post(new StartJourneyAction(false));
+    }
+
     @Click(R.id.btn_go)
     void onGo() {
         _fabMenu.close(true);
@@ -108,13 +125,6 @@ public class TabJourney extends Fragment implements
         } catch (GooglePlayServicesNotAvailableException e) {
             // TODO: Handle the error.
         }
-    }
-
-    @Click(R.id.btn_start)
-    void onBtnStart() {
-        _fabMenu.close(true);
-
-       _eventBus.post(new StartJourneyAction(false));
     }
 
     @OnActivityResult(AUTOCOMPLETE_REQUEST_CODE)
@@ -150,8 +160,9 @@ public class TabJourney extends Fragment implements
         Application_.isJourneyStarted = true;
         Application_.journeyWithSharing = action.withSharing;
         Application_.journeyDestination = _targetLocation;
-        Intent overlayServiceIntent = new Intent(getActivity(), JourneyService_.class);
-        getActivity().startService(overlayServiceIntent);
+
+        _eventBus.post(new SetOverlayVisibilityAction(true));
+
         getActivity().finish();
     }
 

@@ -6,10 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-
-import org.greenrobot.eventbus.EventBus
-
 import me.cargoapp.cargo.event.message.DismissMessageNotificationAction
+import org.greenrobot.eventbus.EventBus
 
 object MessagingNotificationInteracter {
     fun reply(context: Context, result: MessagingNotificationParser.NotificationParserResult, text: String): Boolean {

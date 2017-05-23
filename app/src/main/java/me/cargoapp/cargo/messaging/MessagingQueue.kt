@@ -1,6 +1,6 @@
 package me.cargoapp.cargo.messaging
 
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Created by Marvin on 10/05/2017.

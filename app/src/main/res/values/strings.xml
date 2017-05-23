@@ -87,6 +87,9 @@
     <string name="tts_message_sent">Le message a été envoyé.</string>
     <string name="tts_message_cancel">Très bien, j\'annule.</string>
 
+    <string name="tts_parking_success">Position de parking enregistrée avec succès.</string>
+    <string name="tts_parking_failure">Une erreur est survenue lors de l\'enregistrement de la position de parking.</string>
+
     <string name="tts_received_message_confirmation">Nouveau message de %s. Voulez-vous le lire ?</string>
     <string name="tts_received_message_confirmation_repeat">Je n\'ai pas compris. Voulez-vous lire le message ? Répondez par oui ou non.</string>
     <string name="tts_received_message_reading">Voici le message : %s</string>

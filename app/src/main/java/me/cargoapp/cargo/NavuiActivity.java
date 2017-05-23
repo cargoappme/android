@@ -4,23 +4,25 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 
 import com.tmtron.greenannotations.EventBusGreenRobot;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.WindowFeature;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import me.cargoapp.cargo.event.navui.HandleNavuiActionAction;
-import me.cargoapp.cargo.event.overlay.OverlayClickedEvent;
-import me.cargoapp.cargo.event.overlay.OverlaySetBackIconAction;
-import me.cargoapp.cargo.event.overlay.StopOverlayServiceAction;
+import me.cargoapp.cargo.event.overlay.SetOverlayVisibilityAction;
+import me.cargoapp.cargo.event.service.StopBackgroundServiceAction;
 import me.cargoapp.cargo.event.vibrator.VibrateAction;
 import me.cargoapp.cargo.event.voice.SpeakAction;
-import me.cargoapp.cargo.navui.MainFragment_;
 import me.cargoapp.cargo.navui.NavuiCall_;
+import me.cargoapp.cargo.navui.NavuiMenu_;
 import me.cargoapp.cargo.navui.NavuiMessage_;
 import me.cargoapp.cargo.navui.NavuiOil_;
 import me.cargoapp.cargo.navui.NavuiParking_;
@@ -40,6 +42,9 @@ public class NavuiActivity extends Activity {
     @EventBusGreenRobot
     EventBus _eventBus;
 
+    @ViewById(R.id.icon)
+    ImageView _navIcon;
+
     @Override
     public void finish() {
         super.finish();
@@ -52,7 +57,7 @@ public class NavuiActivity extends Activity {
         active = true;
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE);
-        _eventBus.post(new OverlaySetBackIconAction(true));
+        _eventBus.post(new SetOverlayVisibilityAction(false));
     }
 
     @Override
@@ -60,16 +65,16 @@ public class NavuiActivity extends Activity {
         super.onStop();
         active = false;
 
-        _eventBus.post(new OverlaySetBackIconAction(false));
+        _eventBus.post(new SetOverlayVisibilityAction(true));
     }
 
     @AfterViews
     public void afterViews() {
-        getFragmentManager().beginTransaction().add(R.id.fragment_container, MainFragment_.builder().build()).commit();
+        getFragmentManager().beginTransaction().add(R.id.fragment_container, NavuiMenu_.builder().build()).commit();
     }
 
-    @Subscribe
-    public void onOverlayClick(OverlayClickedEvent event) {
+    @Click(R.id.nav_menu)
+    void onNavClick() {
         if (!_onMenu) _eventBus.post(new HandleNavuiActionAction(MENU));
         else finish();
     }
@@ -79,12 +84,12 @@ public class NavuiActivity extends Activity {
         if (action.getType() == HandleNavuiActionAction.Type.QUIT) {
             Application_.isJourneyStarted = false;
 
-            _eventBus.post(new StopOverlayServiceAction());
+            _eventBus.post(new StopBackgroundServiceAction());
             finish();
             return;
         }
 
-        Fragment fragment = MainFragment_.builder().build();
+        Fragment fragment = NavuiMenu_.builder().build();
         String item = "";
 
         switch (action.getType()) {
@@ -118,5 +123,11 @@ public class NavuiActivity extends Activity {
         _eventBus.post(new VibrateAction());
 
         _onMenu = action.getType() == MENU;
+
+        int navIconResId;
+        if (_onMenu) navIconResId = R.drawable.ic_cargo_c;
+        else navIconResId = R.drawable.ic_chevron_left_black_24dp;
+
+        _navIcon.setImageResource(navIconResId);
     }
 }

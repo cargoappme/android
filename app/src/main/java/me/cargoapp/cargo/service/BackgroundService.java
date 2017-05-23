@@ -23,17 +23,15 @@ import java.util.Locale;
 import me.cargoapp.cargo.NavuiActivity_;
 import me.cargoapp.cargo.OverlayLayer;
 import me.cargoapp.cargo.R;
-import me.cargoapp.cargo.event.overlay.HideOverlayAction;
 import me.cargoapp.cargo.event.overlay.OverlayClickedEvent;
-import me.cargoapp.cargo.event.overlay.OverlaySetBackIconAction;
-import me.cargoapp.cargo.event.overlay.ShowOverlayAction;
-import me.cargoapp.cargo.event.overlay.StopOverlayServiceAction;
+import me.cargoapp.cargo.event.overlay.SetOverlayVisibilityAction;
+import me.cargoapp.cargo.event.service.StopBackgroundServiceAction;
 import me.cargoapp.cargo.event.vibrator.VibrateAction;
 import me.cargoapp.cargo.event.voice.SpeakAction;
 import me.cargoapp.cargo.event.voice.SpeechDoneEvent;
 
 @EService
-public class JourneyService extends Service implements TextToSpeech.OnInitListener {
+public class BackgroundService extends Service implements TextToSpeech.OnInitListener {
 
     private String TAG = this.getClass().getSimpleName();
     public static boolean active = false;
@@ -72,8 +70,6 @@ public class JourneyService extends Service implements TextToSpeech.OnInitListen
         Notification notification = _createNotification();
         startForeground(FOREGROUND_ID, notification);
 
-        _eventBus.post(new ShowOverlayAction());
-
         active = true;
 
         return START_STICKY;
@@ -99,7 +95,7 @@ public class JourneyService extends Service implements TextToSpeech.OnInitListen
     }
 
     @Subscribe
-    public void onStopOverlayService(StopOverlayServiceAction event) {
+    public void onStopBackgroundService(StopBackgroundServiceAction event) {
         stopSelf();
     }
 
@@ -151,22 +147,12 @@ public class JourneyService extends Service implements TextToSpeech.OnInitListen
      */
 
     @Subscribe
-    public void onHideOverlay(HideOverlayAction event) {
-        if (_overlayLayer.isShown()) {
+    public void onSetOverlayVisibility(SetOverlayVisibilityAction action) {
+        if (action.getVisible()) {
+            _overlayLayer.addToScreen();
+        } else {
             _overlayLayer.removeFromScreen();
         }
-    }
-
-    @Subscribe
-    public void onShowOverlay(ShowOverlayAction event) {
-        if (!_overlayLayer.isShown()) {
-            _overlayLayer.addToScreen();
-        }
-    }
-
-    @Subscribe
-    public void onOverlaySetBackIcon(OverlaySetBackIconAction action) {
-        _overlayLayer.setBackIcon(action.getBack());
     }
 
     @Subscribe

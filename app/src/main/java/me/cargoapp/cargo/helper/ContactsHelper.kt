@@ -1,12 +1,9 @@
 package me.cargoapp.cargo.helper
 
 import android.content.Context
-import android.database.Cursor
 import android.provider.ContactsContract
-
-import java.util.ArrayList
-
 import me.cargoapp.cargo.navui.adapter.ContactsAdapter
+import java.util.*
 
 /**
  * Created by Marvin on 18/05/2017.

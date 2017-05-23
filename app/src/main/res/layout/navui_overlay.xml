@@ -13,7 +13,6 @@
         android:tint="@color/primary" />
 
     <ImageView
-        android:id="@+id/icon"
         android:layout_width="@dimen/overlay_logo_size"
         android:layout_height="@dimen/overlay_logo_size"
         android:scaleType="fitXY"

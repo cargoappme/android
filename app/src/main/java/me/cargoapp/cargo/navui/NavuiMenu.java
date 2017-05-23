@@ -12,7 +12,7 @@ import me.cargoapp.cargo.R;
 import me.cargoapp.cargo.event.navui.HandleNavuiActionAction;
 
 @EFragment(R.layout.navui_main)
-public class MainFragment extends Fragment {
+public class NavuiMenu extends Fragment {
 
     @EventBusGreenRobot
     EventBus _eventBus;
