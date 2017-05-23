@@ -3,6 +3,7 @@ package me.cargoapp.cargo;
 import android.app.Activity;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.speech.tts.Voice;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import me.cargoapp.cargo.event.message.HandleMessageQueueAction;
 import me.cargoapp.cargo.event.message.MessageReceivedEvent;
 import me.cargoapp.cargo.event.overlay.SetOverlayVisibilityAction;
+import me.cargoapp.cargo.event.voice.ListeningDoneEvent;
 import me.cargoapp.cargo.event.voice.SpeechDoneEvent;
 import me.cargoapp.cargo.helper.IntentHelper;
 import me.cargoapp.cargo.helper.VoiceHelper;
@@ -33,10 +35,10 @@ public class ReceivedMessageActivity extends Activity {
     private String TAG = this.getClass().getSimpleName();
     public static boolean active = false;
 
-    final int REQ_VALIDATION_SPEECH_INPUT = 1;
+    private final String UTTERANCE_MESSAGE_ASKING = "NAVUI_MESSAGE_RECEIVED_MESSAGE_ASKING";
+    private final String UTTERANCE_MESSAGE_READING = "NAVUI_MESSAGE_RECEIVED_MESSAGE_READING";
 
-    private final String UTTERANCE_MESSAGE_ASKING = "NAVUI_MESSAGE_RECEIVED_ASKING";
-    private final String UTTERANCE_MESSAGE_READING = "NAVUI_MESSAGE_RECEIVED_READING";
+    private final String LISTENING_VALIDATION = "NAVUI_MESSAGE_RECEIVED_VALIDATION";
 
     @EventBusGreenRobot
     EventBus _eventBus;
@@ -106,7 +108,7 @@ public class ReceivedMessageActivity extends Activity {
     void onSpeechDone(SpeechDoneEvent event) {
         switch (event.getUtteranceId()) {
             case UTTERANCE_MESSAGE_ASKING:
-                startActivityForResult(IntentHelper.INSTANCE.recognizeSpeechIntent(getString(R.string.stt_received_message_read_prompt)), REQ_VALIDATION_SPEECH_INPUT);
+                VoiceHelper.INSTANCE.listen(LISTENING_VALIDATION);
                 break;
             case UTTERANCE_MESSAGE_READING:
                 _eventBus.post(new HandleMessageQueueAction(HandleMessageQueueAction.Type.DONE));
@@ -115,16 +117,20 @@ public class ReceivedMessageActivity extends Activity {
         }
     }
 
-    @OnActivityResult(REQ_VALIDATION_SPEECH_INPUT)
-    void onValidationSpeech(int resultCode, @OnActivityResult.Extra(value = RecognizerIntent.EXTRA_RESULTS) ArrayList<String> results) {
-        String text = results.get(0).toLowerCase().trim();
+    @Subscribe
+    void onListeningDone(ListeningDoneEvent event) {
+        switch (event.getListeningId()) {
+            case LISTENING_VALIDATION:
+                String text = event.getText().toLowerCase().trim();
 
-        if (text.contains(getString(R.string.stt_yes))) {
-            VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_READING, getString(R.string.tts_received_message_reading, ReceivedMessageActivity.this._message));
-        } else if (text.contains(getString(R.string.stt_no))) {
-            VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_READING, getString(R.string.tts_received_message_ignore));
-        } else {
-            VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_ASKING, getString(R.string.tts_received_message_confirmation_repeat));
+                if (text.contains(getString(R.string.stt_yes))) {
+                    VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_READING, getString(R.string.tts_received_message_reading, ReceivedMessageActivity.this._message));
+                } else if (text.contains(getString(R.string.stt_no))) {
+                    VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_READING, getString(R.string.tts_received_message_ignore));
+                } else {
+                    VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_ASKING, getString(R.string.tts_received_message_confirmation_repeat));
+                }
+                break;
         }
     }
 }

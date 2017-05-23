@@ -3,39 +3,30 @@ package me.cargoapp.cargo.navui;
 import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
-import android.speech.RecognizerIntent;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.yoga.android.YogaLayout;
 import com.tmtron.greenannotations.EventBusGreenRobot;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
-import es.dmoral.toasty.Toasty;
 import me.cargoapp.cargo.R;
-import me.cargoapp.cargo.event.voice.ListenAction;
 import me.cargoapp.cargo.event.voice.ListeningDoneEvent;
 import me.cargoapp.cargo.event.voice.SpeechDoneEvent;
 import me.cargoapp.cargo.helper.ContactsHelper;
-import me.cargoapp.cargo.helper.IntentHelper;
 import me.cargoapp.cargo.helper.VoiceHelper;
 import me.cargoapp.cargo.navui.adapter.ContactsAdapter;
-
-import static android.app.Activity.RESULT_CANCELED;
-import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by Mathieu on 05/05/2017.
@@ -43,12 +34,14 @@ import static android.app.Activity.RESULT_OK;
 @EFragment(R.layout.fragment_navui_contacts)
 public class NavuiMessage extends Fragment {
 
-    final int REQ_MESSAGE_SPEECH_INPUT = 1;
-    final int REQ_VALIDATION_SPEECH_INPUT = 2;
+    private String TAG = this.getClass().getSimpleName();
 
     final String UTTERANCE_MESSAGE = "NAVUI_MESSAGE_MESSAGE";
     final String UTTERANCE_VALIDATION = "NAVUI_MESSAGE_VALIDATION";
     final String UTTERANCE_DONE = "NAVUI_MESSAGE_DONE";
+
+    final String LISTENING_MESSAGE_CONTENT = "NAVUI_MESSAGE_MESSAGE_CONTENT";
+    final String LISTENING_MESSAGE_VALIDATION = "NAVUI_MESSAGE_MESSAGE_VALIDATION";
 
     @EventBusGreenRobot
     EventBus _eventBus;
@@ -101,20 +94,14 @@ public class NavuiMessage extends Fragment {
         _gridView.setVisibility(View.VISIBLE);
     }
 
-    void _handleError() {
-        Toasty.error(getActivity(), getString(R.string.generic_error), Toast.LENGTH_LONG, true).show();
-        _clear();
-    }
-
     @Subscribe
     public void onSpeechDone(SpeechDoneEvent event) {
         switch (event.getUtteranceId()) {
             case UTTERANCE_MESSAGE:
-                //startActivityForResult(IntentHelper.INSTANCE.recognizeSpeechIntent(getString(R.string.stt_message_content_prompt)), REQ_MESSAGE_SPEECH_INPUT);
-                _eventBus.post(new ListenAction(UTTERANCE_MESSAGE));
+                VoiceHelper.INSTANCE.listen(LISTENING_MESSAGE_CONTENT);
                 break;
             case UTTERANCE_VALIDATION:
-                startActivityForResult(IntentHelper.INSTANCE.recognizeSpeechIntent(getString(R.string.stt_message_send_prompt)), REQ_VALIDATION_SPEECH_INPUT);
+                VoiceHelper.INSTANCE.listen(LISTENING_MESSAGE_VALIDATION);
                 break;
         }
     }
@@ -122,59 +109,28 @@ public class NavuiMessage extends Fragment {
     @Subscribe
     public void onListeningDone(ListeningDoneEvent event) {
         switch (event.getListeningId()) {
-            case UTTERANCE_MESSAGE:
-                VoiceHelper.INSTANCE.speak(UTTERANCE_DONE, getString(R.string.tts_message_cancel));
+            case LISTENING_MESSAGE_CONTENT:
+                _message = event.getText();
+
+                VoiceHelper.INSTANCE.speak(UTTERANCE_VALIDATION, getString(R.string.tts_message_validation, _message));
                 break;
-        }
-    }
+            case LISTENING_MESSAGE_VALIDATION:
+                String text = event.getText().toLowerCase().trim();
 
-    @OnActivityResult(REQ_MESSAGE_SPEECH_INPUT)
-    void onMessageSpeech(int resultCode, @OnActivityResult.Extra(value = RecognizerIntent.EXTRA_RESULTS) ArrayList<String> results) {
-        if (resultCode == RESULT_CANCELED) {
-            VoiceHelper.INSTANCE.speak(UTTERANCE_DONE, getString(R.string.tts_message_cancel));
-            _clear();
-            return;
-        }
+                if (text.contains(getString(R.string.stt_yes))) {
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage(_numberToSendTo, null, _message, null, null);
+                    VoiceHelper.INSTANCE.speak(UTTERANCE_DONE, getString(R.string.tts_message_sent));
 
-        if (resultCode != RESULT_OK) {
-            _handleError();
-            return;
-        }
+                    _clear();
+                } else if (text.contains(getString(R.string.stt_no))) {
+                    VoiceHelper.INSTANCE.speak(UTTERANCE_DONE, getString(R.string.tts_message_cancel));
 
-        _message = results.get(0);
-
-        VoiceHelper.INSTANCE.speak(UTTERANCE_VALIDATION, getString(R.string.tts_message_validation, _message));
-    }
-
-    @OnActivityResult(REQ_VALIDATION_SPEECH_INPUT)
-    void onValidationSpeech(int resultCode, @OnActivityResult.Extra(value = RecognizerIntent.EXTRA_RESULTS) ArrayList<String> results) {
-        if (resultCode == RESULT_CANCELED) {
-            VoiceHelper.INSTANCE.speak(UTTERANCE_DONE, getString(R.string.tts_message_cancel));
-            _clear();
-            return;
-        }
-
-        if (resultCode != RESULT_OK) {
-            _handleError();
-            return;
-        }
-
-        String text = results.get(0).toLowerCase().trim();
-
-        if (text.contains(getString(R.string.stt_yes))) {
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(_numberToSendTo, null, _message, null, null);
-            VoiceHelper.INSTANCE.speak(UTTERANCE_DONE, getString(R.string.tts_message_sent));
-
-
-            _clear();
-        } else if (text.contains(getString(R.string.stt_no))) {
-            VoiceHelper.INSTANCE.speak(UTTERANCE_DONE, getString(R.string.tts_message_cancel));
-
-
-            _clear();
-        } else {
-            VoiceHelper.INSTANCE.speak(UTTERANCE_VALIDATION, getString(R.string.tts_message_validation_repeat));
+                    _clear();
+                } else {
+                    VoiceHelper.INSTANCE.speak(UTTERANCE_VALIDATION, getString(R.string.tts_message_validation_repeat));
+                }
+                break;
         }
     }
 }

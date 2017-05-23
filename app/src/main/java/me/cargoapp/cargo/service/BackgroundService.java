@@ -93,6 +93,11 @@ public class BackgroundService extends Service implements TextToSpeech.OnInitLis
             _tts.shutdown();
         }
 
+        if (_stt != null) {
+            _stt.stop();
+            _stt.shutdown();
+        }
+
         active = false;
 
         stopForeground(true);

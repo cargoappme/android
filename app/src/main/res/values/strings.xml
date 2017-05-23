@@ -76,9 +76,6 @@
     <!-- Speech to text -->
     <string name="stt_yes">oui</string>
     <string name="stt_no">no</string>
-    <string name="stt_message_content_prompt">Contenu du message</string>
-    <string name="stt_message_send_prompt">Envoyer le message ?</string>
-    <string name="stt_received_message_read_prompt">Lire le message ?</string>
 
     <!-- Text to speech -->
     <string name="tts_message_content">Je vais envoyer un SMS à %s. Quel message voulez-vous envoyer ?</string>
