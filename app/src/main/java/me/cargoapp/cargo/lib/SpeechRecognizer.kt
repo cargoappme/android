@@ -29,14 +29,22 @@ class SpeechRecognizer(val _context: Context) {
     }
 
     fun listen(utteranceId: String) {
-        if (_isListening) {
-            _mainHandler.post({ _speechRecognizer.stopListening() })
-            EventBus.getDefault().post(ListeningDoneEvent(_utteranceId, null))
-        }
+        stop()
 
         _utteranceId = utteranceId
         _mainHandler.post({ _speechRecognizer.startListening(_speechRecognizerIntent) })
         _isListening = true
+    }
+
+    fun stop() {
+        if (_isListening) {
+            _mainHandler.post({ _speechRecognizer.stopListening() })
+            EventBus.getDefault().post(ListeningDoneEvent(_utteranceId, null))
+        }
+    }
+
+    fun shutdown() {
+        _speechRecognizer.destroy()
     }
 
     inner class SpeechRecognitionListener : RecognitionListener {
