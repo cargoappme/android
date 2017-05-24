@@ -93,6 +93,7 @@
     <string name="tts_received_message_ignore">D\'accord, j\'ignore le message.</string>
 
     <!-- NavUI -->
+    <string name="navui_overlay_toast_wait">Veuillez patienter jusqu\'à la fin du chargement</string>
     <string name="navui_item_menu">Menu</string>
     <string name="navui_item_phone">Téléphone</string>
     <string name="navui_item_sms">SMS</string>

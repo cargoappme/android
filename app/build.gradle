@@ -78,6 +78,9 @@ dependencies {
     // Floating action button
     compile 'com.github.clans:fab:1.6.4'
 
+    // Loading
+    compile 'com.victor:lib:1.0.4'
+
     testCompile 'junit:junit:4.12'
 }
 
