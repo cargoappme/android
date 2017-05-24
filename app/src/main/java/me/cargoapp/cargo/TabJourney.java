@@ -1,6 +1,5 @@
 package me.cargoapp.cargo;
 
-import android.*;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;

@@ -79,6 +79,8 @@
     <string name="stt_no">no</string>
 
     <!-- Text to speech -->
+    <string name="tts_error_repeat">Je n\'ai pas compris. Pouvez-vous répéter ?</string>
+
     <string name="tts_message_content">Je vais envoyer un SMS à %s. Quel message voulez-vous envoyer ?</string>
     <string name="tts_message_validation">J\'ai compris le message suivant : %s. Voulez-vous l\'envoyer ?</string>
     <string name="tts_message_validation_repeat">Je n\'ai pas compris. Voulez-vous envoyer le message ? Répondez par oui ou par non.</string>

@@ -81,6 +81,9 @@ dependencies {
     // Loading
     compile 'com.victor:lib:1.0.4'
 
+    // WaveLoading
+    compile 'com.race604.waveloading:library:1.1.1'
+
     testCompile 'junit:junit:4.12'
 }
 
