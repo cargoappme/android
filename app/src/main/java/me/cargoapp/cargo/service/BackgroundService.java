@@ -126,8 +126,6 @@ public class BackgroundService extends Service implements TextToSpeech.OnInitLis
     @Background
     public void onInit(int initStatus) {
         if (initStatus == TextToSpeech.SUCCESS) {
-            Logger.i("TTS initialized");
-
             _tts.setLanguage(Locale.getDefault());
             _tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
 
@@ -188,7 +186,7 @@ public class BackgroundService extends Service implements TextToSpeech.OnInitLis
     public void onOverlayClicked(OverlayClickedEvent event) {
         if (!ready) {
             Toasty.warning(getApplicationContext(), getString(R.string.navui_overlay_toast_wait), Toast.LENGTH_SHORT).show();
-            return;
+            // return;
         }
 
         NavuiActivity_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).start();

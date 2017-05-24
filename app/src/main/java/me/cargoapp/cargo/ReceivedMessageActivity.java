@@ -2,8 +2,6 @@ package me.cargoapp.cargo;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.speech.RecognizerIntent;
-import android.speech.tts.Voice;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,20 +10,16 @@ import com.orhanobut.logger.Logger;
 import com.tmtron.greenannotations.EventBusGreenRobot;
 
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.WindowFeature;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
-import java.util.ArrayList;
 
 import me.cargoapp.cargo.event.message.HandleMessageQueueAction;
 import me.cargoapp.cargo.event.message.MessageReceivedEvent;
 import me.cargoapp.cargo.event.overlay.SetOverlayVisibilityAction;
 import me.cargoapp.cargo.event.voice.ListeningDoneEvent;
 import me.cargoapp.cargo.event.voice.SpeechDoneEvent;
-import me.cargoapp.cargo.helper.IntentHelper;
 import me.cargoapp.cargo.helper.VoiceHelper;
 
 @WindowFeature({Window.FEATURE_NO_TITLE})

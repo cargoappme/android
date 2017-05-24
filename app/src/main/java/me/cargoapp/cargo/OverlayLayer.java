@@ -15,7 +15,6 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.orhanobut.logger.Logger;
 import com.tmtron.greenannotations.EventBusGreenRobot;
 import com.victor.loading.rotate.RotateLoading;
 
@@ -23,12 +22,9 @@ import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.SystemService;
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import me.cargoapp.cargo.event.overlay.OverlayClickedEvent;
-import me.cargoapp.cargo.event.service.ServiceReadyEvent;
 import me.cargoapp.cargo.event.vibrator.VibrateAction;
-import me.cargoapp.cargo.service.BackgroundService_;
 
 @EBean
 public class OverlayLayer implements View.OnTouchListener {

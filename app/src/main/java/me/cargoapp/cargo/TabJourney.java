@@ -1,5 +1,7 @@
 package me.cargoapp.cargo;
 
+import android.*;
+import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -23,6 +26,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.tmtron.greenannotations.EventBusGreenRobot;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OnActivityResult;
@@ -33,6 +37,7 @@ import org.greenrobot.eventbus.Subscribe;
 import es.dmoral.toasty.Toasty;
 import me.cargoapp.cargo.event.overlay.SetOverlayVisibilityAction;
 import me.cargoapp.cargo.helper.IntentHelper;
+import me.cargoapp.cargo.helper.PermissionHelper;
 import me.cargoapp.cargo.service.BackgroundService_;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -50,6 +55,9 @@ public class TabJourney extends Fragment implements
 
     @ViewById(R.id.fab_menu)
     FloatingActionMenu _fabMenu;
+
+    @ViewById(R.id.btn_go)
+    FloatingActionButton _fabWithTracking;
 
     GoogleApiClient _googleClient;
     Location _currentLocation;
@@ -104,6 +112,14 @@ public class TabJourney extends Fragment implements
 
     @Override
     public void onConnectionSuspended(int code) {
+    }
+
+    @AfterViews
+    void afterViews() {
+        if (!PermissionHelper.INSTANCE.isPermittedTo(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+            _fabWithTracking.setEnabled(false);
+            Toasty.warning(getActivity(), getString(R.string.journey_tracking_disabled_no_permissions), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Click(R.id.btn_start)

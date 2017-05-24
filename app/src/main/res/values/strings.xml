@@ -12,17 +12,17 @@
     <string name="welcome_welcome_title">Bienvenue sur Cargo !</string>
     <string name="welcome_welcome_description">Nous espérons que vous vous plairez avec nous.</string>
     <string name="welcome_microphone_title">Microphone</string>
-    <string name="welcome_microphone_description">Requis. Cargo utilise votre microphone pour les interactions vocales.</string>
+    <string name="welcome_microphone_description">Cargo peut utiliser votre microphone pour les interactions vocales.</string>
     <string name="welcome_gps_title">Position</string>
-    <string name="welcome_gps_description">Requis. Cargo utilise votre position pour démarrer vos trajets.</string>
+    <string name="welcome_gps_description">Cargo peut utiliser votre position pour démarrer vos trajets.</string>
     <string name="welcome_contacts_title">Contacts</string>
-    <string name="welcome_contacts_description">Optionnel. Cargo utilise vos contacts pour vous permettre de les joindre facilement.</string>
+    <string name="welcome_contacts_description">Cargo peut utiliser vos contacts pour vous permettre de les joindre facilement.</string>
     <string name="welcome_sms_title">SMS</string>
-    <string name="welcome_sms_description">Optionnel. Cargo peut envoyer des SMS à l\'aide du contrôle vocal.</string>
+    <string name="welcome_sms_description">Cargo peut envoyer des SMS à l\'aide du contrôle vocal.</string>
     <string name="welcome_tel_title">Téléphone</string>
-    <string name="welcome_tel_description">Optionnel. Cargo peut téléphoner à vos contacts à l\'aide du contrôle vocal.</string>
+    <string name="welcome_tel_description">Cargo peut téléphoner à vos contacts à l\'aide du contrôle vocal.</string>
     <string name="welcome_notifications_title">Notifications</string>
-    <string name="welcome_notifications_description">Requis. Cargo lit vos notifications pour interagir avec vos messageries.</string>
+    <string name="welcome_notifications_description">Cargo peut lire vos notifications pour interagir avec vos messageries.</string>
     <string name="welcome_overlay_title">Superposition</string>
     <string name="welcome_overlay_description">Requis. Cargo se superpose à vos applications pour être plus facile d\'accès.</string>
     <string name="welcome_special_button">Autoriser</string>
@@ -41,6 +41,7 @@
     <string name="journey_fab_close">Fermer</string>
     <string name="journey_fab_go">Démarrer avec partage de position</string>
     <string name="journey_fab_start">Démarrer sans partage de position</string>
+    <string name="journey_tracking_disabled_no_permissions">Partage de position désactivé : permissions non accordées</string>
 
     <!-- Tabs -->
     <string name="tab_journey">Trajet</string>
@@ -94,6 +95,7 @@
 
     <!-- NavUI -->
     <string name="navui_overlay_toast_wait">Veuillez patienter jusqu\'à la fin du chargement</string>
+    <string name="navui_item_no_permissions">Vous n\'avez pas les permissions nécessaires.</string>
     <string name="navui_item_menu">Menu</string>
     <string name="navui_item_phone">Téléphone</string>
     <string name="navui_item_sms">SMS</string>

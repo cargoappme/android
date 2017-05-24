@@ -43,18 +43,7 @@ public class WelcomeActivity extends AppIntro2 {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String[] dangerousAndSpecialPermissions = {
-                Manifest.permission.RECORD_AUDIO,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.SEND_SMS,
-                Manifest.permission.CALL_PHONE,
-                Manifest.permission.READ_CONTACTS,
-                Manifest.permission.SYSTEM_ALERT_WINDOW,
-                Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE
-        };
-
-        // Checking for first time launch or all perms - before calling setContentView()
-        if (!_preferences.isFirstRun().get() && PermissionHelper.INSTANCE.isPermittedTo(this, dangerousAndSpecialPermissions)) {
+        if (!_preferences.isFirstRun().get() && PermissionHelper.INSTANCE.isPermittedTo(getApplicationContext(), Manifest.permission.SYSTEM_ALERT_WINDOW)) {
             launchHomeScreen();
             finish();
             return;
@@ -64,23 +53,25 @@ public class WelcomeActivity extends AppIntro2 {
         askForPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, 2);
         addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_gps_title), getString(R.string.welcome_gps_description), R.drawable.welcome_maps, getResources().getColor(R.color.slide_primary_background, null)));
         askForPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 3);
-        addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_contacts_title), getString(R.string.welcome_contacts_description), R.drawable.welcome_contacts, getResources().getColor(R.color.slide_secondary_background, null)));
+        addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_contacts_title), getString(R.string.welcome_contacts_description), R.drawable.welcome_contacts, getResources().getColor(R.color.slide_primary_background, null)));
         askForPermissions(new String[]{Manifest.permission.READ_CONTACTS}, 4);
-        addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_sms_title), getString(R.string.welcome_sms_description), R.drawable.welcome_sms, getResources().getColor(R.color.slide_secondary_background, null)));
+        addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_sms_title), getString(R.string.welcome_sms_description), R.drawable.welcome_sms, getResources().getColor(R.color.slide_primary_background, null)));
         askForPermissions(new String[]{Manifest.permission.SEND_SMS}, 5);
-        addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_tel_title), getString(R.string.welcome_tel_description), R.drawable.welcome_phone, getResources().getColor(R.color.slide_secondary_background, null)));
+        addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_tel_title), getString(R.string.welcome_tel_description), R.drawable.welcome_phone, getResources().getColor(R.color.slide_primary_background, null)));
         askForPermissions(new String[]{Manifest.permission.CALL_PHONE}, 6);
         Fragment notificationFragment = new WelcomeActivity_.SpecialFragment_();
         Bundle notificationArgs = new Bundle();
         notificationArgs.putBoolean(NOTIFICATION_ARG, true);
         notificationFragment.setArguments(notificationArgs);
         addSlide(notificationFragment);
-        Fragment overlayFragment = new WelcomeActivity_.SpecialFragment_();
-        Bundle overlayArgs = new Bundle();
-        overlayArgs.putBoolean(NOTIFICATION_ARG, false);
-        overlayFragment.setArguments(overlayArgs);
-        addSlide(overlayFragment);
+        if (!PermissionHelper.INSTANCE.isPermittedTo(getApplicationContext(), Manifest.permission.SYSTEM_ALERT_WINDOW)) {
+            Fragment overlayFragment = new WelcomeActivity_.SpecialFragment_();
+            Bundle overlayArgs = new Bundle();
+            overlayArgs.putBoolean(NOTIFICATION_ARG, false);
+            overlayFragment.setArguments(overlayArgs);
+            addSlide(overlayFragment);
 
+        }
         showSkipButton(false);
 
         setVibrate(true);
@@ -131,7 +122,7 @@ public class WelcomeActivity extends AppIntro2 {
                 _title.setText(R.string.welcome_notifications_title);
                 _description.setText(R.string.welcome_notifications_description);
             } else {
-                _layout.setBackgroundColor(getResources().getColor(R.color.slide_primary_background, null));
+                _layout.setBackgroundColor(getResources().getColor(R.color.slide_secondary_background, null));
                 _title.setText(R.string.welcome_overlay_title);
                 _description.setText(R.string.welcome_overlay_description);
             }
@@ -151,7 +142,7 @@ public class WelcomeActivity extends AppIntro2 {
         @Override
         public boolean isPolicyRespected() {
             if (_isNotification) {
-                return PermissionHelper.INSTANCE.isPermittedTo(getContext(), Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE);
+                return true;
             } else {
                 return PermissionHelper.INSTANCE.isPermittedTo(getContext(), Manifest.permission.SYSTEM_ALERT_WINDOW);
             }
