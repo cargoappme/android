@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<com.facebook.yoga.android.YogaLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:yoga="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    yoga:yg_flexDirection="column"
+    yoga:yg_justifyContent="space_around">
+
+    <com.facebook.yoga.android.YogaLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        yoga:yg_flexGrow="2"
+        yoga:yg_flexBasis="0"
+        yoga:yg_flexDirection="row">
+
+        <com.facebook.yoga.android.YogaLayout
+            android:id="@+id/prev"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient_navui_music_prev"
+            yoga:yg_flexGrow="1"
+            yoga:yg_flexBasis="0"
+            yoga:yg_justifyContent="center"
+            yoga:yg_alignItems="center">
+
+            <ImageView
+                android:id="@+id/prev_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_skip_previous_black_24dp"
+                android:tint="@android:color/white"
+                android:scaleType="fitXY"
+                yoga:yg_width="70%"
+                yoga:yg_aspectRatio="1" />
+        </com.facebook.yoga.android.YogaLayout>
+
+        <com.facebook.yoga.android.YogaLayout
+            android:id="@+id/next"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient_navui_music_next"
+            yoga:yg_flexGrow="1"
+            yoga:yg_flexBasis="0"
+            yoga:yg_justifyContent="center"
+            yoga:yg_alignItems="center">
+
+            <ImageView
+                android:id="@+id/next_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_skip_next_black_24dp"
+                android:tint="@android:color/white"
+                android:scaleType="fitXY"
+                yoga:yg_width="70%"
+                yoga:yg_aspectRatio="1" />
+        </com.facebook.yoga.android.YogaLayout>
+    </com.facebook.yoga.android.YogaLayout>
+
+    <com.facebook.yoga.android.YogaLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        yoga:yg_flexGrow="1"
+        yoga:yg_flexBasis="0"
+        yoga:yg_flexDirection="row">
+
+        <com.facebook.yoga.android.YogaLayout
+            android:id="@+id/playPause"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient_navui_music_playpause"
+            yoga:yg_flexGrow="1"
+            yoga:yg_flexBasis="0"
+            yoga:yg_justifyContent="center"
+            yoga:yg_alignItems="center">
+
+            <ImageView
+                android:id="@+id/playPause_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_play_arrow_black_24dp"
+                android:tint="@android:color/white"
+                android:scaleType="fitXY"
+                yoga:yg_width="70%"
+                yoga:yg_aspectRatio="1" />
+        </com.facebook.yoga.android.YogaLayout>
+    </com.facebook.yoga.android.YogaLayout>
+</com.facebook.yoga.android.YogaLayout>
