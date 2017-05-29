@@ -8,7 +8,9 @@ import android.os.Looper
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
+import android.util.Log
 import me.cargoapp.cargo.event.voice.ListeningDoneEvent
+import me.cargoapp.cargo.event.voice.ListeningErrorEvent
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -16,6 +18,9 @@ import org.greenrobot.eventbus.EventBus
  */
 
 class SpeechRecognizer(val _context: Context) {
+
+    val TAG = this.javaClass.simpleName
+
     val _speechRecognizer: SpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(_context)
     val _speechRecognizerIntent: Intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
     val _mainHandler: Handler = Handler(Looper.getMainLooper())
@@ -34,12 +39,17 @@ class SpeechRecognizer(val _context: Context) {
         _utteranceId = utteranceId
         _mainHandler.post({ _speechRecognizer.startListening(_speechRecognizerIntent) })
         _isListening = true
+
+        Log.d(TAG, "Listening: " + utteranceId);
     }
 
     fun stop() {
         if (_isListening) {
             _mainHandler.post({ _speechRecognizer.stopListening() })
+            _isListening = false
             EventBus.getDefault().post(ListeningDoneEvent(_utteranceId, null))
+
+            Log.d(TAG, "Stopping: " + _utteranceId);
         }
     }
 
@@ -55,7 +65,10 @@ class SpeechRecognizer(val _context: Context) {
         override fun onEndOfSpeech() {}
 
         override fun onError(error: Int) {
-            _mainHandler.post({ _speechRecognizer.startListening(_speechRecognizerIntent) })
+            _isListening = false
+            EventBus.getDefault().post(ListeningErrorEvent(_utteranceId))
+
+            Log.d(TAG, "Errored: " + _utteranceId);
         }
 
         override fun onEvent(eventType: Int, params: Bundle?) {}
@@ -67,8 +80,10 @@ class SpeechRecognizer(val _context: Context) {
         override fun onResults(results: Bundle?) {
             val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
 
-            EventBus.getDefault().post(ListeningDoneEvent(_utteranceId, matches?.get(0)))
             _isListening = false
+            EventBus.getDefault().post(ListeningDoneEvent(_utteranceId, matches?.get(0)))
+
+            Log.d(TAG, "Done: " + _utteranceId);
         }
 
         override fun onRmsChanged(rmsdB: Float) {}

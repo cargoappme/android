@@ -59,6 +59,7 @@ public class ContactsAdapter extends BaseAdapter {
 
         String photoUri = _contacts.get(position).photoUri;
         if (photoUri != null) image.setImageURI(Uri.parse(photoUri));
+        else image.setImageResource(android.R.color.transparent); // need to reset because views are recycled
 
         return layout;
     }

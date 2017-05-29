@@ -55,8 +55,6 @@ public class NotificationReaderService extends NotificationListenerService {
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
-        Logger.i("onNotificationPosted");
-
         if (!Application_.isJourneyStarted) return;
         if (!_prefs.getBoolean("pref_notifications", true)) return;
 
@@ -72,8 +70,6 @@ public class NotificationReaderService extends NotificationListenerService {
 
     @Override
     public void onNotificationRemoved(StatusBarNotification sbn) {
-        Logger.i("onNotificationRemoved");
-
         if (!Application_.isJourneyStarted) return;
         if (!_prefs.getBoolean("pref_notifications", true)) return;
     }

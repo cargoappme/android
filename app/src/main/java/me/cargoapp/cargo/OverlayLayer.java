@@ -16,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.tmtron.greenannotations.EventBusGreenRobot;
+import com.victor.loading.rotate.RotateLoading;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;
@@ -46,6 +47,8 @@ public class OverlayLayer implements View.OnTouchListener {
     private FrameLayout _layout;
 
     ImageView _imageView;
+    ImageView _logoView;
+    RotateLoading _loadingView;
 
     public OverlayLayer(Context context) {
         _context = context;
@@ -56,6 +59,8 @@ public class OverlayLayer implements View.OnTouchListener {
     public void afterInject() {
         _layoutInflater.inflate(R.layout.navui_overlay, _layout);
         _imageView = (ImageView) _layout.findViewById(R.id.overlay);
+        _logoView = (ImageView) _layout.findViewById(R.id.logo);
+        _loadingView = (RotateLoading) _layout.findViewById(R.id.loading);
 
         _imageView.setOnTouchListener(this); // cannot use annotation as we use an inflater and not activity
     }
@@ -78,6 +83,16 @@ public class OverlayLayer implements View.OnTouchListener {
 
     public void removeFromScreen() {
         _wm.removeView(_layout);
+    }
+
+    public void setLoading(boolean loading) {
+        if (loading) {
+            _logoView.setVisibility(View.GONE);
+            _loadingView.start();
+        } else {
+            _logoView.setVisibility(View.VISIBLE);
+            _loadingView.stop();
+        }
     }
 
     @Override

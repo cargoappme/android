@@ -7,6 +7,7 @@ import android.os.IBinder;
 import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
+import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 import com.tmtron.greenannotations.EventBusGreenRobot;
@@ -17,14 +18,17 @@ import org.androidannotations.annotations.EService;
 import org.androidannotations.annotations.SystemService;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Locale;
 
+import es.dmoral.toasty.Toasty;
 import me.cargoapp.cargo.NavuiActivity_;
 import me.cargoapp.cargo.OverlayLayer;
 import me.cargoapp.cargo.R;
 import me.cargoapp.cargo.event.overlay.OverlayClickedEvent;
 import me.cargoapp.cargo.event.overlay.SetOverlayVisibilityAction;
+import me.cargoapp.cargo.event.service.ServiceReadyEvent;
 import me.cargoapp.cargo.event.service.StopBackgroundServiceAction;
 import me.cargoapp.cargo.event.vibrator.VibrateAction;
 import me.cargoapp.cargo.event.voice.ListenAction;
@@ -37,8 +41,10 @@ public class BackgroundService extends Service implements TextToSpeech.OnInitLis
 
     private String TAG = this.getClass().getSimpleName();
     public static boolean active = false;
+    public static boolean ready = false;
 
     private final static int FOREGROUND_ID = 999;
+    private final String UTTERANCE_INIT = "BACKGROUND_INIT";
 
     @EventBusGreenRobot
     EventBus _eventBus;
@@ -62,6 +68,8 @@ public class BackgroundService extends Service implements TextToSpeech.OnInitLis
 
         _tts = new TextToSpeech(getApplicationContext(), this);
         _stt = new SpeechRecognizer(getApplicationContext());
+
+        _overlayLayer.setLoading(true);
     }
 
     @Override
@@ -118,8 +126,6 @@ public class BackgroundService extends Service implements TextToSpeech.OnInitLis
     @Background
     public void onInit(int initStatus) {
         if (initStatus == TextToSpeech.SUCCESS) {
-            Logger.i("TTS initialized");
-
             _tts.setLanguage(Locale.getDefault());
             _tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
 
@@ -128,12 +134,17 @@ public class BackgroundService extends Service implements TextToSpeech.OnInitLis
 
                 @Override
                 public void onDone(String utteranceId) {
-                    _eventBus.post(new SpeechDoneEvent(utteranceId));
+                    if (utteranceId.equals(UTTERANCE_INIT)) {
+                        ready = true;
+                        _eventBus.post(new ServiceReadyEvent());
+                    } else _eventBus.post(new SpeechDoneEvent(utteranceId));
                 }
 
                 @Override
                 public void onError(String utteranceId) {}
             });
+
+            _tts.speak("", TextToSpeech.QUEUE_FLUSH, null, UTTERANCE_INIT);
         }
     }
 
@@ -173,9 +184,17 @@ public class BackgroundService extends Service implements TextToSpeech.OnInitLis
 
     @Subscribe
     public void onOverlayClicked(OverlayClickedEvent event) {
-        if (NavuiActivity_.active) return;
+        if (!ready) {
+            Toasty.warning(getApplicationContext(), getString(R.string.navui_overlay_toast_wait), Toast.LENGTH_SHORT).show();
+            // return;
+        }
 
         NavuiActivity_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).start();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onServiceReady(ServiceReadyEvent event) {
+        _overlayLayer.setLoading(false);
     }
 
     private Notification _createNotification() {

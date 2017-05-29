@@ -1,25 +1,33 @@
 package me.cargoapp.cargo;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
+import com.race604.drawable.wave.WaveDrawable;
 import com.tmtron.greenannotations.EventBusGreenRobot;
 
-import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.WindowFeature;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import me.cargoapp.cargo.event.navui.HandleNavuiActionAction;
 import me.cargoapp.cargo.event.overlay.SetOverlayVisibilityAction;
 import me.cargoapp.cargo.event.service.StopBackgroundServiceAction;
 import me.cargoapp.cargo.event.vibrator.VibrateAction;
+import me.cargoapp.cargo.event.voice.ListenAction;
+import me.cargoapp.cargo.event.voice.ListeningDoneEvent;
+import me.cargoapp.cargo.event.voice.ListeningErrorEvent;
+import me.cargoapp.cargo.event.voice.SpeechDoneEvent;
 import me.cargoapp.cargo.helper.VoiceHelper;
 import me.cargoapp.cargo.navui.NavuiCall_;
 import me.cargoapp.cargo.navui.NavuiMenu_;
@@ -36,14 +44,34 @@ public class NavuiActivity extends Activity {
     public static boolean active = false;
 
     final String UTTERANCE_SPEAK_ITEM = "NAVUI_SPEAK_ITEM";
+    final String UTTERANCE_SPEECH_ERROR = "NAVUI_SPEECH_ERROR";
 
     boolean _onMenu = true;
+    boolean _listening = false;
+    String _erroredListeningId;
+    WaveDrawable _waveDrawable;
 
     @EventBusGreenRobot
     EventBus _eventBus;
 
     @ViewById(R.id.icon)
     ImageView _navIcon;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        _waveDrawable = new WaveDrawable(getDrawable(R.drawable.microphone));
+        ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.setRepeatMode(ValueAnimator.RESTART);
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.setDuration(2000);
+        _waveDrawable.setIndeterminateAnimator(animator);
+        _waveDrawable.setIndeterminate(true);
+
+        getFragmentManager().beginTransaction().add(R.id.fragment_container, NavuiMenu_.builder().build()).commit();
+    }
 
     @Override
     public void finish() {
@@ -68,15 +96,18 @@ public class NavuiActivity extends Activity {
         _eventBus.post(new SetOverlayVisibilityAction(true));
     }
 
-    @AfterViews
-    public void afterViews() {
-        getFragmentManager().beginTransaction().add(R.id.fragment_container, NavuiMenu_.builder().build()).commit();
-    }
-
     @Click(R.id.nav_menu)
     void onNavClick() {
         if (!_onMenu) _eventBus.post(new HandleNavuiActionAction(MENU));
         else finish();
+    }
+
+    void _setImageResource() {
+        int navIconResId;
+        if (_onMenu) navIconResId = R.drawable.ic_cargo_c;
+        else navIconResId = R.drawable.ic_chevron_left_black_24dp;
+
+        _navIcon.setImageResource(navIconResId);
     }
 
     @Subscribe
@@ -125,10 +156,29 @@ public class NavuiActivity extends Activity {
 
         _onMenu = action.getType() == MENU;
 
-        int navIconResId;
-        if (_onMenu) navIconResId = R.drawable.ic_cargo_c;
-        else navIconResId = R.drawable.ic_chevron_left_black_24dp;
+        _setImageResource();
+    }
 
-        _navIcon.setImageResource(navIconResId);
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onListen(ListenAction action) {
+        _listening = true;
+        _navIcon.setImageDrawable(_waveDrawable);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onListeningDone(ListeningDoneEvent event) {
+        _listening = false;
+        _setImageResource();
+    }
+
+    @Subscribe
+    public void onListeningError(ListeningErrorEvent event) {
+        _erroredListeningId = event.getListeningId();
+        VoiceHelper.INSTANCE.speak(UTTERANCE_SPEECH_ERROR, getString(R.string.tts_error_repeat));
+    }
+
+    @Subscribe
+    public void onSpeechDone(SpeechDoneEvent event) {
+        if (event.getUtteranceId().equals(UTTERANCE_SPEECH_ERROR)) VoiceHelper.INSTANCE.listen(_erroredListeningId);
     }
 }
