@@ -99,7 +99,7 @@ public class ReceivedMessageActivity extends Activity {
     }
 
     @Subscribe
-    void onSpeechDone(SpeechDoneEvent event) {
+    public void onSpeechDone(SpeechDoneEvent event) {
         switch (event.getUtteranceId()) {
             case UTTERANCE_MESSAGE_ASKING:
                 VoiceHelper.INSTANCE.listen(LISTENING_VALIDATION);
@@ -112,7 +112,7 @@ public class ReceivedMessageActivity extends Activity {
     }
 
     @Subscribe
-    void onListeningDone(ListeningDoneEvent event) {
+    public void onListeningDone(ListeningDoneEvent event) {
         switch (event.getListeningId()) {
             case LISTENING_VALIDATION:
                 String text = event.getText().toLowerCase().trim();

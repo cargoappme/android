@@ -149,14 +149,14 @@ public class BackgroundService extends Service implements TextToSpeech.OnInitLis
     }
 
     @Subscribe
-    void onSpeak(SpeakAction action) {
+    public void onSpeak(SpeakAction action) {
         _tts.speak(action.getText(), TextToSpeech.QUEUE_ADD, null, action.getUtteranceId());
     }
 
     // STT
 
     @Subscribe
-    void onListen(ListenAction action) {
+    public void onListen(ListenAction action) {
         _stt.listen(action.getListeningId());
     }
 
@@ -165,7 +165,7 @@ public class BackgroundService extends Service implements TextToSpeech.OnInitLis
      */
 
     @Subscribe
-    void onVibrate(VibrateAction action) {
+    public void onVibrate(VibrateAction action) {
         _vibrator.vibrate(200);
     }
 
