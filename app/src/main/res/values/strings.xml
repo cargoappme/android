@@ -76,7 +76,7 @@
 
     <!-- Speech to text -->
     <string name="stt_yes">oui</string>
-    <string name="stt_no">no</string>
+    <string name="stt_no">non</string>
 
     <!-- Text to speech -->
     <string name="tts_error_repeat">Je n\'ai pas compris. Pouvez-vous répéter ?</string>
@@ -103,5 +103,6 @@
     <string name="navui_item_sms">SMS</string>
     <string name="navui_item_music">Musique</string>
     <string name="navui_item_oil">Stations-service</string>
+    <string name="navui_item_language">Langage</string>
     <string name="navui_item_parking">Parking</string>
 </resources>

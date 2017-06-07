@@ -1,3 +1,5 @@
 package me.cargoapp.cargo.event.voice
 
-data class ListenAction(val listeningId: String)
+import java.util.*
+
+data class ListenAction(val listeningId: String, val locale: Locale)

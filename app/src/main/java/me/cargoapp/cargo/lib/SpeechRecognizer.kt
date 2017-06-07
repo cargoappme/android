@@ -12,6 +12,7 @@ import android.util.Log
 import me.cargoapp.cargo.event.voice.ListeningDoneEvent
 import me.cargoapp.cargo.event.voice.ListeningErrorEvent
 import org.greenrobot.eventbus.EventBus
+import java.util.*
 
 /**
  * Created by Marvin on 23/05/2017.
@@ -22,25 +23,24 @@ class SpeechRecognizer(val _context: Context) {
     val TAG = this.javaClass.simpleName
 
     val _speechRecognizer: SpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(_context)
-    val _speechRecognizerIntent: Intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
     val _mainHandler: Handler = Handler(Looper.getMainLooper())
 
     var _isListening: Boolean = false
     var _utteranceId: String = ""
 
     init {
-        _speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
         _speechRecognizer.setRecognitionListener(SpeechRecognitionListener())
     }
 
-    fun listen(utteranceId: String) {
+    fun listen(utteranceId: String, locale: Locale) {
         stop()
 
+        var intent: Intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, locale)
         _utteranceId = utteranceId
-        _mainHandler.post({ _speechRecognizer.startListening(_speechRecognizerIntent) })
+        _mainHandler.post({ _speechRecognizer.startListening(intent) })
         _isListening = true
-
-        Log.d(TAG, "Listening: " + utteranceId);
     }
 
     fun stop() {
@@ -48,8 +48,6 @@ class SpeechRecognizer(val _context: Context) {
             _mainHandler.post({ _speechRecognizer.stopListening() })
             _isListening = false
             EventBus.getDefault().post(ListeningDoneEvent(_utteranceId, null))
-
-            Log.d(TAG, "Stopping: " + _utteranceId);
         }
     }
 

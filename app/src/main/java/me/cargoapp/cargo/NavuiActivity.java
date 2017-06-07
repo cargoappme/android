@@ -20,6 +20,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Locale;
+
 import me.cargoapp.cargo.event.navui.HandleNavuiActionAction;
 import me.cargoapp.cargo.event.overlay.SetOverlayVisibilityAction;
 import me.cargoapp.cargo.event.service.StopBackgroundServiceAction;
@@ -28,13 +30,15 @@ import me.cargoapp.cargo.event.voice.ListenAction;
 import me.cargoapp.cargo.event.voice.ListeningDoneEvent;
 import me.cargoapp.cargo.event.voice.ListeningErrorEvent;
 import me.cargoapp.cargo.event.voice.SpeechDoneEvent;
+import me.cargoapp.cargo.helper.LocalizationHelper;
 import me.cargoapp.cargo.helper.VoiceHelper;
 import me.cargoapp.cargo.navui.NavuiCall_;
+import me.cargoapp.cargo.navui.NavuiLanguage_;
 import me.cargoapp.cargo.navui.NavuiMenu_;
 import me.cargoapp.cargo.navui.NavuiMessage_;
+import me.cargoapp.cargo.navui.NavuiMusic_;
 import me.cargoapp.cargo.navui.NavuiOil_;
 import me.cargoapp.cargo.navui.NavuiParking_;
-import me.cargoapp.cargo.navui.NavuiMusic_;
 
 import static me.cargoapp.cargo.event.navui.HandleNavuiActionAction.Type.MENU;
 
@@ -43,6 +47,7 @@ import static me.cargoapp.cargo.event.navui.HandleNavuiActionAction.Type.MENU;
 public class NavuiActivity extends Activity {
 
     public static boolean active = false;
+    public static Locale locale = Locale.getDefault();
 
     final String UTTERANCE_SPEAK_ITEM = "NAVUI_SPEAK_ITEM";
     final String UTTERANCE_SPEECH_ERROR = "NAVUI_SPEECH_ERROR";
@@ -86,6 +91,7 @@ public class NavuiActivity extends Activity {
         active = true;
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE);
+
         _eventBus.post(new SetOverlayVisibilityAction(false));
     }
 
@@ -127,22 +133,26 @@ public class NavuiActivity extends Activity {
         switch (action.getType()) {
             case CALL:
                 fragment = NavuiCall_.builder().build();
-                item = getString(R.string.navui_item_phone);
+                item = LocalizationHelper.INSTANCE.getString(this, locale, R.string.navui_item_phone);
                 break;
             case MESSAGE:
                 fragment = NavuiMessage_.builder().build();
-                item = getString(R.string.navui_item_sms);
+                item = LocalizationHelper.INSTANCE.getString(this, locale, R.string.navui_item_sms);
                 break;
             case MUSIC:
                 fragment = NavuiMusic_.builder().build();
-                item = getString(R.string.navui_item_music);
+                item = LocalizationHelper.INSTANCE.getString(this, locale, R.string.navui_item_music);
                 break;
             case OIL:
                 fragment = NavuiOil_.builder().build();
-                item = getString(R.string.navui_item_oil);
+                item = LocalizationHelper.INSTANCE.getString(this, locale, R.string.navui_item_oil);
+                break;
+            case LANGUAGE:
+                fragment = NavuiLanguage_.builder().build();
+                item = LocalizationHelper.INSTANCE.getString(this, locale, R.string.navui_item_language);
                 break;
             case PARKING:
-                item = getString(R.string.navui_item_parking);
+                item = LocalizationHelper.INSTANCE.getString(this, locale, R.string.navui_item_parking);
                 fragment = NavuiParking_.builder().build();
                 break;
         }
@@ -152,7 +162,7 @@ public class NavuiActivity extends Activity {
                 .replace(R.id.fragment_container, fragment)
                 .commit();
 
-        VoiceHelper.INSTANCE.speak(UTTERANCE_SPEAK_ITEM, item);
+        VoiceHelper.INSTANCE.speak(UTTERANCE_SPEAK_ITEM, item, NavuiActivity_.locale);
 
         _eventBus.post(new VibrateAction());
 
@@ -176,11 +186,11 @@ public class NavuiActivity extends Activity {
     @Subscribe
     public void onListeningError(ListeningErrorEvent event) {
         _erroredListeningId = event.getListeningId();
-        VoiceHelper.INSTANCE.speak(UTTERANCE_SPEECH_ERROR, getString(R.string.tts_error_repeat));
+        VoiceHelper.INSTANCE.speak(UTTERANCE_SPEECH_ERROR, getString(R.string.tts_error_repeat), NavuiActivity_.locale);
     }
 
     @Subscribe
     public void onSpeechDone(SpeechDoneEvent event) {
-        if (event.getUtteranceId().equals(UTTERANCE_SPEECH_ERROR)) VoiceHelper.INSTANCE.listen(_erroredListeningId);
+        if (event.getUtteranceId().equals(UTTERANCE_SPEECH_ERROR)) VoiceHelper.INSTANCE.listen(_erroredListeningId, NavuiActivity_.locale);
     }
 }

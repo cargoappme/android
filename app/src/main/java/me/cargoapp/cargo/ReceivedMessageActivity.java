@@ -95,14 +95,14 @@ public class ReceivedMessageActivity extends Activity {
 
         _message = event.getResult().getMessage();
 
-        VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_ASKING, getString(R.string.tts_received_message_confirmation, event.getResult().getAuthor()));
+        VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_ASKING, getString(R.string.tts_received_message_confirmation, event.getResult().getAuthor()), NavuiActivity_.locale);
     }
 
     @Subscribe
     public void onSpeechDone(SpeechDoneEvent event) {
         switch (event.getUtteranceId()) {
             case UTTERANCE_MESSAGE_ASKING:
-                VoiceHelper.INSTANCE.listen(LISTENING_VALIDATION);
+                VoiceHelper.INSTANCE.listen(LISTENING_VALIDATION, NavuiActivity_.locale);
                 break;
             case UTTERANCE_MESSAGE_READING:
                 _eventBus.post(new HandleMessageQueueAction(HandleMessageQueueAction.Type.DONE));
@@ -118,11 +118,11 @@ public class ReceivedMessageActivity extends Activity {
                 String text = event.getText().toLowerCase().trim();
 
                 if (text.contains(getString(R.string.stt_yes))) {
-                    VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_READING, getString(R.string.tts_received_message_reading, ReceivedMessageActivity.this._message));
+                    VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_READING, getString(R.string.tts_received_message_reading, ReceivedMessageActivity.this._message), NavuiActivity_.locale);
                 } else if (text.contains(getString(R.string.stt_no))) {
-                    VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_READING, getString(R.string.tts_received_message_ignore));
+                    VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_READING, getString(R.string.tts_received_message_ignore), NavuiActivity_.locale);
                 } else {
-                    VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_ASKING, getString(R.string.tts_received_message_confirmation_repeat));
+                    VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_ASKING, getString(R.string.tts_received_message_confirmation_repeat), NavuiActivity_.locale);
                 }
                 break;
         }

@@ -21,10 +21,12 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
+import me.cargoapp.cargo.NavuiActivity_;
 import me.cargoapp.cargo.R;
 import me.cargoapp.cargo.event.voice.ListeningDoneEvent;
 import me.cargoapp.cargo.event.voice.SpeechDoneEvent;
 import me.cargoapp.cargo.helper.ContactsHelper;
+import me.cargoapp.cargo.helper.LocalizationHelper;
 import me.cargoapp.cargo.helper.VoiceHelper;
 import me.cargoapp.cargo.navui.adapter.ContactsAdapter;
 
@@ -84,7 +86,7 @@ public class NavuiMessage extends Fragment {
             if (contact.photoUri != null) _contactImage.setImageURI(Uri.parse(contact.photoUri));
             _contactView.setVisibility(View.VISIBLE);
 
-            VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE, getString(R.string.tts_message_content, contact.name));
+            VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE, LocalizationHelper.INSTANCE.getString(getContext(), NavuiActivity_.locale, R.string.tts_message_content, contact.name), NavuiActivity_.locale);
             }
         });
     }
@@ -98,10 +100,10 @@ public class NavuiMessage extends Fragment {
     public void onSpeechDone(SpeechDoneEvent event) {
         switch (event.getUtteranceId()) {
             case UTTERANCE_MESSAGE:
-                VoiceHelper.INSTANCE.listen(LISTENING_MESSAGE_CONTENT);
+                VoiceHelper.INSTANCE.listen(LISTENING_MESSAGE_CONTENT, NavuiActivity_.locale);
                 break;
             case UTTERANCE_VALIDATION:
-                VoiceHelper.INSTANCE.listen(LISTENING_MESSAGE_VALIDATION);
+                VoiceHelper.INSTANCE.listen(LISTENING_MESSAGE_VALIDATION, NavuiActivity_.locale);
                 break;
         }
     }
@@ -112,23 +114,23 @@ public class NavuiMessage extends Fragment {
             case LISTENING_MESSAGE_CONTENT:
                 _message = event.getText();
 
-                VoiceHelper.INSTANCE.speak(UTTERANCE_VALIDATION, getString(R.string.tts_message_validation, _message));
+                VoiceHelper.INSTANCE.speak(UTTERANCE_VALIDATION, LocalizationHelper.INSTANCE.getString(getContext(), NavuiActivity_.locale, R.string.tts_message_validation, _message), NavuiActivity_.locale);
                 break;
             case LISTENING_MESSAGE_VALIDATION:
                 String text = event.getText().toLowerCase().trim();
 
-                if (text.contains(getString(R.string.stt_yes))) {
+                if (text.contains(LocalizationHelper.INSTANCE.getString(getContext(), NavuiActivity_.locale, R.string.stt_yes))) {
                     SmsManager smsManager = SmsManager.getDefault();
                     smsManager.sendTextMessage(_numberToSendTo, null, _message, null, null);
-                    VoiceHelper.INSTANCE.speak(UTTERANCE_DONE, getString(R.string.tts_message_sent));
+                    VoiceHelper.INSTANCE.speak(UTTERANCE_DONE, LocalizationHelper.INSTANCE.getString(getContext(), NavuiActivity_.locale, R.string.tts_message_sent), NavuiActivity_.locale);
 
                     _clear();
-                } else if (text.contains(getString(R.string.stt_no))) {
-                    VoiceHelper.INSTANCE.speak(UTTERANCE_DONE, getString(R.string.tts_message_cancel));
+                } else if (text.contains(LocalizationHelper.INSTANCE.getString(getContext(), NavuiActivity_.locale, R.string.stt_no))) {
+                    VoiceHelper.INSTANCE.speak(UTTERANCE_DONE, LocalizationHelper.INSTANCE.getString(getContext(), NavuiActivity_.locale, R.string.tts_message_cancel), NavuiActivity_.locale);
 
                     _clear();
                 } else {
-                    VoiceHelper.INSTANCE.speak(UTTERANCE_VALIDATION, getString(R.string.tts_message_validation_repeat));
+                    VoiceHelper.INSTANCE.speak(UTTERANCE_VALIDATION, LocalizationHelper.INSTANCE.getString(getContext(), NavuiActivity_.locale, R.string.tts_message_validation_repeat), NavuiActivity_.locale);
                 }
                 break;
         }

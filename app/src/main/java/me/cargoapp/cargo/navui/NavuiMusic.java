@@ -1,12 +1,10 @@
 package me.cargoapp.cargo.navui;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.media.AudioManager;
 import android.view.KeyEvent;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
@@ -15,10 +13,7 @@ import org.androidannotations.annotations.ViewById;
 
 import me.cargoapp.cargo.R;
 
-         /**
-  + * Created by Mathieu on 19/05/2017.
-  + */
-         @EFragment(R.layout.fragment_navui_music)
+@EFragment(R.layout.fragment_navui_music)
 public class NavuiMusic extends Fragment {
     @SystemService
     AudioManager _audioManager;
@@ -28,10 +23,10 @@ public class NavuiMusic extends Fragment {
     @AfterViews
     void afterViews() {
         if(_audioManager.isMusicActive()){
-            playPause.setImageDrawable(getResources().getDrawable(R.drawable.ic_play_arrow_black_24dp, null));
+            playPause.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause_black_24dp, null));
         }
         else{
-            playPause.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause_black_24dp, null));
+            playPause.setImageDrawable(getResources().getDrawable(R.drawable.ic_play_arrow_black_24dp, null));
         }
     }
     @Click(R.id.prev)

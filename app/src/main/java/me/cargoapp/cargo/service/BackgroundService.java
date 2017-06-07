@@ -150,6 +150,7 @@ public class BackgroundService extends Service implements TextToSpeech.OnInitLis
 
     @Subscribe
     public void onSpeak(SpeakAction action) {
+        _tts.setLanguage(action.getLocale());
         _tts.speak(action.getText(), TextToSpeech.QUEUE_ADD, null, action.getUtteranceId());
     }
 
@@ -157,7 +158,7 @@ public class BackgroundService extends Service implements TextToSpeech.OnInitLis
 
     @Subscribe
     public void onListen(ListenAction action) {
-        _stt.listen(action.getListeningId());
+        _stt.listen(action.getListeningId(), action.getLocale());
     }
 
     /**

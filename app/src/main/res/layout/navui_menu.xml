@@ -136,6 +136,27 @@
         </com.facebook.yoga.android.YogaLayout>
 
         <com.facebook.yoga.android.YogaLayout
+            android:id="@+id/language"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient_navui_language"
+            yoga:yg_flexGrow="1"
+            yoga:yg_flexBasis="0"
+            yoga:yg_justifyContent="center"
+            yoga:yg_alignItems="center">
+
+            <ImageView
+                android:id="@+id/language_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_language_black_24dp"
+                android:tint="@android:color/white"
+                android:scaleType="fitXY"
+                yoga:yg_width="70%"
+                yoga:yg_aspectRatio="1" />
+        </com.facebook.yoga.android.YogaLayout>
+
+        <com.facebook.yoga.android.YogaLayout
             android:id="@+id/quit"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
