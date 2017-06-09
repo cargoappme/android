@@ -105,4 +105,9 @@
     <string name="navui_item_oil">Stations-service</string>
     <string name="navui_item_language">Langage</string>
     <string name="navui_item_parking">Parking</string>
+
+    <!-- Shortcuts -->
+    <string name="shortcut_navui_short_label">Démarrer la NavUI</string>
+    <string name="shortcut_navui_long_label">Démarrer l\'interface de navigation</string>
+    <string name="shortcut_navui_disabled_message">Veuillez lancer l\'application pour accorder les permissions nécessaires.</string>
 </resources>
