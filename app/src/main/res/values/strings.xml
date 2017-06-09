@@ -20,9 +20,9 @@
     <string name="welcome_sms_title">SMS</string>
     <string name="welcome_sms_description">Cargo peut envoyer des SMS à l\'aide du contrôle vocal.</string>
     <string name="welcome_tel_title">Téléphone</string>
-    <string name="welcome_tel_description">Cargo peut téléphoner à vos contacts à l\'aide du contrôle vocal.</string>
+    <string name="welcome_tel_description">Cargo peut téléphoner à vos contacts.</string>
     <string name="welcome_notifications_title">Notifications</string>
-    <string name="welcome_notifications_description">Cargo peut lire vos notifications pour interagir avec vos messageries.</string>
+    <string name="welcome_notifications_description">Cargo peut lire vos notifications pour interagir avec vos messageries et lire vos notifications.</string>
     <string name="welcome_overlay_title">Superposition</string>
     <string name="welcome_overlay_description">Requis. Cargo se superpose à vos applications pour être plus facile d\'accès.</string>
     <string name="welcome_special_button">Autoriser</string>
@@ -66,7 +66,7 @@
     <string name="action_settings">Paramètres</string>
 
     <string name="pref_notifications">Intercepter les notifications</string>
-    <string name="pref_notifications_summ">Cargo peut lire vos notifications pour vous proposer de lire et de répondre dynamiquement à vos messages.</string>
+    <string name="pref_notifications_summ">Cargo peut lire vos notifications pour vous proposer de lire vocalement vos notifications et de répondre dynamiquement à vos messages.</string>
 
     <!-- Parking -->
     <string name="parking_save_success">Position de parking enregistrée</string>

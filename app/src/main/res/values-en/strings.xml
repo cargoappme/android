@@ -4,7 +4,16 @@
     <string name="action_settings">Settings</string>
     <string name="dialog_vehiclechecks_action_back">Back to home</string>
     <string name="dialog_vehiclechecks_action_go">Let\'s go!</string>
-    <string name="dialog_vehiclechecks_text"></string>
+    <string name="dialog_vehiclechecks_text">You are about to start a <b>journey of 100km+</b>.
+
+        \n\nFor your <b>safety</b>, ensure you check:
+
+        \n\n• The pressure of your tires
+        \n• The engine oil level
+        \n• The Windshield wipers
+
+        \n\nYou can find some information in the <i>Vehicle tab</i> on the homescreen.
+    </string>
     <string name="navui_item_language">Language</string>
     <string name="navui_item_menu">Menu</string>
     <string name="navui_item_music">Music</string>
@@ -31,4 +40,47 @@
     <string name="tts_received_message_confirmation_repeat">I didn\'t understand. Would you like to read the message? Say yes or no.</string>
     <string name="tts_received_message_ignore">Alright, I ignore the message.</string>
     <string name="tts_received_message_reading">Here\'s the message : %s</string>
+    <string name="dialog_vehiclechecks_title">Vehicle check-up</string>
+    <string name="generic_error">An error happened</string>
+    <string name="journey_fab_close">Close</string>
+    <string name="journey_fab_go">Start with position sharing</string>
+    <string name="journey_fab_start">Start without position sharing</string>
+    <string name="journey_tracking_disabled_no_permissions">Position sharing disabled : permissions not  granted</string>
+    <string name="notification_text">Enjoy the road safely.</string>
+    <string name="notification_title">Cargo is started</string>
+    <string name="parking_available">Parking position saved</string>
+    <string name="pref_notifications">Intercept notifications</string>
+    <string name="pref_notifications_summ">Cargo can read your notifications to vocally read your notifications and dynamically answer to them with your voice.</string>
+    <string name="shortcut_navui_disabled_message">Please start the app to grand the required permissions.</string>
+    <string name="shortcut_navui_long_label">Start the navigation interface</string>
+    <string name="shortcut_navui_short_label">Start the NavUI</string>
+    <string name="tab_journey">Journey</string>
+    <string name="tab_vehicle">Vehicle</string>
+    <string name="welcome_contacts_description">Cargo can access your contacts to allow you to join them easily.</string>
+    <string name="welcome_contacts_title">Contacts</string>
+    <string name="welcome_enable_permission">Enable the option for Cargo and press back</string>
+    <string name="welcome_gps_description">Cargo can use your location to start your journeys</string>
+    <string name="welcome_gps_title">Location</string>
+    <string name="welcome_microphone_description">Cargo can access your microphone to interact with your voice.</string>
+    <string name="welcome_microphone_title">Microphone</string>
+    <string name="welcome_notifications_description">Cargo can read your notifications to interact with your messages and read you vocally your notifications.</string>
+    <string name="welcome_notifications_title">Notifications</string>
+    <string name="welcome_overlay_description">Required. Cargo draws itself on top of your apps to be easily accessible.</string>
+    <string name="welcome_overlay_title">Overlay</string>
+    <string name="welcome_permission_needed">You need to enable the option to continue</string>
+    <string name="welcome_sms_description">Cargo can send SMS thanks to the vocal control.</string>
+    <string name="welcome_sms_title">SMS</string>
+    <string name="welcome_special_button">Grant</string>
+    <string name="welcome_tel_description">Cargo can call your contacts.</string>
+    <string name="welcome_tel_title">Phone</string>
+    <string name="welcome_welcome_description">We hope you\'ll enjoy your trip with Cargo.</string>
+    <string name="welcome_welcome_title">Welcome to Cargo!</string>
+    <string name="journey_welcome"><b>Welcome to Cargo</b>.
+
+        \n\nStart a journey by tapping the icon in the lower right corner
+
+        \n\nConsult vehicles information by tapping the right tab
+
+        \n\nEnjoy the road, with Cargo.
+    </string>
 </resources>
