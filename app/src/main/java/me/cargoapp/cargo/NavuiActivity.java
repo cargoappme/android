@@ -186,7 +186,7 @@ public class NavuiActivity extends Activity {
     @Subscribe
     public void onListeningError(ListeningErrorEvent event) {
         _erroredListeningId = event.getListeningId();
-        VoiceHelper.INSTANCE.speak(UTTERANCE_SPEECH_ERROR, getString(R.string.tts_error_repeat), NavuiActivity_.locale);
+        VoiceHelper.INSTANCE.speak(UTTERANCE_SPEECH_ERROR, LocalizationHelper.INSTANCE.getString(this, NavuiActivity_.locale, R.string.tts_error_repeat), NavuiActivity_.locale);
     }
 
     @Subscribe
