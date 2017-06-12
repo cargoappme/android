@@ -20,6 +20,7 @@ import me.cargoapp.cargo.event.message.MessageReceivedEvent;
 import me.cargoapp.cargo.event.overlay.SetOverlayVisibilityAction;
 import me.cargoapp.cargo.event.voice.ListeningDoneEvent;
 import me.cargoapp.cargo.event.voice.SpeechDoneEvent;
+import me.cargoapp.cargo.helper.LocalizationHelper;
 import me.cargoapp.cargo.helper.VoiceHelper;
 
 @WindowFeature({Window.FEATURE_NO_TITLE})
@@ -95,14 +96,14 @@ public class ReceivedMessageActivity extends Activity {
 
         _message = event.getResult().getMessage();
 
-        VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_ASKING, getString(R.string.tts_received_message_confirmation, event.getResult().getAuthor()));
+        VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_ASKING, LocalizationHelper.INSTANCE.getString(this, NavuiActivity_.locale, R.string.tts_received_message_confirmation, event.getResult().getAuthor()), NavuiActivity_.locale);
     }
 
     @Subscribe
-    void onSpeechDone(SpeechDoneEvent event) {
+    public void onSpeechDone(SpeechDoneEvent event) {
         switch (event.getUtteranceId()) {
             case UTTERANCE_MESSAGE_ASKING:
-                VoiceHelper.INSTANCE.listen(LISTENING_VALIDATION);
+                VoiceHelper.INSTANCE.listen(LISTENING_VALIDATION, NavuiActivity_.locale);
                 break;
             case UTTERANCE_MESSAGE_READING:
                 _eventBus.post(new HandleMessageQueueAction(HandleMessageQueueAction.Type.DONE));
@@ -112,17 +113,17 @@ public class ReceivedMessageActivity extends Activity {
     }
 
     @Subscribe
-    void onListeningDone(ListeningDoneEvent event) {
+    public void onListeningDone(ListeningDoneEvent event) {
         switch (event.getListeningId()) {
             case LISTENING_VALIDATION:
                 String text = event.getText().toLowerCase().trim();
 
-                if (text.contains(getString(R.string.stt_yes))) {
-                    VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_READING, getString(R.string.tts_received_message_reading, ReceivedMessageActivity.this._message));
-                } else if (text.contains(getString(R.string.stt_no))) {
-                    VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_READING, getString(R.string.tts_received_message_ignore));
+                if (text.contains(LocalizationHelper.INSTANCE.getString(this, NavuiActivity_.locale, R.string.stt_yes))) {
+                    VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_READING, LocalizationHelper.INSTANCE.getString(this, NavuiActivity_.locale, R.string.tts_received_message_reading, ReceivedMessageActivity.this._message), NavuiActivity_.locale);
+                } else if (text.contains(LocalizationHelper.INSTANCE.getString(this, NavuiActivity_.locale, R.string.stt_no))) {
+                    VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_READING, LocalizationHelper.INSTANCE.getString(this, NavuiActivity_.locale, R.string.tts_received_message_ignore), NavuiActivity_.locale);
                 } else {
-                    VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_ASKING, getString(R.string.tts_received_message_confirmation_repeat));
+                    VoiceHelper.INSTANCE.speak(UTTERANCE_MESSAGE_ASKING, LocalizationHelper.INSTANCE.getString(this, NavuiActivity_.locale, R.string.tts_received_message_confirmation_repeat), NavuiActivity_.locale);
                 }
                 break;
         }

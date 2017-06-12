@@ -11,6 +11,7 @@ data class HandleNavuiActionAction(val type: Type) {
         MUSIC,
         OIL,
         PARKING,
+        LANGUAGE,
         MENU,
         QUIT
     }

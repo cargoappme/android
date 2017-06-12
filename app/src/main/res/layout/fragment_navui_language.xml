@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<com.facebook.yoga.android.YogaLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:yoga="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    yoga:yg_flexDirection="column"
+    yoga:yg_justifyContent="space_around"
+    yoga:yg_alignItems="center">
+
+    <com.facebook.yoga.android.YogaLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        yoga:yg_flexGrow="1"
+        yoga:yg_flexBasis="0"
+        yoga:yg_flexDirection="row"
+        yoga:yg_justifyContent="space_around"
+        yoga:yg_alignItems="center">
+
+        <ImageView
+            android:id="@+id/fr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_flag_fr"
+            android:scaleType="fitXY"
+            yoga:yg_width="70%"
+            yoga:yg_aspectRatio="1" />
+    </com.facebook.yoga.android.YogaLayout>
+
+    <com.facebook.yoga.android.YogaLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        yoga:yg_flexGrow="1"
+        yoga:yg_flexBasis="0"
+        yoga:yg_flexDirection="row"
+        yoga:yg_justifyContent="space_around"
+        yoga:yg_alignItems="center">
+
+        <ImageView
+            android:id="@+id/en"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_flag_en"
+            android:scaleType="fitXY"
+            yoga:yg_width="70%"
+            yoga:yg_aspectRatio="1" />
+    </com.facebook.yoga.android.YogaLayout>
+</com.facebook.yoga.android.YogaLayout>

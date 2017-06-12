@@ -3,6 +3,7 @@ package me.cargoapp.cargo.navui;
 import android.Manifest;
 import android.app.Fragment;
 import android.view.MotionEvent;
+import android.graphics.Color;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 
 import es.dmoral.toasty.Toasty;
+import me.cargoapp.cargo.NavuiActivity_;
 import me.cargoapp.cargo.R;
 import me.cargoapp.cargo.event.navui.HandleNavuiActionAction;
 import me.cargoapp.cargo.helper.PermissionHelper;
@@ -53,6 +55,9 @@ public class NavuiMenu extends Fragment {
     @ViewById(R.id.parking_icon)
     ImageView _parkingIcon;
 
+    @ViewById(R.id.language_icon)
+    ImageView _languageIcon;
+
     @ViewById(R.id.quit_icon)
     ImageView _quitIcon;
 
@@ -69,6 +74,29 @@ public class NavuiMenu extends Fragment {
             if (!PermissionHelper.INSTANCE.isPermittedTo(getActivity(), iImagePermissions.permissions))
                 iImagePermissions.imageView.setAlpha(0.3f);
         }
+
+        // language flag
+
+        String language = NavuiActivity_.locale.getLanguage();
+
+        int langFlagResId;
+        boolean tint = false;
+        if (language.equals("fr")) {
+            langFlagResId = R.drawable.ic_flag_fr;
+        } else if (language.equals("en")) {
+            langFlagResId = R.drawable.ic_flag_en;
+        } else {
+            langFlagResId = R.drawable.gradient_navui_language;
+            tint = true;
+        }
+
+        _languageIcon.setImageDrawable(getResources().getDrawable(langFlagResId, null));
+        if (tint) {
+            _languageIcon.setColorFilter(Color.argb(255, 255, 255, 255));
+        } else {
+            _languageIcon.setColorFilter(null);
+            _languageIcon.setImageTintMode(null);
+        }
     }
 
     boolean checkPermissions(String[] permissions) {
@@ -76,7 +104,7 @@ public class NavuiMenu extends Fragment {
 
 
         String text = getString(R.string.navui_item_no_permissions);
-        VoiceHelper.INSTANCE.speak(UTTERANCE_NO_PERMISSIONS, text);
+        VoiceHelper.INSTANCE.speak(UTTERANCE_NO_PERMISSIONS, text, NavuiActivity_.locale);
         Toasty.warning(getActivity(), text, Toast.LENGTH_SHORT).show();
         return false;
     }
@@ -185,6 +213,12 @@ public class NavuiMenu extends Fragment {
         if (!checkPermissions(PARKING_PERMISSIONS)) return;
 
         _eventBus.post(new HandleNavuiActionAction(HandleNavuiActionAction.Type.PARKING));
+    }
+
+
+    @Click(R.id.language)
+    void onLanguage() {
+        _eventBus.post(new HandleNavuiActionAction(HandleNavuiActionAction.Type.LANGUAGE));
     }
 
     @Touch(R.id.quit)

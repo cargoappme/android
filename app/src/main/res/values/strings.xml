@@ -20,9 +20,9 @@
     <string name="welcome_sms_title">SMS</string>
     <string name="welcome_sms_description">Cargo peut envoyer des SMS à l\'aide du contrôle vocal.</string>
     <string name="welcome_tel_title">Téléphone</string>
-    <string name="welcome_tel_description">Cargo peut téléphoner à vos contacts à l\'aide du contrôle vocal.</string>
+    <string name="welcome_tel_description">Cargo peut téléphoner à vos contacts.</string>
     <string name="welcome_notifications_title">Notifications</string>
-    <string name="welcome_notifications_description">Cargo peut lire vos notifications pour interagir avec vos messageries.</string>
+    <string name="welcome_notifications_description">Cargo peut lire vos notifications pour interagir avec vos messageries et lire vos notifications.</string>
     <string name="welcome_overlay_title">Superposition</string>
     <string name="welcome_overlay_description">Requis. Cargo se superpose à vos applications pour être plus facile d\'accès.</string>
     <string name="welcome_special_button">Autoriser</string>
@@ -66,7 +66,7 @@
     <string name="action_settings">Paramètres</string>
 
     <string name="pref_notifications">Intercepter les notifications</string>
-    <string name="pref_notifications_summ">Cargo peut lire vos notifications pour vous proposer de lire et de répondre dynamiquement à vos messages.</string>
+    <string name="pref_notifications_summ">Cargo peut lire vos notifications pour vous proposer de lire vocalement vos notifications et de répondre dynamiquement à vos messages.</string>
 
     <!-- Parking -->
     <string name="parking_save_success">Position de parking enregistrée</string>
@@ -76,7 +76,7 @@
 
     <!-- Speech to text -->
     <string name="stt_yes">oui</string>
-    <string name="stt_no">no</string>
+    <string name="stt_no">non</string>
 
     <!-- Text to speech -->
     <string name="tts_error_repeat">Je n\'ai pas compris. Pouvez-vous répéter ?</string>
@@ -103,5 +103,11 @@
     <string name="navui_item_sms">SMS</string>
     <string name="navui_item_music">Musique</string>
     <string name="navui_item_oil">Stations-service</string>
+    <string name="navui_item_language">Langage</string>
     <string name="navui_item_parking">Parking</string>
+
+    <!-- Shortcuts -->
+    <string name="shortcut_navui_short_label">Démarrer la NavUI</string>
+    <string name="shortcut_navui_long_label">Démarrer l\'interface de navigation</string>
+    <string name="shortcut_navui_disabled_message">Veuillez lancer l\'application pour accorder les permissions nécessaires.</string>
 </resources>

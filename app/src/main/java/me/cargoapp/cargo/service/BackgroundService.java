@@ -28,6 +28,7 @@ import me.cargoapp.cargo.OverlayLayer;
 import me.cargoapp.cargo.R;
 import me.cargoapp.cargo.event.overlay.OverlayClickedEvent;
 import me.cargoapp.cargo.event.overlay.SetOverlayVisibilityAction;
+import me.cargoapp.cargo.event.service.ServiceBootedEvent;
 import me.cargoapp.cargo.event.service.ServiceReadyEvent;
 import me.cargoapp.cargo.event.service.StopBackgroundServiceAction;
 import me.cargoapp.cargo.event.vibrator.VibrateAction;
@@ -83,6 +84,7 @@ public class BackgroundService extends Service implements TextToSpeech.OnInitLis
         startForeground(FOREGROUND_ID, notification);
 
         active = true;
+        _eventBus.post(new ServiceBootedEvent());
 
         return START_STICKY;
     }
@@ -149,15 +151,16 @@ public class BackgroundService extends Service implements TextToSpeech.OnInitLis
     }
 
     @Subscribe
-    void onSpeak(SpeakAction action) {
+    public void onSpeak(SpeakAction action) {
+        _tts.setLanguage(action.getLocale());
         _tts.speak(action.getText(), TextToSpeech.QUEUE_ADD, null, action.getUtteranceId());
     }
 
     // STT
 
     @Subscribe
-    void onListen(ListenAction action) {
-        _stt.listen(action.getListeningId());
+    public void onListen(ListenAction action) {
+        _stt.listen(action.getListeningId(), action.getLocale());
     }
 
     /**
@@ -165,7 +168,7 @@ public class BackgroundService extends Service implements TextToSpeech.OnInitLis
      */
 
     @Subscribe
-    void onVibrate(VibrateAction action) {
+    public void onVibrate(VibrateAction action) {
         _vibrator.vibrate(200);
     }
 
