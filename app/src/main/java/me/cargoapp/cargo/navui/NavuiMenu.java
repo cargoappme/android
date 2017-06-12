@@ -2,14 +2,17 @@ package me.cargoapp.cargo.navui;
 
 import android.Manifest;
 import android.app.Fragment;
+import android.view.MotionEvent;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.facebook.yoga.android.YogaLayout;
 import com.tmtron.greenannotations.EventBusGreenRobot;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.Touch;
 import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 
@@ -78,13 +81,41 @@ public class NavuiMenu extends Fragment {
         return false;
     }
 
+    @Touch(R.id.phone)
+    public boolean onPhoneTouch(MotionEvent event) {
+        YogaLayout ll = (YogaLayout) getActivity().findViewById(R.id.phone);
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                ll.setAlpha(1f);
+                return false;
+                // if you want to handle the touch event
+            case MotionEvent.ACTION_UP:
+                ll.setAlpha(0.7f);
+                return false;
+        }
+        return false;
+    }
+
     @Click(R.id.phone)
     void onPhone() {
         if (!checkPermissions(PHONE_PERMISSIONS)) return;
 
         _eventBus.post(new HandleNavuiActionAction(HandleNavuiActionAction.Type.CALL));
     }
-
+    @Touch(R.id.message)
+    public boolean onMessageTouch(MotionEvent event) {
+        YogaLayout ll = (YogaLayout) getActivity().findViewById(R.id.message);
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                ll.setAlpha(1f);
+                return false;
+            // if you want to handle the touch event
+            case MotionEvent.ACTION_UP:
+                ll.setAlpha(0.7f);
+                return false;
+        }
+        return false;
+    }
     @Click(R.id.message)
     void onMessage() {
         if (!checkPermissions(SMS_PERMISSIONS)) return;
@@ -92,6 +123,20 @@ public class NavuiMenu extends Fragment {
         _eventBus.post(new HandleNavuiActionAction(HandleNavuiActionAction.Type.MESSAGE));
     }
 
+    @Touch(R.id.music)
+    public boolean onMusicTouch(MotionEvent event) {
+        YogaLayout ll = (YogaLayout) getActivity().findViewById(R.id.music);
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                ll.setAlpha(1f);
+                return false;
+            // if you want to handle the touch event
+            case MotionEvent.ACTION_UP:
+                ll.setAlpha(0.7f);
+                return false;
+        }
+        return false;
+    }
     @Click(R.id.music)
     void onMusic() {
         if (!checkPermissions(MUSIC_PERMISSIONS)) return;
@@ -99,11 +144,40 @@ public class NavuiMenu extends Fragment {
         _eventBus.post(new HandleNavuiActionAction(HandleNavuiActionAction.Type.MUSIC));
     }
 
+    @Touch(R.id.oil)
+    public boolean onOilTouch(MotionEvent event) {
+        YogaLayout ll = (YogaLayout) getActivity().findViewById(R.id.oil);
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                ll.setAlpha(1f);
+                return false;
+            // if you want to handle the touch event
+            case MotionEvent.ACTION_UP:
+                ll.setAlpha(0.7f);
+                return false;
+        }
+        return false;
+    }
     @Click(R.id.oil)
     void onOil() {
         if (!checkPermissions(GAS_PERMISSIONS)) return;
 
         _eventBus.post(new HandleNavuiActionAction(HandleNavuiActionAction.Type.OIL));
+    }
+
+    @Touch(R.id.parking)
+    public boolean onParkingTouch(MotionEvent event) {
+        YogaLayout ll = (YogaLayout) getActivity().findViewById(R.id.parking);
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                ll.setAlpha(1f);
+                return false;
+            // if you want to handle the touch event
+            case MotionEvent.ACTION_UP:
+                ll.setAlpha(0.7f);
+                return false;
+        }
+        return false;
     }
 
     @Click(R.id.parking)
@@ -113,6 +187,20 @@ public class NavuiMenu extends Fragment {
         _eventBus.post(new HandleNavuiActionAction(HandleNavuiActionAction.Type.PARKING));
     }
 
+    @Touch(R.id.quit)
+    public boolean onQuitTouch(MotionEvent event) {
+        YogaLayout ll = (YogaLayout) getActivity().findViewById(R.id.quit);
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                ll.setAlpha(1f);
+                return false;
+            // if you want to handle the touch event
+            case MotionEvent.ACTION_UP:
+                ll.setAlpha(0.7f);
+                return false;
+        }
+        return false;
+    }
     @Click(R.id.quit)
     void onQuit() {
         _eventBus.post(new HandleNavuiActionAction(HandleNavuiActionAction.Type.QUIT));
