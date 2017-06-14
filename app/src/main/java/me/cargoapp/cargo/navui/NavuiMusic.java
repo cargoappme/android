@@ -97,10 +97,10 @@ public class NavuiMusic extends Fragment {
         KeyEvent event2 = new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE);
         _audioManager.dispatchMediaKeyEvent(event2);
          if(_audioManager.isMusicActive()){
-             playPause.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause_black_24dp, null));
+             playPause.setImageDrawable(getResources().getDrawable(R.drawable.ic_play_arrow_black_24dp, null));
          }
          else{
-             playPause.setImageDrawable(getResources().getDrawable(R.drawable.ic_play_arrow_black_24dp, null));
+             playPause.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause_black_24dp, null));
          }
      }
  }
