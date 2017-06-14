@@ -92,7 +92,9 @@
 
     <string name="tts_received_message_confirmation">Nouveau message de %s. Voulez-vous le lire ?</string>
     <string name="tts_received_message_confirmation_repeat">Je n\'ai pas compris. Voulez-vous lire le message ? Répondez par oui ou non.</string>
-    <string name="tts_received_message_reading">Voici le message : %s</string>
+    <string name="tts_received_message_reading">Voici le message : %s. Voulez-vous y répondre ?</string>
+    <string name="tts_received_message_reply_repeat">Je n\'ai pas compris. Voulez-vous répondre au message ? Répondez par oui ou non.</string>
+    <string name="tts_received_message_prompt">Quel message voulez-vous envoyer ?</string>
     <string name="tts_received_message_ignore">D\'accord, j\'ignore le message.</string>
 
     <!-- NavUI -->

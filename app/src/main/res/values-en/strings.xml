@@ -39,7 +39,7 @@
     <string name="tts_received_message_confirmation">New message from %s. Would you like to read it?</string>
     <string name="tts_received_message_confirmation_repeat">I didn\'t understand. Would you like to read the message? Say yes or no.</string>
     <string name="tts_received_message_ignore">Alright, I ignore the message.</string>
-    <string name="tts_received_message_reading">Here\'s the message : %s</string>
+    <string name="tts_received_message_reading">Here\'s the message : %s. Would you like to answer?</string>
     <string name="dialog_vehiclechecks_title">Vehicle check-up</string>
     <string name="generic_error">An error happened</string>
     <string name="journey_fab_close">Close</string>
@@ -83,4 +83,6 @@
 
         \n\nEnjoy the road, with Cargo.
     </string>
+    <string name="tts_received_message_reply_repeat">I did not understand. Would-you like to reply? Say yes or no.</string>
+    <string name="tts_received_message_prompt">What message would you like to send?</string>
 </resources>
