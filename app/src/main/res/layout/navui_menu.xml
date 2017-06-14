@@ -144,6 +144,7 @@
             android:id="@+id/language"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:alpha="0.7"
             android:background="@drawable/gradient_navui_language"
             yoga:yg_flexGrow="1"
             yoga:yg_flexBasis="0"

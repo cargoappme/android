@@ -84,8 +84,8 @@ public class NavuiMusic extends Fragment {
             ll.setAlpha(1f);
             return false;
         case MotionEvent.ACTION_UP:
-        ll.setAlpha(0.7f);
-        return false;
+            ll.setAlpha(0.7f);
+            return false;
         }
         return false;
      }

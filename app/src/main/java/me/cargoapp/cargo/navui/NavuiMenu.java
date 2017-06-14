@@ -216,6 +216,20 @@ public class NavuiMenu extends Fragment {
     }
 
 
+    @Touch(R.id.language)
+    public boolean onLanguageTouch(MotionEvent event) {
+        YogaLayout ll = (YogaLayout) getActivity().findViewById(R.id.language);
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                ll.setAlpha(1f);
+                return false;
+            // if you want to handle the touch event
+            case MotionEvent.ACTION_UP:
+                ll.setAlpha(0.7f);
+                return false;
+        }
+        return false;
+    }
     @Click(R.id.language)
     void onLanguage() {
         _eventBus.post(new HandleNavuiActionAction(HandleNavuiActionAction.Type.LANGUAGE));
