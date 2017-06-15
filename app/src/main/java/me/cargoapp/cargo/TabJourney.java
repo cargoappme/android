@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
@@ -48,6 +49,7 @@ public class TabJourney extends Fragment implements
 
     final int AUTOCOMPLETE_REQUEST_CODE = 1;
     final String CAR_CHECKS_DIALOG_TAG = "CAR_CHECKS_DIALOG";
+    DestinationBDD destinationBDD;
 
     @EventBusGreenRobot
     EventBus _eventBus;
@@ -76,6 +78,7 @@ public class TabJourney extends Fragment implements
                 .build();
 
         _backgroundServiceIntent = new Intent(getActivity(), BackgroundService_.class);
+        destinationBDD = new DestinationBDD(getContext());
     }
 
     @Override
@@ -149,6 +152,10 @@ public class TabJourney extends Fragment implements
             _targetLocation = new Location("");
             _targetLocation.setLatitude(_targetPlace.getLatLng().latitude);
             _targetLocation.setLongitude(_targetPlace.getLatLng().longitude);
+            Destination destination = new Destination(_targetPlace.getAddress().toString(),_targetLocation.getLongitude(),_targetLocation.getLatitude());
+            destinationBDD.open();
+            destinationBDD.insertDestination(destination);
+            Destination[] destinationFromBDD = destinationBDD.getAllDestinations();
             float distanceInMeters = _targetLocation.distanceTo(_currentLocation);
 
             if (distanceInMeters >= 100 * 1000) {
