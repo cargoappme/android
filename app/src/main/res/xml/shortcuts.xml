@@ -2,7 +2,7 @@
     <shortcut
         android:shortcutId="navui"
         android:enabled="true"
-        android:icon="@drawable/ic_view_quilt_black_24dp"
+        android:icon="@drawable/ic_shortcut_navui"
         android:shortcutShortLabel="@string/shortcut_navui_short_label"
         android:shortcutLongLabel="@string/shortcut_navui_long_label"
         android:shortcutDisabledMessage="@string/shortcut_navui_disabled_message">

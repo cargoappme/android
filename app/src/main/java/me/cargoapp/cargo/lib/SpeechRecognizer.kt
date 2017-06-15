@@ -37,7 +37,7 @@ class SpeechRecognizer(val _context: Context) {
 
         var intent: Intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, locale)
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, locale.language)
         _utteranceId = utteranceId
         _mainHandler.post({ _speechRecognizer.startListening(intent) })
         _isListening = true
