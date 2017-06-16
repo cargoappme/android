@@ -74,6 +74,9 @@
     <string name="parking_available">Position de parking enregistrée</string>
     <string name="parking_go">S\'y rendre</string>
 
+    <!-- Music -->
+    <string name="music_info">Vous devez avoir un lecteur de musique actif</string>
+
     <!-- Speech to text -->
     <string name="stt_yes">oui</string>
     <string name="stt_no">non</string>

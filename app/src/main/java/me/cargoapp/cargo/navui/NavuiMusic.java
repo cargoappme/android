@@ -5,6 +5,8 @@ import android.media.AudioManager;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import com.facebook.yoga.android.YogaLayout;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -13,6 +15,7 @@ import org.androidannotations.annotations.SystemService;
 import org.androidannotations.annotations.Touch;
 import org.androidannotations.annotations.ViewById;
 
+import es.dmoral.toasty.Toasty;
 import me.cargoapp.cargo.R;
 
 @EFragment(R.layout.fragment_navui_music)
@@ -30,6 +33,7 @@ public class NavuiMusic extends Fragment {
         else{
             playPause.setImageDrawable(getResources().getDrawable(R.drawable.ic_play_arrow_black_24dp, null));
         }
+        Toasty.info(getContext(), getString(R.string.music_info), Toast.LENGTH_LONG, true).show();
     }
      @Touch(R.id.prev)
      public boolean onPrevTouch(MotionEvent event) {
