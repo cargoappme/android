@@ -84,6 +84,9 @@ dependencies {
     // WaveLoading
     compile 'com.race604.waveloading:library:1.1.1'
 
+    // Volley
+    compile 'com.android.volley:volley:1.0.0'
+
     testCompile 'junit:junit:4.12'
 }
 

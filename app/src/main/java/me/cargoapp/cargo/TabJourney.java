@@ -11,8 +11,18 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.common.ConnectionResult;
@@ -26,12 +36,16 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.tmtron.greenannotations.EventBusGreenRobot;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.HttpsClient;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import es.dmoral.toasty.Toasty;
 import me.cargoapp.cargo.event.overlay.SetOverlayVisibilityAction;
@@ -48,6 +62,9 @@ public class TabJourney extends Fragment implements
 
     final int AUTOCOMPLETE_REQUEST_CODE = 1;
     final String CAR_CHECKS_DIALOG_TAG = "CAR_CHECKS_DIALOG";
+    final static String JOURNEY_SHARING_DIALOG_TAG = "JOURNEY_SHARING_DIALOG";
+
+    final static String JOURNEYS_URL = "https://cargo-api.herokuapp.com/journeys";
 
     @EventBusGreenRobot
     EventBus _eventBus;
@@ -65,6 +82,14 @@ public class TabJourney extends Fragment implements
 
     Intent _backgroundServiceIntent;
 
+    RequestQueue _requestQueue;
+
+    String _journeyToken;
+    String _journeySecret;
+    boolean _tokenValid = false;
+
+    static Dialog _trackingDialog;
+
     @Override
     public void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
@@ -76,6 +101,8 @@ public class TabJourney extends Fragment implements
                 .build();
 
         _backgroundServiceIntent = new Intent(getActivity(), BackgroundService_.class);
+
+        _requestQueue = Volley.newRequestQueue(getActivity());
     }
 
     @Override
@@ -175,6 +202,9 @@ public class TabJourney extends Fragment implements
         Application_.isJourneyStarted = true;
         Application_.journeyWithSharing = action.withSharing;
         Application_.journeyDestination = _targetLocation;
+        Application_.journeyToken = _journeyToken;
+        Application_.journeySecret = _journeySecret;
+        Application_.tokenValid = _tokenValid;
 
         _eventBus.post(new SetOverlayVisibilityAction(true));
 
@@ -189,6 +219,74 @@ public class TabJourney extends Fragment implements
         }
     }
 
+    @Subscribe
+    public void onGetTrackingUrl(GetTrackingUrlAction action) {
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            JSONObject startObject = new JSONObject();
+            startObject.put("latitude", _currentLocation.getLatitude());
+            startObject.put("longitude", _currentLocation.getLongitude());
+
+            JSONObject endObject = new JSONObject();
+            endObject.put("latitude", _targetLocation.getLatitude());
+            endObject.put("longitude", _targetLocation.getLongitude());
+            jsonObject.put("start", startObject);
+            jsonObject.put("end", endObject);
+        } catch (JSONException e) {
+        }
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.POST, JOURNEYS_URL, jsonObject, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        String token = "";
+                        String secret = "";
+                        try {
+                            token = response.getString("token");
+                            secret = response.getString("secret");
+                        } catch (JSONException e) {
+
+                        }
+
+                        _journeyToken = token;
+                        _journeySecret = secret;
+                        _tokenValid = true;
+
+                       TextView urlView = (TextView) _trackingDialog.findViewById(R.id.url);
+                        urlView.setText("https://cargoapp.me/track?id=" + token);
+
+                        ImageButton button = (ImageButton) _trackingDialog.findViewById(R.id.share);
+                        button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent sendIntent = new Intent();
+                                sendIntent.setAction(Intent.ACTION_SEND);
+                                sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.sharing_text, "https://cargoapp.me/track?id=" + _journeyToken));
+                                sendIntent.setType("text/plain");
+                                startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.sharing_send_to)));
+                            }
+                        });
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        TextView urlView = (TextView) _trackingDialog.findViewById(R.id.url);
+                        urlView.setText("-");
+                    }
+                });
+
+        _requestQueue.add(jsObjRequest);
+    }
+
+    public static class GetTrackingUrlAction {
+
+        public GetTrackingUrlAction() {
+        }
+    }
+
     public static class CarChecksDialogFragment extends DialogFragment {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -198,6 +296,34 @@ public class TabJourney extends Fragment implements
                     .setTitle(R.string.dialog_vehiclechecks_title)
                     .setView(R.layout.dialog_vehicle_checks)
                     .setPositiveButton(R.string.dialog_vehiclechecks_action_go, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            DialogFragment dialogFragment = new TrackingUrlDialogFragment();
+
+                            dialogFragment.show(getFragmentManager(), JOURNEY_SHARING_DIALOG_TAG);
+                            getFragmentManager().executePendingTransactions();
+                            _trackingDialog = dialogFragment.getDialog();
+
+                            EventBus.getDefault().post(new GetTrackingUrlAction());
+                        }
+                    })
+                    .setNegativeButton(R.string.dialog_vehiclechecks_action_back, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
+    }
+
+    public static class TrackingUrlDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder
+                    .setTitle(R.string.dialog_share_journey_title)
+                    .setView(R.layout.dialog_share_journey)
+                    .setPositiveButton(R.string.dialog_share_journey_action_go, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             EventBus.getDefault().post(new StartJourneyAction(true));
                         }

@@ -16,6 +16,10 @@ public class Application extends android.app.Application {
     public static boolean journeyWithSharing = false;
     public static Location journeyDestination;
 
+    public static String journeyToken = "";
+    public static String journeySecret = "";
+    public static boolean tokenValid = false;
+
     @Override
     public void onCreate() {
         super.onCreate();

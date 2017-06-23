@@ -62,6 +62,11 @@
     <string name="dialog_vehiclechecks_action_go">C\'est bon !</string>
     <string name="dialog_vehiclechecks_action_back">Retour à l\'accueil</string>
 
+    <string name="dialog_share_journey_title">Partage du trajet</string>
+    <string name="dialog_share_journey_text">Voici votre lien de partage. Partagez le avec vos proches pour qu\'ils puissent suivre votre trajet.</string>
+    <string name="dialog_share_journey_action_go">Démarrer</string>
+    <string name="dialog_share_journey_loading">Chargement...</string>
+
     <!-- Strings related to Settings -->
     <string name="action_settings">Paramètres</string>
 
@@ -112,4 +117,8 @@
     <string name="shortcut_navui_short_label">Démarrer la NavUI</string>
     <string name="shortcut_navui_long_label">Démarrer l\'interface de navigation</string>
     <string name="shortcut_navui_disabled_message">Veuillez lancer l\'application pour accorder les permissions nécessaires.</string>
+
+    <!-- Sharing -->
+    <string name="sharing_text">Suis mon trajet avec ce lien Cargo anonyme et sécurisé : %s</string>
+    <string name="sharing_send_to">Envoyer à</string>
 </resources>

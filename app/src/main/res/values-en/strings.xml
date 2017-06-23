@@ -85,4 +85,10 @@
     </string>
     <string name="tts_received_message_reply_repeat">I did not understand. Would-you like to reply? Say yes or no.</string>
     <string name="tts_received_message_prompt">What message would you like to send?</string>
+    <string name="dialog_share_journey_text">Here\'s your sharing link. Share it with your loved ones so they can track your journey.</string>
+    <string name="dialog_share_journey_action_go">Start</string>
+    <string name="dialog_share_journey_title">Journey sharing</string>
+    <string name="dialog_share_journey_loading">Loading...</string>
+    <string name="sharing_send_to">Send to</string>
+    <string name="sharing_text">Track my journey with this anonymous and secure Cargo link : %s</string>
 </resources>
