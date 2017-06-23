@@ -75,11 +75,11 @@ public class DestinationBDD {
     }
 
     public Destination[] getAllDestinations(){
-        List<Destination> list = null;
-        Cursor c = bdd.rawQuery("Select * from table_destinations ORDER BY rowid DESC limit 10",null);
+        Cursor c = bdd.rawQuery("Select distinct " + COL_ADRESS + ", " + COL_LON + ", " + COL_LAT + " from table_destinations ORDER BY rowid DESC limit 10",null);
         int cnt = c.getCount();
         Destination[] listings;
         listings = new Destination[cnt];
+        if (cnt == 0) return listings;
         c.moveToFirst();
         cnt = 0;
         do {

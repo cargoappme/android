@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     @AfterViews
     void afterViews() {
         _tabLayout.addTab(_tabLayout.newTab().setText(R.string.tab_journey));
-        _tabLayout.addTab(_tabLayout.newTab().setText(R.string.tab_vehicle));
+        _tabLayout.addTab(_tabLayout.newTab().setText(R.string.tab_history));
         _tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         _tabLayout.addOnTabSelectedListener(this);
 
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 case 0:
                     return new TabJourney_();
                 case 1:
-                    return new TabVehicle_();
+                    return new TabHistory_();
                 default:
                     return null;
             }

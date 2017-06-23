@@ -3,12 +3,27 @@ package me.cargoapp.cargo.service;
 import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.orhanobut.logger.Logger;
 import com.tmtron.greenannotations.EventBusGreenRobot;
 
@@ -19,13 +34,19 @@ import org.androidannotations.annotations.SystemService;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import es.dmoral.toasty.Toasty;
+import me.cargoapp.cargo.Application_;
 import me.cargoapp.cargo.NavuiActivity_;
 import me.cargoapp.cargo.OverlayLayer;
 import me.cargoapp.cargo.R;
+import me.cargoapp.cargo.TabJourney;
 import me.cargoapp.cargo.event.overlay.OverlayClickedEvent;
 import me.cargoapp.cargo.event.overlay.SetOverlayVisibilityAction;
 import me.cargoapp.cargo.event.service.ServiceBootedEvent;
@@ -38,14 +59,20 @@ import me.cargoapp.cargo.event.voice.SpeechDoneEvent;
 import me.cargoapp.cargo.lib.SpeechRecognizer;
 
 @EService
-public class BackgroundService extends Service implements TextToSpeech.OnInitListener {
+public class BackgroundService extends Service implements TextToSpeech.OnInitListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private String TAG = this.getClass().getSimpleName();
     public static boolean active = false;
     public static boolean ready = false;
 
+    private final static int JOURNEY_UPDATE_INTERVAL = 60000;
     private final static int FOREGROUND_ID = 999;
     private final String UTTERANCE_INIT = "BACKGROUND_INIT";
+
+    GoogleApiClient _googleClient;
+
+    Timer _timer;
+    RequestQueue _requestQueue;
 
     @EventBusGreenRobot
     EventBus _eventBus;
@@ -71,6 +98,16 @@ public class BackgroundService extends Service implements TextToSpeech.OnInitLis
         _stt = new SpeechRecognizer(getApplicationContext());
 
         _overlayLayer.setLoading(true);
+
+        _requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+        _googleClient = new GoogleApiClient.Builder(getApplicationContext())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+
+        _googleClient.connect();
     }
 
     @Override
@@ -85,6 +122,15 @@ public class BackgroundService extends Service implements TextToSpeech.OnInitLis
 
         active = true;
         _eventBus.post(new ServiceBootedEvent());
+
+        _timer = new Timer();
+        _timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                _updateJourneyPosition();
+            }
+
+        }, 0, JOURNEY_UPDATE_INTERVAL);
 
         return START_STICKY;
     }
@@ -111,11 +157,62 @@ public class BackgroundService extends Service implements TextToSpeech.OnInitLis
         active = false;
 
         stopForeground(true);
+
+        _googleClient.disconnect();
     }
 
     @Subscribe
     public void onStopBackgroundService(StopBackgroundServiceAction event) {
         stopSelf();
+    }
+
+    /**
+     * Google
+     */
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {}
+
+    @Override
+    public void onConnectionSuspended(int i) {}
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
+
+    /**
+     * Journey
+     */
+
+    void _updateJourneyPosition() {
+        if (!Application_.isJourneyStarted || !Application_.journeyWithSharing || !Application_.tokenValid) return;
+
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Location location = LocationServices.FusedLocationApi.getLastLocation(_googleClient);
+            if (location != null) {
+                JSONObject jsonObject = new JSONObject();
+
+                try {
+                    jsonObject.put("latitude", location.getLatitude());
+                    jsonObject.put("longitude", location.getLongitude());
+                } catch (JSONException e) {
+                }
+
+                JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                        (Request.Method.POST, TabJourney.JOURNEYS_URL + "/" + Application_.journeyToken + "?secret=" + Application_.journeySecret, jsonObject, new Response.Listener<JSONObject>() {
+
+                            @Override
+                            public void onResponse(JSONObject response) {
+                            }
+                        }, new Response.ErrorListener() {
+
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                            }
+                        });
+
+                _requestQueue.add(jsObjRequest);
+            }
+        }
     }
 
     /**

@@ -45,7 +45,7 @@
 
     <!-- Tabs -->
     <string name="tab_journey">Trajet</string>
-    <string name="tab_vehicle">Historique</string>
+    <string name="tab_history">Historique</string>
 
     <!-- Dialogs -->
     <string name="dialog_vehiclechecks_title">Vérifications du véhicule</string>

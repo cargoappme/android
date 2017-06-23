@@ -56,7 +56,7 @@
     <string name="shortcut_navui_long_label">Start the navigation interface</string>
     <string name="shortcut_navui_short_label">Start the NavUI</string>
     <string name="tab_journey">Journey</string>
-    <string name="tab_vehicle">Vehicle</string>
+    <string name="tab_history">History</string>
     <string name="welcome_contacts_description">Cargo can access your contacts to allow you to join them easily.</string>
     <string name="welcome_contacts_title">Contacts</string>
     <string name="welcome_enable_permission">Enable the option for Cargo and press back</string>

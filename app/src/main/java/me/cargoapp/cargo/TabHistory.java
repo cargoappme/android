@@ -7,18 +7,25 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.tmtron.greenannotations.EventBusGreenRobot;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
+import me.cargoapp.cargo.event.overlay.SetOverlayVisibilityAction;
 import me.cargoapp.cargo.helper.IntentHelper;
 
 @EFragment(R.layout.tab_vehicle)
-public class TabVehicle extends Fragment {
+public class TabHistory extends Fragment {
 
     DestinationBDD destinationBDD;
+
+    @EventBusGreenRobot
+    EventBus _eventBus;
 
     @ViewById(R.id.listView)
     ListView mListView;
@@ -46,6 +53,13 @@ public class TabVehicle extends Fragment {
                                     long arg3) {
                 Intent intent = IntentHelper.INSTANCE.createNavigationIntent(destinationFromBDD[arg2].getLat(), destinationFromBDD[arg2].getLon(), mylist.get(arg2));
                 startActivity(intent);
+
+                Application_.isJourneyStarted = true;
+                Application_.journeyWithSharing = false;
+
+                _eventBus.post(new SetOverlayVisibilityAction(true));
+
+                getActivity().finish();
             }
 
         });

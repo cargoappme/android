@@ -61,7 +61,7 @@ public class TabJourney extends Fragment implements
     final String CAR_CHECKS_DIALOG_TAG = "CAR_CHECKS_DIALOG";
     final static String JOURNEY_SHARING_DIALOG_TAG = "JOURNEY_SHARING_DIALOG";
 
-    final static String JOURNEYS_URL = "https://cargo-api.herokuapp.com/journeys";
+    public final static String JOURNEYS_URL = "https://cargo-api.herokuapp.com/journeys";
 
     @EventBusGreenRobot
     EventBus _eventBus;
