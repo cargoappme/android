@@ -12,7 +12,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,10 +35,8 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.tmtron.greenannotations.EventBusGreenRobot;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.HttpsClient;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
@@ -80,6 +77,8 @@ public class TabJourney extends Fragment implements
     Location _targetLocation;
     Place _targetPlace;
 
+    DestinationBDD destinationBDD;
+
     Intent _backgroundServiceIntent;
 
     RequestQueue _requestQueue;
@@ -103,6 +102,7 @@ public class TabJourney extends Fragment implements
         _backgroundServiceIntent = new Intent(getActivity(), BackgroundService_.class);
 
         _requestQueue = Volley.newRequestQueue(getActivity());
+        destinationBDD = new DestinationBDD(getContext());
     }
 
     @Override
@@ -176,6 +176,10 @@ public class TabJourney extends Fragment implements
             _targetLocation = new Location("");
             _targetLocation.setLatitude(_targetPlace.getLatLng().latitude);
             _targetLocation.setLongitude(_targetPlace.getLatLng().longitude);
+            Destination destination = new Destination(_targetPlace.getAddress().toString(),_targetLocation.getLongitude(),_targetLocation.getLatitude());
+            destinationBDD.open();
+            destinationBDD.insertDestination(destination);
+            Destination[] destinationFromBDD = destinationBDD.getAllDestinations();
             float distanceInMeters = _targetLocation.distanceTo(_currentLocation);
 
             if (distanceInMeters >= 100 * 1000) {

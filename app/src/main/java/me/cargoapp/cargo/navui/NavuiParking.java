@@ -88,6 +88,7 @@ public class NavuiParking extends Fragment implements GoogleApiClient.Connection
                 VoiceHelper.INSTANCE.speak(UTTERANCE_FAILURE, getString(R.string.tts_parking_failure), NavuiActivity_.locale);
             }
 
+
             _eventBus.post(new HandleNavuiActionAction(HandleNavuiActionAction.Type.MENU));
         }
     }

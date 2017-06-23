@@ -27,7 +27,8 @@
     <string name="stt_no">no</string>
     <string name="stt_yes">yes</string>
     <string name="parking_save_failure">Failed to get your current location</string>
-    <string name="parking_save_success">Parking position successfully savec</string>
+    <string name="parking_save_success">Parking position successfully saved</string>
+    <string name="music_info">You must have an active music player</string>
     <string name="tts_error_repeat">I didn\'t understand. Can you repeat?</string>
     <string name="tts_message_cancel">Alright, I cancel.</string>
     <string name="tts_message_content">I am going to send an SMS to %s. What message would you like to send?</string>

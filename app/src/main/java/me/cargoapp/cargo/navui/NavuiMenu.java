@@ -2,8 +2,8 @@ package me.cargoapp.cargo.navui;
 
 import android.Manifest;
 import android.app.Fragment;
-import android.view.MotionEvent;
 import android.graphics.Color;
+import android.view.MotionEvent;
 import android.widget.ImageView;
 import android.widget.Toast;
 

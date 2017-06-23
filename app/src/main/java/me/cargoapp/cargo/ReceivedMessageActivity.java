@@ -2,7 +2,6 @@ package me.cargoapp.cargo;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.service.notification.StatusBarNotification;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
