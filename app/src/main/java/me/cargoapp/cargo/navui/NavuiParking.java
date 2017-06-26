@@ -28,6 +28,7 @@ import me.cargoapp.cargo.NavuiActivity_;
 import me.cargoapp.cargo.ParkingStore_;
 import me.cargoapp.cargo.R;
 import me.cargoapp.cargo.event.navui.HandleNavuiActionAction;
+import me.cargoapp.cargo.helper.LocalizationHelper;
 import me.cargoapp.cargo.helper.VoiceHelper;
 
 /**
@@ -80,12 +81,13 @@ public class NavuiParking extends Fragment implements GoogleApiClient.Connection
                 _parkingStore.latitude().put((float) _lastLocation.getLatitude());
                 _parkingStore.longitude().put((float) _lastLocation.getLongitude());
                 _parkingStore.hasPositionSaved().put(true);
-                Toasty.success(getContext(), getString(R.string.parking_save_success), Toast.LENGTH_LONG, true).show();
-                VoiceHelper.INSTANCE.speak(UTTERANCE_SUCCESS, getString(R.string.tts_parking_success), NavuiActivity_.locale);
+
+                Toasty.success(getContext(), LocalizationHelper.INSTANCE.getString(getContext(), NavuiActivity_.locale, R.string.parking_save_success), Toast.LENGTH_LONG, true).show();
+                VoiceHelper.INSTANCE.speak(UTTERANCE_SUCCESS, LocalizationHelper.INSTANCE.getString(getContext(), NavuiActivity_.locale, R.string.tts_parking_success), NavuiActivity_.locale);
 
             } else {
-                Toasty.error(getContext(), getString(R.string.parking_save_failure), Toast.LENGTH_LONG, true).show();
-                VoiceHelper.INSTANCE.speak(UTTERANCE_FAILURE, getString(R.string.tts_parking_failure), NavuiActivity_.locale);
+                Toasty.error(getContext(), LocalizationHelper.INSTANCE.getString(getContext(), NavuiActivity_.locale, R.string.parking_save_failure), Toast.LENGTH_LONG, true).show();
+                VoiceHelper.INSTANCE.speak(UTTERANCE_FAILURE, LocalizationHelper.INSTANCE.getString(getContext(), NavuiActivity_.locale, R.string.tts_parking_failure), NavuiActivity_.locale);
             }
 
 
