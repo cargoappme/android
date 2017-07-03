@@ -76,6 +76,8 @@ public class WelcomeActivity extends AppIntro2 {
             addSlide(overlayFragment);
 
         }
+        addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_done_title), getString(R.string.welcome_done_description), R.drawable.welcome_done, getResources().getColor(R.color.slide_primary_background, null)));
+
         showSkipButton(false);
 
         setVibrate(true);

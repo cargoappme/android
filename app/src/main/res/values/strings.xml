@@ -25,6 +25,8 @@
     <string name="welcome_notifications_description">Cargo peut lire vos notifications pour interagir avec vos messageries et lire vos notifications.</string>
     <string name="welcome_overlay_title">Superposition</string>
     <string name="welcome_overlay_description">Requis. Cargo se superpose à vos applications pour être plus facile d\'accès.</string>
+    <string name="welcome_done_title">C\'est fini !</string>
+    <string name="welcome_done_description">Vous êtes prets à utiliser Cargo.</string>
     <string name="welcome_special_button">Autoriser</string>
     <string name="welcome_enable_permission">Activez l\'option pour Cargo et faites retour</string>
     <string name="welcome_permission_needed">Vous devez activer l\'option pour continuer</string>

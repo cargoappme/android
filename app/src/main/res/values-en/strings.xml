@@ -91,4 +91,6 @@
     <string name="sharing_send_to">Send to</string>
     <string name="sharing_text">Track my journey with this anonymous and secure Cargo link : %s</string>
     <string name="journey_enter_destination">Enter your destination</string>
+    <string name="welcome_done_title">Done!</string>
+    <string name="welcome_done_description">You are ready to use Cargo.</string>
 </resources>
