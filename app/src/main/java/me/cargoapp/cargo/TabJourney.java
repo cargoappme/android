@@ -162,6 +162,7 @@ public class TabJourney extends Fragment implements
         try {
             Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY).build(getActivity());
             startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
+            Toasty.info(getContext(), getString(R.string.journey_enter_destination), Toast.LENGTH_LONG).show();
         } catch (GooglePlayServicesRepairableException e) {
             // TODO: Handle the error.
         } catch (GooglePlayServicesNotAvailableException e) {

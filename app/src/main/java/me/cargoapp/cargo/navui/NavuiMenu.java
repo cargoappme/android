@@ -23,6 +23,7 @@ import es.dmoral.toasty.Toasty;
 import me.cargoapp.cargo.NavuiActivity_;
 import me.cargoapp.cargo.R;
 import me.cargoapp.cargo.event.navui.HandleNavuiActionAction;
+import me.cargoapp.cargo.helper.LocalizationHelper;
 import me.cargoapp.cargo.helper.PermissionHelper;
 import me.cargoapp.cargo.helper.VoiceHelper;
 
@@ -102,8 +103,7 @@ public class NavuiMenu extends Fragment {
     boolean checkPermissions(String[] permissions) {
         if (PermissionHelper.INSTANCE.isPermittedTo(getActivity(), permissions)) return true;
 
-
-        String text = getString(R.string.navui_item_no_permissions);
+        String text = LocalizationHelper.INSTANCE.getString(getContext(), NavuiActivity_.locale, R.string.navui_item_no_permissions);
         VoiceHelper.INSTANCE.speak(UTTERANCE_NO_PERMISSIONS, text, NavuiActivity_.locale);
         Toasty.warning(getActivity(), text, Toast.LENGTH_SHORT).show();
         return false;

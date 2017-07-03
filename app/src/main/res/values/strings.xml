@@ -34,7 +34,7 @@
 
         \n\nDémarrez un trajet en cliquant sur l\'icône en bas à droite
 
-        \n\nConsultez des informations sur les véhicules en sélectionnant l\'onglet à droite
+        \n\nConsultez votre historique de destination en sélectionnant l\'onglet à droite
 
         \n\nAimez la route, avec Cargo.
     </string>
@@ -42,6 +42,7 @@
     <string name="journey_fab_go">Démarrer avec partage de position</string>
     <string name="journey_fab_start">Démarrer sans partage de position</string>
     <string name="journey_tracking_disabled_no_permissions">Partage de position désactivé : permissions non accordées</string>
+    <string name="journey_enter_destination">Entrez votre destination</string>
 
     <!-- Tabs -->
     <string name="tab_journey">Trajet</string>
@@ -56,8 +57,6 @@
         \n\n• La pression de vos pneux
         \n• Le niveau d\'huile moteur
         \n• Les essuie-glaces
-
-        \n\nVous trouverez certaines informations dans l\'onglet <i>Véhicule</i> sur l\'écran d\'accueil.
     </string>
     <string name="dialog_vehiclechecks_action_go">C\'est bon !</string>
     <string name="dialog_vehiclechecks_action_back">Retour à l\'accueil</string>

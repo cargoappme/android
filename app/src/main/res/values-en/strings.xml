@@ -11,8 +11,6 @@
         \n\n• The pressure of your tires
         \n• The engine oil level
         \n• The windshield wipers
-
-        \n\nYou can find some information in the <i>Vehicle tab</i> on the homescreen.
     </string>
     <string name="navui_item_language">Language</string>
     <string name="navui_item_menu">Menu</string>
@@ -80,7 +78,7 @@
 
         \n\nStart a journey by tapping the icon in the lower right corner
 
-        \n\nConsult vehicles information by tapping the right tab
+        \n\nConsult your destination history by tapping the right tab
 
         \n\nEnjoy the road, with Cargo.
     </string>
@@ -92,4 +90,5 @@
     <string name="dialog_share_journey_loading">Loading...</string>
     <string name="sharing_send_to">Send to</string>
     <string name="sharing_text">Track my journey with this anonymous and secure Cargo link : %s</string>
+    <string name="journey_enter_destination">Enter your destination</string>
 </resources>

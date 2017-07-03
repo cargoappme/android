@@ -59,11 +59,15 @@ public class WelcomeActivity extends AppIntro2 {
         askForPermissions(new String[]{Manifest.permission.SEND_SMS}, 5);
         addSlide(AppIntro2Fragment.newInstance(getString(R.string.welcome_tel_title), getString(R.string.welcome_tel_description), R.drawable.welcome_phone, getResources().getColor(R.color.slide_primary_background, null)));
         askForPermissions(new String[]{Manifest.permission.CALL_PHONE}, 6);
-        Fragment notificationFragment = new WelcomeActivity_.SpecialFragment_();
-        Bundle notificationArgs = new Bundle();
-        notificationArgs.putBoolean(NOTIFICATION_ARG, true);
-        notificationFragment.setArguments(notificationArgs);
-        addSlide(notificationFragment);
+
+        if (!PermissionHelper.INSTANCE.isPermittedTo(getApplicationContext(), Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE)) {
+            Fragment notificationFragment = new WelcomeActivity_.SpecialFragment_();
+            Bundle notificationArgs = new Bundle();
+            notificationArgs.putBoolean(NOTIFICATION_ARG, true);
+            notificationFragment.setArguments(notificationArgs);
+            addSlide(notificationFragment);
+
+        }
         if (!PermissionHelper.INSTANCE.isPermittedTo(getApplicationContext(), Manifest.permission.SYSTEM_ALERT_WINDOW)) {
             Fragment overlayFragment = new WelcomeActivity_.SpecialFragment_();
             Bundle overlayArgs = new Bundle();
